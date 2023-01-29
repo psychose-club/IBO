@@ -386,7 +386,7 @@ public final class BinaryWriter {
      * @return The offset position.
      * @throws ClosedException This exception will be thrown when the BinaryWriter is closed but the user tries to access it.
      */
-    public long getOffsetPosition () throws ClosedException {
+    public int getOffsetPosition () throws ClosedException {
         if (this.isClosed())
             throw new ClosedException("The BinaryWriter is closed!");
 
