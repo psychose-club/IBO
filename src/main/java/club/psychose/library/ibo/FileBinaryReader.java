@@ -155,7 +155,7 @@ public final class FileBinaryReader {
         this.chunkOffsetPosition = 0;
         this.offsetPosition = 0;
 
-        this.setOffsetPosition(offsetPosition);
+        this.setOffsetPosition(startOffsetPosition);
     }
 
     /**
