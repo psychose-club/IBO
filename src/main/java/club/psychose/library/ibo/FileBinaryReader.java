@@ -622,6 +622,18 @@ public final class FileBinaryReader {
     }
 
     /**
+     * This method returns the offset position from the file.
+     * @return The file offset position.
+     * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
+     */
+    public long getFileOffsetPosition () throws ClosedException {
+        if (this.isClosed())
+            throw new ClosedException("The FileBinaryReader is closed!");
+
+        return this.offsetPosition;
+    }
+
+    /**
      * This method returns the file length of the binary file.
      * @return The file length.
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
