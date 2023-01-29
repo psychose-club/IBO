@@ -564,6 +564,14 @@ public final class FileBinaryReader {
     }
 
     /**
+     * This method returns the internal {@link ByteOrder}.
+     * @return {@link ByteOrder}
+     */
+    public ByteOrder getByteOrder () {
+        return this.byteOrder;
+    }
+
+    /**
      * This method returns the chunk number from an offset position.
      * @param offsetPosition The offset position.
      * @return The chunk number.
