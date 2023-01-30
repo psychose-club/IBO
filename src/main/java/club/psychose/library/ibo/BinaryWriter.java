@@ -100,26 +100,33 @@ public final class BinaryWriter {
     /**
      * This method opens the file to write in. (If the file or directories didn't exist it'll be created)
      * @param filePath The path to the file.
+     * @param overwrite Indicates if the file should be replaced with a new file or the write process should begin at the end of the file.
      * @throws OpenedException This exception will be thrown when the BinaryWriter is opened but should be closed and the user tries to access it.
+     * @throws ClosedException This exception will be thrown when the BinaryWriter is closed but the user tries to access it.
      * @throws IOException This exception will be thrown when something goes wrong while initializing the file.
      */
-    public void open (Path filePath) throws OpenedException, IOException {
+    public void open (Path filePath, boolean overwrite) throws OpenedException, ClosedException, IOException {
         if (!(this.isClosed()))
             throw new OpenedException("The BinaryWriter is already opened!");
 
-        Path directoryPath = filePath.getParent();
+        if ((!(Files.exists(filePath))) || (overwrite)) {
+            Path directoryPath = filePath.getParent();
 
-        if (!(Files.exists(directoryPath)))
-            Files.createDirectories(directoryPath);
+            if (!(Files.exists(directoryPath)))
+                Files.createDirectories(directoryPath);
 
-        Files.deleteIfExists(filePath);
-        Files.createFile(filePath);
+            Files.deleteIfExists(filePath);
+            Files.createFile(filePath);
+        }
 
         this.randomAccessFile = new RandomAccessFile(filePath.toFile(), "rw");
         this.randomAccessFile.seek(0);
 
         this.closed = false;
         this.offsetPosition = 0;
+
+        if (!(overwrite))
+            this.setOffsetPosition(this.randomAccessFile.length());
     }
 
     /**
