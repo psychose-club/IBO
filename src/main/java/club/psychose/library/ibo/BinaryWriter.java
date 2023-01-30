@@ -402,6 +402,16 @@ public final class BinaryWriter {
     }
 
     /**
+     * This method returns the written file length.
+     * @return The file length.
+     * @throws ClosedException This exception will be thrown when the BinaryWriter is closed but the user tries to access it.
+     * @throws IOException This exception will be thrown when something go reading the length of the file.
+     */
+    public long getFileLength () throws ClosedException, IOException {
+        return this.randomAccessFile.length();
+    }
+
+    /**
      * This method returns the current offset position from the BinaryWriter.
      * @return The offset position.
      * @throws ClosedException This exception will be thrown when the BinaryWriter is closed but the user tries to access it.
