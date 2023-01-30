@@ -108,6 +108,10 @@ public final class Int32 extends IBODataType<Long> {
 
     @Override
     public void setValue (Long value) throws RangeOutOfBoundsException {
+        this.setValue((long) value);
+    }
+
+    public void setValue (long value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
             this.dataObject = value;
         } else {

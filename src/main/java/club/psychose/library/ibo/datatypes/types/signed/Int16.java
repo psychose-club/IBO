@@ -100,6 +100,10 @@ public final class Int16 extends IBODataType<Integer> {
 
     @Override
     public void setValue (Integer value) throws RangeOutOfBoundsException {
+        this.setValue((int) value);
+    }
+
+    public void setValue (int value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
             this.dataObject = value;
         } else {

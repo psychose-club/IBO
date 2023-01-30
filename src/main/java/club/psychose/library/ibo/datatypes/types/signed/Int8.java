@@ -92,6 +92,10 @@ public final class Int8 extends IBODataType<Short> {
 
     @Override
     public void setValue (Short value) throws RangeOutOfBoundsException {
+        this.setValue((short) value);
+    }
+
+    public void setValue (short value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
             this.dataObject = value;
         } else {
