@@ -55,7 +55,7 @@ public final class UInt64 extends IBODataType<BigInteger> {
     }
 
     public UInt64 (byte value) throws RangeOutOfBoundsException {
-        super(BigInteger.valueOf(value));
+        super(BigInteger.valueOf(value & 0xFF));
     }
 
     public UInt64 (short value) throws RangeOutOfBoundsException {
@@ -87,8 +87,10 @@ public final class UInt64 extends IBODataType<BigInteger> {
     }
 
     public void setValue (byte value) throws RangeOutOfBoundsException {
-        if ((value >= getMinimumValue().longValue()) && (value <= getMaximumValue().longValue())) {
-            this.dataObject = BigInteger.valueOf(value);
+        BigInteger convertedValue = BigInteger.valueOf(value & 0xFF);
+
+        if ((convertedValue.longValue() >= getMinimumValue().longValue()) && (convertedValue.longValue() <= getMaximumValue().longValue())) {
+            this.dataObject = convertedValue;
         } else {
             throw new RangeOutOfBoundsException("The value for the UInt64 data type is out of bounds!");
         }

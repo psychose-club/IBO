@@ -51,7 +51,7 @@ public final class UInt8 extends IBODataType<Short> {
     }
 
     public UInt8 (byte value) throws RangeOutOfBoundsException {
-        super((short) value);
+        super((short) (value & 0xFF));
     }
 
     public UInt8 (short value) throws RangeOutOfBoundsException {
@@ -83,8 +83,10 @@ public final class UInt8 extends IBODataType<Short> {
     }
 
     public void setValue (byte value) throws RangeOutOfBoundsException {
-        if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
-            this.dataObject = (short) value;
+        short convertedValue = (short) (value & 0xFF);
+
+        if ((convertedValue >= getMinimumValue()) && (convertedValue <= getMaximumValue())) {
+            this.dataObject = convertedValue;
         } else {
             throw new RangeOutOfBoundsException("The value for the UInt8 data type is out of bounds!");
         }
