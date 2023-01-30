@@ -47,11 +47,11 @@ import java.util.stream.IntStream;
 
 public final class Int64 extends IBODataType<BigInteger> {
     public Int64 (byte[] dataBytes) throws RangeOutOfBoundsException {
-        super(new BigInteger(1, ByteBuffer.wrap(dataBytes, 0, 8).array()));
+        super(new BigInteger(-1, ByteBuffer.wrap(dataBytes, 0, 8).array()));
     }
 
     public Int64 (byte[] dataBytes, ByteOrder byteOrder) throws RangeOutOfBoundsException {
-        super(new BigInteger(1, ByteBuffer.wrap(dataBytes, 0, 8).order(byteOrder).array()));
+        super(new BigInteger(-1, ByteBuffer.wrap(dataBytes, 0, 8).order(byteOrder).array()));
     }
 
     public Int64 (byte value) throws RangeOutOfBoundsException {
@@ -166,7 +166,7 @@ public final class Int64 extends IBODataType<BigInteger> {
 
         // Padding.
         boolean isValueNegative = (this.dataObject.compareTo(BigInteger.valueOf(0)) < 0);
-        IntStream.range(0, byteArray.length).forEachOrdered(index -> buffer[index] = (isValueNegative) ? ((byte) 0xFF) : ((byte) 0x0));
+        IntStream.range(0, 8).forEachOrdered(index -> buffer[index] = (isValueNegative) ? ((byte) 0xFF) : ((byte) 0x0));
 
         // When the default ByteOrder is different from the required one, we will reverse the bytes.
         if (byteOrder != byteArrayOrder) {
