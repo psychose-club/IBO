@@ -408,6 +408,9 @@ public final class BinaryWriter {
      * @throws IOException This exception will be thrown when something go reading the length of the file.
      */
     public long getFileLength () throws ClosedException, IOException {
+        if (this.isClosed())
+            throw new ClosedException("The BinaryWriter is closed!");
+
         return this.randomAccessFile.length();
     }
 
