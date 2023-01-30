@@ -93,7 +93,7 @@ public class TC0009WriterBinaryWriterNoChunkPadding extends Test {
         }
 
         try {
-            binaryWriter.open(PathUtils.getTestSuiteFolderPath("\\test.bin"));
+            binaryWriter.open(PathUtils.getTestSuiteFolderPath("\\test.bin"), true);
 
             binaryWriter.setOffsetPosition(0);
             binaryWriter.fill((byte) 0x0, 0xA);
