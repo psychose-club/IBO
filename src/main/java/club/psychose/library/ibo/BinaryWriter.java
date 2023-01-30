@@ -41,8 +41,8 @@ import club.psychose.library.ibo.exceptions.ClosedException;
 import club.psychose.library.ibo.exceptions.OpenedException;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.Charset;
@@ -57,10 +57,10 @@ import java.util.Arrays;
 
 public final class BinaryWriter {
     private ByteOrder byteOrder;
-    private FileOutputStream fileOutputStream;
+    private RandomAccessFile randomAccessFile;
 
     private boolean closed;
-    private int offsetPosition;
+    private long offsetPosition;
 
     private boolean chunkPadding;
     private int chunkSize;
@@ -71,7 +71,7 @@ public final class BinaryWriter {
      */
     public BinaryWriter () {
         this.byteOrder = ByteOrder.nativeOrder();
-        this.fileOutputStream = null;
+        this.randomAccessFile = null;
 
         this.closed = true;
         this.offsetPosition = 0;
@@ -87,7 +87,7 @@ public final class BinaryWriter {
      */
     public BinaryWriter (ByteOrder byteOrder) {
         this.byteOrder = byteOrder;
-        this.fileOutputStream = null;
+        this.randomAccessFile = null;
 
         this.closed = true;
         this.offsetPosition = 0;
@@ -98,33 +98,39 @@ public final class BinaryWriter {
     }
 
     /**
-     * This method opens the file to write in. (If it's not exist it'll be created)
+     * This method opens the file to write in. (If the file or directories didn't exist it'll be created)
      * @param filePath The path to the file.
      * @throws OpenedException This exception will be thrown when the BinaryWriter is opened but should be closed and the user tries to access it.
-     * @throws IOException This exception will be thrown when something goes wrong while initializing the {@link FileOutputStream}.
+     * @throws IOException This exception will be thrown when something goes wrong while initializing the file.
      */
     public void open (Path filePath) throws OpenedException, IOException {
         if (!(this.isClosed()))
             throw new OpenedException("The BinaryWriter is already opened!");
 
-        if (!(Files.exists(filePath)))
-            Files.createFile(filePath);
+        Path directoryPath = filePath.getParent();
 
-        this.fileOutputStream = new FileOutputStream(filePath.toFile());
+        if (!(Files.exists(directoryPath)))
+            Files.createDirectories(directoryPath);
+
+        Files.deleteIfExists(filePath);
+        Files.createFile(filePath);
+
+        this.randomAccessFile = new RandomAccessFile(filePath.toFile(), "rw");
+        this.randomAccessFile.seek(0);
+
         this.closed = false;
         this.offsetPosition = 0;
     }
 
     /**
      * This method resets and closes the BinaryWriter.
-     * @throws IOException This exception will be thrown when something goes wrong while closing the {@link FileOutputStream}.
+     * @throws IOException This exception will be thrown when something goes wrong while closing the file.
      */
     public void close () throws IOException {
         if (!(this.isClosed())) {
-            if (this.fileOutputStream.getChannel().isOpen())
-                this.fileOutputStream.close();
+            this.randomAccessFile.close();
+            this.randomAccessFile = null;
 
-            this.fileOutputStream = null;
             this.closed = true;
             this.offsetPosition = 0;
         }
@@ -163,7 +169,9 @@ public final class BinaryWriter {
         byte[] fillBytes = new byte[length];
         Arrays.fill(fillBytes, fillWithByte);
 
-        this.fileOutputStream.write(fillBytes, this.offsetPosition, length);
+        this.randomAccessFile.seek(this.offsetPosition);
+        this.randomAccessFile.write(fillBytes, 0, length);
+
         this.skipOffsetPosition(length);
     }
 
@@ -177,7 +185,9 @@ public final class BinaryWriter {
         if (this.isClosed())
             throw new ClosedException("The BinaryWriter is closed!");
 
-        this.fileOutputStream.write(bytes, this.offsetPosition, bytes.length);
+        this.randomAccessFile.seek(this.offsetPosition);
+        this.randomAccessFile.write(bytes, 0, bytes.length);
+
         this.skipOffsetPosition(bytes.length);
 
         if (this.chunkPadding) {
@@ -311,20 +321,23 @@ public final class BinaryWriter {
      * This method sets the current offset position to a specific position.
      * @param offsetPosition The offset position.
      * @throws ClosedException This exception will be thrown when the BinaryWriter is closed but the user tries to access it.
+     * @throws IOException This exception will be thrown when something go wrong while setting the offset in the file.
      */
-    public void setOffsetPosition (int offsetPosition) throws ClosedException {
+    public void setOffsetPosition (long offsetPosition) throws ClosedException, IOException {
         if (this.isClosed())
             throw new ClosedException("The BinaryWriter is closed!");
 
         this.offsetPosition = offsetPosition;
+        this.randomAccessFile.seek(this.offsetPosition);
     }
 
     /**
      * This method skips a specific offset length from the current offset position.
      * @param length The length that should be skipped.
      * @throws ClosedException This exception will be thrown when the BinaryWriter is closed but the user tries to access it.
+     * @throws IOException This exception will be thrown when something go wrong while setting the offset in the file.
      */
-    public void skipOffsetPosition (int length) throws ClosedException {
+    public void skipOffsetPosition (long length) throws ClosedException, IOException {
         if (this.isClosed())
             throw new ClosedException("The BinaryWriter is closed!");
 
@@ -386,7 +399,7 @@ public final class BinaryWriter {
      * @return The offset position.
      * @throws ClosedException This exception will be thrown when the BinaryWriter is closed but the user tries to access it.
      */
-    public int getOffsetPosition () throws ClosedException {
+    public long getOffsetPosition () throws ClosedException {
         if (this.isClosed())
             throw new ClosedException("The BinaryWriter is closed!");
 
