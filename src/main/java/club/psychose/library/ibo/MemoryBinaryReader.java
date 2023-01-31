@@ -367,7 +367,7 @@ public final class MemoryBinaryReader {
         if (this.isClosed())
             throw new ClosedException("The MemoryBinaryReader is closed!");
 
-        if ((offsetPosition <= 0) || (offsetPosition > this.getBinaryLength()))
+        if ((offsetPosition < 0) || (offsetPosition > this.getBinaryLength()))
             throw new RangeOutOfBoundsException("The offset position is out of bounds!");
 
         this.offsetPosition = offsetPosition;
