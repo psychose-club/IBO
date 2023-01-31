@@ -35,10 +35,7 @@ import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -47,11 +44,13 @@ import java.util.stream.IntStream;
 
 public final class UInt64 extends IBODataType<BigInteger> {
     public UInt64 (byte[] dataBytes) throws RangeOutOfBoundsException {
-        super(new BigInteger(1, ByteBuffer.wrap(dataBytes, 0, 8).array()));
+        super(BigInteger.valueOf(0));
+        this.setValue(new BigInteger(1, ByteBuffer.wrap(this.getBytesAsBigEndianByteOrder(dataBytes, null), 0, 8).array()));
     }
 
     public UInt64 (byte[] dataBytes, ByteOrder byteOrder) throws RangeOutOfBoundsException {
-        super(new BigInteger(1, ByteBuffer.wrap(dataBytes, 0, 8).order(byteOrder).array()));
+        super(BigInteger.valueOf(0));
+        this.setValue(new BigInteger(1, ByteBuffer.wrap(this.getBytesAsBigEndianByteOrder(dataBytes, byteOrder), 0, 8).array()));
     }
 
     public UInt64 (byte value) throws RangeOutOfBoundsException {
@@ -155,35 +154,14 @@ public final class UInt64 extends IBODataType<BigInteger> {
         if (byteOrder == null)
             byteOrder = ByteOrder.nativeOrder();
 
-        ByteOrder byteArrayOrder;
-        byte[] byteArray;
-
-        {
-            ByteBuffer byteBuffer = ByteBuffer.wrap(this.dataObject.toByteArray());
-            byteArrayOrder = byteBuffer.order();
-            byteArray = byteBuffer.array();
-        }
-
+        byte[] byteArray = this.dataObject.toByteArray();
         byte[] buffer = new byte[8];
 
-        // Padding.
-        IntStream.range(0, byteArray.length).forEachOrdered(index -> buffer[index] = (byte) 0x0);
+        boolean isValueNegative = (this.dataObject.compareTo(BigInteger.ZERO) < 0);
+        IntStream.range(0, (8 - byteArray.length)).forEachOrdered(index -> buffer[index] = (isValueNegative) ? ((byte) 0xFF) : ((byte) 0x0));
+        IntStream.range((8 - byteArray.length), 8).forEachOrdered(index -> buffer[index] = byteArray[(index - (8 - byteArray.length))]);
 
-        // When the default ByteOrder is different from the required one, we will reverse the bytes.
-        if (byteOrder != byteArrayOrder) {
-            ArrayList<Byte> byteArrayList = IntStream.range(0, (8 - byteArray.length)).mapToObj(index -> (byte) 0x0).collect(Collectors.toCollection(ArrayList::new));
-
-            for (Byte arrayByte : byteArray) {
-                byteArrayList.add(arrayByte);
-            }
-
-            Collections.reverse(byteArrayList);
-            IntStream.range(0, buffer.length).forEachOrdered(index -> buffer[index] = byteArrayList.get(index));
-        } else {
-            System.arraycopy(byteArray, 0, buffer, buffer.length - byteArray.length, byteArray.length);
-        }
-
-        return buffer;
+        return this.getBytesAsBigEndianByteOrder(buffer, byteOrder);
     }
 
     /**
