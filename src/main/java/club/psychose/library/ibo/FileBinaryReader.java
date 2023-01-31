@@ -194,8 +194,8 @@ public final class FileBinaryReader {
             this.readChunk(this.offsetPosition, length);
 
         byte[] bytes = new byte[length];
-        LongStream.range(this.offsetPosition, newOffsetPosition).forEachOrdered(byteIndex -> {
-            long index = (this.offsetPosition - byteIndex);
+        LongStream.range(this.chunkOffsetPosition, (this.chunkOffsetPosition + length)).forEachOrdered(byteIndex -> {
+            long index = (byteIndex - this.chunkOffsetPosition);
             bytes[(int) index] = this.byteBuffer.get((int) byteIndex);
         });
 
@@ -488,10 +488,10 @@ public final class FileBinaryReader {
         if (this.isClosed())
             throw new ClosedException("The FileBinaryReader is closed!");
 
-        if ((offsetPosition <= 0) || (offsetPosition > this.getFileLength()))
+        if ((offsetPosition < 0) || (offsetPosition > this.getFileLength()))
             throw new RangeOutOfBoundsException("The offset position is out of bounds!");
 
-        if (this.currentChunk != this.getChunk(offsetPosition))
+        if ((this.offsetPosition == 0) || (this.currentChunk != this.getChunk(offsetPosition)))
             this.readChunkIntoTheMemory(this.getChunk(offsetPosition));
 
         this.offsetPosition = offsetPosition;
@@ -580,6 +580,9 @@ public final class FileBinaryReader {
     public int getChunk (long offsetPosition) throws ClosedException {
         if (this.isClosed())
             throw new ClosedException("The FileBinaryReader is closed!");
+
+        if (offsetPosition == 0)
+            offsetPosition = 1;
 
         return (int) (offsetPosition / this.chunkLength);
     }
