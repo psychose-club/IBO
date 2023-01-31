@@ -34,6 +34,9 @@ import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.stream.IntStream;
 
 /**
  * This class provides the structure to create a number like data type.
@@ -121,6 +124,32 @@ public abstract class IBODataType<DataType extends Number> {
         }
 
         return byteBuffer.array();
+    }
+
+    /**
+     * This method returns the byte array as big endian.<p<
+     * When the {@link ByteOrder} is little endian the bytes will be reversed.<p>
+     * To be honest the method could also reverse the bytes from little endian to big endian but while Java interpret bytes as big endian we do it too.
+     * @param bytes The byte array that should be returned.
+     * @param byteOrder The {@link ByteOrder}.
+     * @return The byte array.
+     */
+    protected byte[] getBytesAsBigEndianByteOrder (byte[] bytes, ByteOrder byteOrder) {
+        if (byteOrder == null)
+            byteOrder = ByteOrder.nativeOrder();
+
+        if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+            ArrayList<Byte> byteArrayList = new ArrayList<>();
+
+            for (Byte arrayByte : bytes) {
+                byteArrayList.add(arrayByte);
+            }
+
+            Collections.reverse(byteArrayList);
+            IntStream.range(0, bytes.length).forEachOrdered(index -> bytes[index] = byteArrayList.get(index));
+        }
+
+        return bytes;
     }
 
     /**
