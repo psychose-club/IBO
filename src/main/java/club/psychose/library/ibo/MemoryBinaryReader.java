@@ -140,7 +140,7 @@ public final class MemoryBinaryReader {
 
         byte[] bytes = new byte[length];
         IntStream.range(this.offsetPosition, newOffsetPosition).forEachOrdered(byteIndex -> {
-            int index = (this.offsetPosition - byteIndex);
+            int index = (byteIndex - this.offsetPosition);
             bytes[index] = this.byteBuffer.get(byteIndex);
         });
 
