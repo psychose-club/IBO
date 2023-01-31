@@ -35,128 +35,116 @@ import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
  * This class handles the Int64 data type.
  */
 
-public final class Int64 extends IBODataType<Long> {
+public final class Int64 extends IBODataType<BigInteger> {
     public Int64 (byte[] dataBytes) throws RangeOutOfBoundsException {
-        super(ByteBuffer.wrap(dataBytes, 0, 8).getLong());
+        super(BigInteger.valueOf(0));
+        this.setValue(new BigInteger(ByteBuffer.wrap(this.getBytesAsBigEndianByteOrder(dataBytes, null), 0, 8).array()));
     }
 
     public Int64 (byte[] dataBytes, ByteOrder byteOrder) throws RangeOutOfBoundsException {
-        super(ByteBuffer.wrap(dataBytes, 0, 8).order(byteOrder).getLong());
+        super(BigInteger.valueOf(0));
+        this.setValue(new BigInteger(ByteBuffer.wrap(this.getBytesAsBigEndianByteOrder(dataBytes, byteOrder), 0, 8).array()));
     }
 
     public Int64 (byte value) throws RangeOutOfBoundsException {
-        super((long) value);
+        super(BigInteger.valueOf(value));
     }
 
     public Int64 (short value) throws RangeOutOfBoundsException {
-        super((long) value);
+        super(BigInteger.valueOf(value));
     }
 
     public Int64 (int value) throws RangeOutOfBoundsException {
-        super((long) value);
+        super(BigInteger.valueOf(value));
     }
 
     public Int64 (long value) throws RangeOutOfBoundsException {
-        super(value);
+        super(BigInteger.valueOf(value));
     }
 
     public Int64 (float value) throws RangeOutOfBoundsException {
-        super((long) value);
+        super(BigInteger.valueOf((long) value));
     }
 
     public Int64 (double value) throws RangeOutOfBoundsException {
-        super((long) value);
+        super(BigInteger.valueOf((long) value));
     }
 
     public Int64 (BigInteger value) throws RangeOutOfBoundsException {
-        super(value.longValue());
+        super(value);
     }
 
     public Int64 (String value) throws RangeOutOfBoundsException {
-        super(Long.parseLong(value));
+        super(new BigInteger(value));
     }
 
     public void setValue (byte value) throws RangeOutOfBoundsException {
-        if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
-            this.dataObject = (long) value;
+        if ((value >= getMinimumValue().longValue()) && (value <= getMaximumValue().longValue())) {
+            this.dataObject = BigInteger.valueOf(value);
         } else {
             throw new RangeOutOfBoundsException("The value for the Int64 data type is out of bounds!");
         }
     }
 
     public void setValue (short value) throws RangeOutOfBoundsException {
-        if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
-            this.dataObject = (long) value;
-        } else {
-            throw new RangeOutOfBoundsException("The value for the Int64 data type is out of bounds!");
-        }
-    }
-
-    @Override
-    public void setValue (Long value) throws RangeOutOfBoundsException {
-        this.setValue((long) value);
-    }
-
-    public void setValue (long value) throws RangeOutOfBoundsException {
-        if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
-            this.dataObject = value;
+        if ((value >= getMinimumValue().longValue()) && (value <= getMaximumValue().longValue())) {
+            this.dataObject = BigInteger.valueOf(value);
         } else {
             throw new RangeOutOfBoundsException("The value for the Int64 data type is out of bounds!");
         }
     }
 
     public void setValue (int value) throws RangeOutOfBoundsException {
-        if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
-            this.dataObject = (long) value;
+        if ((value >= getMinimumValue().longValue()) && (value <= getMaximumValue().longValue())) {
+            this.dataObject = BigInteger.valueOf(value);
+        } else {
+            throw new RangeOutOfBoundsException("The value for the Int64 data type is out of bounds!");
+        }
+    }
+
+    public void setValue (long value) throws RangeOutOfBoundsException {
+        if ((value >= getMinimumValue().longValue()) && (value <= getMaximumValue().longValue())) {
+            this.dataObject = BigInteger.valueOf(value);
         } else {
             throw new RangeOutOfBoundsException("The value for the Int64 data type is out of bounds!");
         }
     }
 
     public void setValue (float value) throws RangeOutOfBoundsException {
-        if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
-            this.dataObject = (long) value;
+        if ((value >= getMinimumValue().longValue()) && (value <= getMaximumValue().longValue())) {
+            this.dataObject = BigInteger.valueOf((long) value);
         } else {
             throw new RangeOutOfBoundsException("The value for the Int64 data type is out of bounds!");
         }
     }
 
     public void setValue (double value) throws RangeOutOfBoundsException {
-        if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
-            this.dataObject = (long) value;
+        if ((value >= getMinimumValue().longValue()) && (value <= getMaximumValue().longValue())) {
+            this.dataObject = BigInteger.valueOf((long) value);
         } else {
             throw new RangeOutOfBoundsException("The value for the Int64 data type is out of bounds!");
         }
     }
 
+    @Override
     public void setValue (BigInteger value) throws RangeOutOfBoundsException {
-        long convertedValue = value.longValue();
-
-        if (convertedValue >= getMinimumValue() && convertedValue <= getMaximumValue()) {
-            this.dataObject = value.longValue();
+        if (((value.compareTo(getMinimumValue()) > 0) || (value.equals(getMinimumValue()))) && ((value.compareTo(getMaximumValue()) < 0) || (value.equals(getMaximumValue())))) {
+            this.dataObject = value;
         } else {
             throw new RangeOutOfBoundsException("The value for the Int64 data type is out of bounds!");
         }
     }
 
     public void setValue (String value) throws RangeOutOfBoundsException {
-        long convertedValue = Long.parseLong(value);
-
-        if (convertedValue >= getMinimumValue() && convertedValue <= getMaximumValue()) {
-            this.dataObject = convertedValue;
-        } else {
-            throw new RangeOutOfBoundsException("The value for the Int64 data type is out of bounds!");
-        }
+        BigInteger convertedValue = new BigInteger(value);
+        this.setValue(convertedValue);
     }
 
     @Override
@@ -164,37 +152,14 @@ public final class Int64 extends IBODataType<Long> {
         if (byteOrder == null)
             byteOrder = ByteOrder.nativeOrder();
 
-        ByteOrder byteArrayOrder;
-        byte[] byteArray;
-
-        {
-            ByteBuffer byteBuffer = ByteBuffer.allocate(8);
-            byteBuffer.putLong(this.dataObject);
-            byteArrayOrder = byteBuffer.order();
-            byteArray = byteBuffer.array();
-        }
-
+        byte[] byteArray = this.dataObject.toByteArray();
         byte[] buffer = new byte[8];
 
-        // Padding.
-        boolean isValueNegative = (this.dataObject < 0);
-        IntStream.range(0, 8).forEachOrdered(index -> buffer[index] = (isValueNegative) ? ((byte) 0xFF) : ((byte) 0x0));
+        boolean isValueNegative = (this.dataObject.compareTo(BigInteger.ZERO) < 0);
+        IntStream.range(0, (8 - byteArray.length)).forEachOrdered(index -> buffer[index] = (isValueNegative) ? ((byte) 0xFF) : ((byte) 0x0));
+        IntStream.range((8 - byteArray.length), 8).forEachOrdered(index -> buffer[index] = byteArray[(index - (8 - byteArray.length))]);
 
-        // When the default ByteOrder is different from the required one, we will reverse the bytes.
-        if (byteOrder != byteArrayOrder) {
-            ArrayList<Byte> byteArrayList = IntStream.range(0, (8 - byteArray.length)).mapToObj(index -> (isValueNegative) ? ((byte) 0xFF) : ((byte) 0x0)).collect(Collectors.toCollection(ArrayList::new));
-
-            for (Byte arrayByte : byteArray) {
-                byteArrayList.add(arrayByte);
-            }
-
-            Collections.reverse(byteArrayList);
-            IntStream.range(0, buffer.length).forEachOrdered(index -> buffer[index] = byteArrayList.get(index));
-        } else {
-            System.arraycopy(byteArray, 0, buffer, buffer.length - byteArray.length, byteArray.length);
-        }
-
-        return buffer;
+        return this.getBytesAsBigEndianByteOrder(buffer, byteOrder);
     }
 
     /**
@@ -210,11 +175,11 @@ public final class Int64 extends IBODataType<Long> {
         return 8;
     }
 
-    public static long getMinimumValue () {
-        return -9223372036854775808L;
+    public static BigInteger getMinimumValue () {
+        return BigInteger.valueOf(-9223372036854775808L);
     }
 
-    public static long getMaximumValue () {
-        return 9223372036854775807L;
+    public static BigInteger getMaximumValue () {
+        return BigInteger.valueOf(9223372036854775807L);
     }
 }
