@@ -30,6 +30,7 @@
 package club.psychose.testsuite.ibo;
 
 import club.psychose.testsuite.ibo.testcases.Test;
+import club.psychose.testsuite.ibo.testcases.reader.TC0011ReaderMemoryBinaryReader;
 import club.psychose.testsuite.ibo.testcases.structures.*;
 import club.psychose.testsuite.ibo.testcases.writer.TC0009WriterBinaryWriterNoChunkPadding;
 import club.psychose.testsuite.ibo.testcases.writer.TC0010WriterBinaryWriterChunkPadding;
@@ -57,6 +58,7 @@ public final class IBOTestSuite {
         testCasesArrayList.add(new TC0008StructureUInt64()); // UInt64
         testCasesArrayList.add(new TC0009WriterBinaryWriterNoChunkPadding()); // BinaryWriter without chunk padding.
         testCasesArrayList.add(new TC0010WriterBinaryWriterChunkPadding()); // BinaryWriter with chunk padding.
+        testCasesArrayList.add(new TC0011ReaderMemoryBinaryReader()); // MemoryBinaryReader
     }
 
     private static void runTests () {
