@@ -380,8 +380,7 @@ public final class FileBinaryReader {
         if (this.currentChunk != this.getChunk(newOffsetPosition))
             this.readChunk(this.offsetPosition, UInt64.getByteLength());
 
-        byte[] e = this.readBytes(UInt64.getByteLength());
-        return new UInt64(e, this.byteOrder);
+        return new UInt64(this.readBytes(UInt64.getByteLength()), this.byteOrder);
     }
 
     /**
