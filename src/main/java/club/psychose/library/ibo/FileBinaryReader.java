@@ -50,7 +50,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.stream.LongStream;
 
 /**
  * The FileBinaryReader class handles binary data types from a file.<p>
@@ -193,13 +192,20 @@ public final class FileBinaryReader {
         if (this.currentChunk != this.getChunk(newOffsetPosition))
             this.readChunk(this.offsetPosition, length);
 
-        byte[] bytes = new byte[length];
-        LongStream.range(this.chunkOffsetPosition, (this.chunkOffsetPosition + length)).forEachOrdered(byteIndex -> {
-            long index = (byteIndex - this.chunkOffsetPosition);
-            bytes[(int) index] = this.byteBuffer.get((int) byteIndex);
-        });
+        long newChunkOffsetPosition = (this.chunkOffsetPosition + length);
+        if (this.byteBuffer.position() < newChunkOffsetPosition) {
+            this.readChunk(this.offsetPosition, length);
+        }
 
+        byte[] bytes = new byte[length];
+
+        for (int index = 0; index < length; index ++) {
+            bytes[index] = this.byteBuffer.get(this.chunkOffsetPosition + index); // Get the read byte.
+        }
+
+        // We set here the offset position again to read a new chunk if required.
         this.setOffsetPosition(newOffsetPosition);
+
         return bytes;
     }
 
@@ -374,7 +380,8 @@ public final class FileBinaryReader {
         if (this.currentChunk != this.getChunk(newOffsetPosition))
             this.readChunk(this.offsetPosition, UInt64.getByteLength());
 
-        return new UInt64(this.readBytes(UInt64.getByteLength()), this.byteOrder);
+        byte[] e = this.readBytes(UInt64.getByteLength());
+        return new UInt64(e, this.byteOrder);
     }
 
     /**
@@ -459,7 +466,6 @@ public final class FileBinaryReader {
 
         byte[] stringBytes = this.readBytes(length);
 
-        this.setOffsetPosition(newOffsetPosition);
         return new String(stringBytes, charset);
     }
 
@@ -496,6 +502,9 @@ public final class FileBinaryReader {
 
         this.offsetPosition = offsetPosition;
         this.currentChunk = this.getChunk(offsetPosition);
+
+        this.checkChunkState();
+
         this.chunkOffsetPosition = this.getChunkOffsetPosition(offsetPosition);
         this.byteBuffer.position(this.chunkOffsetPosition);
     }
@@ -512,6 +521,31 @@ public final class FileBinaryReader {
             throw new ClosedException("The FileBinaryReader is closed!");
 
         this.setOffsetPosition(this.offsetPosition + length);
+    }
+
+    /**
+     * This method checks if fewer bytes than the chunk length was read into the memory and tries then to resolve the missing bytes.
+     * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
+     * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
+    private void checkChunkState () throws ClosedException, IOException, RangeOutOfBoundsException {
+        if (this.isClosed())
+            throw new ClosedException("The FileBinaryReader is closed!");
+
+        if (this.byteBuffer.capacity() != this.chunkLength) {
+            long remainingBytes = this.getRemainingBytes();
+
+            if ((remainingBytes - this.chunkOffsetPosition) >= this.chunkLength) {
+                this.readChunkIntoTheMemory(this.getCurrentChunk());
+            } else {
+                if (this.chunkLength < remainingBytes) {
+                    this.readChunkIntoTheMemory(this.getCurrentChunk());
+                } else {
+                    this.readChunk(this.offsetPosition, (int) remainingBytes);
+                }
+            }
+        }
     }
 
     /**
@@ -657,7 +691,7 @@ public final class FileBinaryReader {
         if (this.isClosed())
             throw new ClosedException("The FileBinaryReader is closed!");
 
-        return (this.offsetPosition - this.getFileLength());
+        return (this.getFileLength() - this.offsetPosition);
     }
 
     /**
