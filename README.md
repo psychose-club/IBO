@@ -94,7 +94,9 @@ The FileBinaryReader, MemoryBinaryReader and BinaryWriter have more features tha
 Also, you can look at the <a href="https://github.com/psychose-club/IBO/tree/production/src/test/java/club/psychose/testsuite/ibo/testcases/">TestCases</a> to see more in-depth test code implementations.
 
 <h3>FileBinaryReader</h3>
+
 _Read an Int32 from the file offset: 0x4_
+
 ```java
 class Foo {
     public void bar () {
@@ -133,7 +135,9 @@ class Foo {
 }
 ```
 <h3>MemoryBinaryReader</h3>
+
 _Read an UInt16 from the memory offset: 0x0_
+
 ```java
 class Foo {
     public void bar () {
@@ -170,7 +174,9 @@ class Foo {
 ```
 
 <h3>BinaryWriter</h3>
+
 _Writes an UInt8 to a file with padding_
+
 ```java
 class Foo {
     public void bar () {
@@ -210,6 +216,7 @@ class Foo {
 ```
 
 _Writes a String to a file without padding_
+
 ```java
 class Foo {
     public void bar () {
@@ -260,7 +267,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the BSD 3-Clause License. See `LICENSE.txt` for more information.
+Distributed under the BSD 3-Clause License. See `LICENSE` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
