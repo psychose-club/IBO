@@ -78,9 +78,25 @@ _Manual_
 
 Go to the <a href="https://github.com/psychose-club/IBO/releases/">Releases</a> and download the latest version of the library.
 
-_Gradle_
+_Maven_
+```
+<dependency>
+    <groupId>club.psychose</groupId>
+    <artifactId>ibo</artifactId>
+    <version>1.0.1</version>
+</dependency>
+```
 
-Waiting for release.
+_Gradle_
+Long:
+```
+implementation group: 'club.psychose', name: 'ibo', version: '1.0.1'
+```
+
+Short:
+```
+implementation 'club.psychose:ibo:1.0.1'
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
