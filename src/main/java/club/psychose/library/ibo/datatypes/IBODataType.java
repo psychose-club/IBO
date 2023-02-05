@@ -127,7 +127,7 @@ public abstract class IBODataType<DataType extends Number> {
     }
 
     /**
-     * This method returns the byte array as big endian.<p<
+     * This method returns the byte array as big endian.<p>
      * When the {@link ByteOrder} is little endian the bytes will be reversed.<p>
      * To be honest the method could also reverse the bytes from little endian to big endian but while Java interpret bytes as big endian we do it too.
      * @param bytes The byte array that should be returned.
