@@ -70,7 +70,7 @@ To install the library follow these steps:
 
 ### Prerequisites
 
-* The library was built with Java 17, but it might be compatible with older versions.
+* The library was built with Java 8
 
 ### Installation
 
@@ -80,7 +80,7 @@ Go to the <a href="https://github.com/psychose-club/IBO/releases/">Releases</a> 
 
 _Gradle_
 
-Coming soon.
+Waiting for release.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

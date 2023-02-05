@@ -218,6 +218,7 @@ public final class BinaryWriter {
      * @param uInt8 The provided data type.
      * @throws ClosedException This exception will be thrown when the BinaryWriter is closed but the user tries to access it.
      * @throws IOException This exception will be thrown when something goes wrong while writing the bytes.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void write (UInt8 uInt8) throws ClosedException, IOException, RangeOutOfBoundsException {
         this.write(uInt8.getAsBytes(this.byteOrder));
@@ -228,6 +229,7 @@ public final class BinaryWriter {
      * @param int16 The provided data type.
      * @throws ClosedException This exception will be thrown when the BinaryWriter is closed but the user tries to access it.
      * @throws IOException This exception will be thrown when something goes wrong while writing the bytes.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void write (Int16 int16) throws ClosedException, IOException, RangeOutOfBoundsException {
         this.write(int16.getAsBytes(this.byteOrder));
@@ -238,6 +240,7 @@ public final class BinaryWriter {
      * @param uInt16 The provided data type.
      * @throws ClosedException This exception will be thrown when the BinaryWriter is closed but the user tries to access it.
      * @throws IOException This exception will be thrown when something goes wrong while writing the bytes.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void write (UInt16 uInt16) throws ClosedException, IOException, RangeOutOfBoundsException {
         this.write(uInt16.getAsBytes(this.byteOrder));
@@ -248,6 +251,7 @@ public final class BinaryWriter {
      * @param int32 The provided data type.
      * @throws ClosedException This exception will be thrown when the BinaryWriter is closed but the user tries to access it.
      * @throws IOException This exception will be thrown when something goes wrong while writing the bytes.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void write (Int32 int32) throws ClosedException, IOException, RangeOutOfBoundsException {
         this.write(int32.getAsBytes(this.byteOrder));
@@ -258,6 +262,7 @@ public final class BinaryWriter {
      * @param uInt32 The provided data type.
      * @throws ClosedException This exception will be thrown when the BinaryWriter is closed but the user tries to access it.
      * @throws IOException This exception will be thrown when something goes wrong while writing the bytes.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void write (UInt32 uInt32) throws ClosedException, IOException, RangeOutOfBoundsException {
         this.write(uInt32.getAsBytes(this.byteOrder));
@@ -268,6 +273,7 @@ public final class BinaryWriter {
      * @param int64 The provided data type.
      * @throws ClosedException This exception will be thrown when the BinaryWriter is closed but the user tries to access it.
      * @throws IOException This exception will be thrown when something goes wrong while writing the bytes.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void write (Int64 int64) throws ClosedException, IOException, RangeOutOfBoundsException {
         this.write(int64.getAsBytes(this.byteOrder));
@@ -278,6 +284,7 @@ public final class BinaryWriter {
      * @param uInt64 The provided data type.
      * @throws ClosedException This exception will be thrown when the BinaryWriter is closed but the user tries to access it.
      * @throws IOException This exception will be thrown when something goes wrong while writing the bytes.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void write (UInt64 uInt64) throws ClosedException, IOException, RangeOutOfBoundsException {
         this.write(uInt64.getAsBytes(this.byteOrder));
