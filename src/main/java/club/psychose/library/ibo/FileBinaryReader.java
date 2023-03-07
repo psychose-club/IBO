@@ -501,10 +501,10 @@ public final class FileBinaryReader {
 
         this.offsetPosition = offsetPosition;
         this.currentChunk = this.getChunk(offsetPosition);
+        this.chunkOffsetPosition = this.getChunkOffsetPosition(offsetPosition);
 
         this.checkChunkState();
 
-        this.chunkOffsetPosition = this.getChunkOffsetPosition(offsetPosition);
         this.byteBuffer.position(this.chunkOffsetPosition);
     }
 
@@ -567,7 +567,7 @@ public final class FileBinaryReader {
         try (RandomAccessFile randomAccessFile = new RandomAccessFile(this.filePath.toFile(), "r")) {
             byte[] buffer = new byte[readLength];
 
-            randomAccessFile.seek(newOffsetPosition - readLength);
+            randomAccessFile.seek(offsetPosition);
             randomAccessFile.read(buffer, 0, readLength);
             randomAccessFile.close();
 
