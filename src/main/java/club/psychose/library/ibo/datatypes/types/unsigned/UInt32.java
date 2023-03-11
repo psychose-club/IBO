@@ -43,11 +43,13 @@ import java.util.Objects;
 
 public final class UInt32 extends IBODataType<Long> {
     public UInt32 (byte[] dataBytes) throws RangeOutOfBoundsException {
-        super((long) ByteBuffer.wrap(dataBytes, 0, 4).getInt());
+        super(0L);
+        this.setValue(new BigInteger(1, ByteBuffer.wrap(this.getBytesAsBigEndianByteOrder(dataBytes, null), 0, 4).array()));
     }
 
     public UInt32 (byte[] dataBytes, ByteOrder byteOrder) throws RangeOutOfBoundsException {
-        super((long) ByteBuffer.wrap(dataBytes, 0, 4).order(byteOrder).getInt());
+        super(0L);
+        this.setValue(new BigInteger(1, ByteBuffer.wrap(this.getBytesAsBigEndianByteOrder(dataBytes, byteOrder), 0, 4).array()));
     }
 
     public UInt32 (byte value) throws RangeOutOfBoundsException {
