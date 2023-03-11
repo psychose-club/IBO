@@ -479,7 +479,12 @@ public final class FileBinaryReader {
         if (this.isClosed())
             throw new ClosedException("The FileBinaryReader is closed!");
 
-        this.readChunk(((long) chunkNumber * this.chunkLength), this.chunkLength);
+        long offsetPosition = ((long) chunkNumber * this.chunkLength);
+
+        if (this.offsetPosition == 0)
+            offsetPosition = 0;
+
+        this.readChunk(offsetPosition, this.chunkLength);
     }
 
     /**
