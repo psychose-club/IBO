@@ -291,6 +291,16 @@ public final class BinaryWriter {
     }
 
     /**
+     * This method writes a single {@code byte} data type into the file.
+     * @param value The provided data type.
+     * @throws ClosedException This exception will be thrown when the BinaryWriter is closed but the user tries to access it.
+     * @throws IOException This exception will be thrown when something goes wrong while writing the bytes.
+     */
+    public void write (byte value) throws ClosedException, IOException {
+        this.write(ByteBuffer.allocate(1).order(this.byteOrder).put(value).array());
+    }
+
+    /**
      * This method converts the {@code float} data type into bytes and writes it to the file.
      * @param value The provided data type.
      * @throws ClosedException This exception will be thrown when the BinaryWriter is closed but the user tries to access it.
