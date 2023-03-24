@@ -28,6 +28,9 @@
       <a href="#about-the-project">About The Project</a>
     </li>
     <li>
+        <a href="#planned-features">Planned features</a>
+    </li>
+    <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
@@ -59,7 +62,17 @@ Currently supported data types:
 | Signed            | Int64     | -9223372036854775808 | 9223372036854775807  |
 | Unsigned          | UInt64    | 0                    | 18446744073709551615 |
 
-More data types might be added in the future.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- PLANNED FEATURES -->
+### Planned features
+We are considering the following features to be added when enough people ask for it:
+* More data types (If possible)
+* HEX Search for the entire file not only one chunk.
+
+If you want to contribute and add some features create an issue in the Issues tab and create a pull request! :)
+
+For more information see <a href="#contributing">Contributing</a>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -70,7 +83,7 @@ To install the library follow these steps:
 
 ### Prerequisites
 
-* The library was built with Java 8
+* JDK 8+
 
 ### Installation
 
@@ -83,7 +96,7 @@ _Maven_
 <dependency>
     <groupId>club.psychose</groupId>
     <artifactId>ibo</artifactId>
-    <version>1.0.4</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
@@ -91,12 +104,12 @@ _Gradle_
 
 Long:
 ```
-implementation group: 'club.psychose', name: 'ibo', version: '1.0.4'
+implementation group: 'club.psychose', name: 'ibo', version: '1.1.0'
 ```
 
 Short:
 ```
-implementation 'club.psychose:ibo:1.0.4'
+implementation 'club.psychose:ibo:1.1.0'
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
