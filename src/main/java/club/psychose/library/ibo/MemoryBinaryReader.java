@@ -40,14 +40,16 @@ import club.psychose.library.ibo.datatypes.types.unsigned.UInt8;
 import club.psychose.library.ibo.exceptions.ClosedException;
 import club.psychose.library.ibo.exceptions.OpenedException;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
+import club.psychose.library.ibo.utils.HEXUtils;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 import java.util.stream.IntStream;
 
-public final class MemoryBinaryReader {
+public final class MemoryBinaryReader extends SharedReaderMethods {
     private ByteBuffer byteBuffer;
     private ByteOrder byteOrder;
 
@@ -355,6 +357,79 @@ public final class MemoryBinaryReader {
 
         this.setOffsetPosition(newOffsetPosition);
         return new String(stringBytes, charset);
+    }
+
+    /**
+     * This method searches the entire memory for the first offset position where the provided HEX string matches.
+     * @param searchForHEX The HEX String that should be matched with.
+     * @return The offset position or -1 when nothing was found.
+     * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
+    public int searchFirstHEXValue (String searchForHEX) throws ClosedException, RangeOutOfBoundsException {
+        if (this.isClosed())
+            throw new ClosedException("The MemoryBinaryReader is closed!");
+
+        return this.searchFirstHEXValue(searchForHEX, 0);
+    }
+
+    /**
+     * This method searches the entire memory for the first offset position where the provided HEX string matches.
+     * @param searchForHEX The HEX String that should be matched with.
+     * @param startFrom The offset position from which should be started.
+     * @return The offset position or -1 when nothing was found.
+     * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
+    public int searchFirstHEXValue (String searchForHEX, int startFrom) throws ClosedException, RangeOutOfBoundsException {
+        if (this.isClosed())
+            throw new ClosedException("The MemoryBinaryReader is closed!");
+
+        int oldOffsetPosition = this.getOffsetPosition();
+
+        this.setOffsetPosition(startFrom);
+        int offset = -1;
+
+        // Searching for the entered offset.
+        {
+            String hexString = HEXUtils.convertBytesToHEXString(this.readBytes(this.getRemainingBytes()));
+
+            if (!(hexString.toUpperCase(Locale.ROOT).contains(searchForHEX.toUpperCase(Locale.ROOT)))) {
+                this.setOffsetPosition(oldOffsetPosition);
+                return -1;
+            }
+
+            for (int index = 0; index < hexString.length(); index ++) {
+                boolean valid = true;
+
+                for (int searchIndex = 0; searchIndex < searchForHEX.length(); searchIndex ++) {
+                    int newIndex = (index + searchIndex);
+
+                    if (hexString.length() < newIndex) {
+                        valid = false;
+                        break;
+                    }
+
+                    if (hexString.charAt(index + searchIndex) != searchForHEX.charAt(searchIndex)) {
+                        valid = false;
+                        break;
+                    }
+                }
+
+                if (valid) {
+                    offset = index;
+                    break;
+                }
+            }
+        }
+
+        if (offset > 0) {
+            offset /= 2;
+            offset += startFrom;
+        }
+
+        this.setOffsetPosition(oldOffsetPosition);
+        return offset;
     }
 
     /**
