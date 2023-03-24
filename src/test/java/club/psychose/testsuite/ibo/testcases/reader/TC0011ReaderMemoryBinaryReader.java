@@ -39,8 +39,8 @@ import club.psychose.library.ibo.datatypes.types.unsigned.UInt8;
 import club.psychose.library.ibo.exceptions.ClosedException;
 import club.psychose.library.ibo.exceptions.OpenedException;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
+import club.psychose.library.ibo.utils.HEXUtils;
 import club.psychose.testsuite.ibo.testcases.Test;
-import club.psychose.testsuite.ibo.utils.HEXUtils;
 
 import java.math.BigInteger;
 import java.nio.ByteOrder;
@@ -166,6 +166,8 @@ public final class TC0011ReaderMemoryBinaryReader extends Test {
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
             this.failed("RANGE_OUT_OF_BOUNDS_EXCEPTION");
             rangeOutOfBoundsException.printStackTrace();
+        } finally {
+            memoryBinaryReader.close();
         }
     }
 

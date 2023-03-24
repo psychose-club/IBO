@@ -42,8 +42,8 @@ import club.psychose.library.ibo.datatypes.types.unsigned.UInt8;
 import club.psychose.library.ibo.exceptions.ClosedException;
 import club.psychose.library.ibo.exceptions.OpenedException;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
+import club.psychose.library.ibo.utils.HEXUtils;
 import club.psychose.testsuite.ibo.testcases.Test;
-import club.psychose.testsuite.ibo.utils.HEXUtils;
 import club.psychose.testsuite.ibo.utils.PathUtils;
 
 import java.io.IOException;
@@ -68,6 +68,7 @@ public final class TC0012ReaderFileBinaryReader extends Test {
                 Int8 int8 = fileBinaryReader.readInt8();
 
                 if (int8.getValue() != -23) {
+                    fileBinaryReader.close();
                     this.failed("FAILED_TO_READ_INT8");
                     return;
                 }
@@ -77,6 +78,7 @@ public final class TC0012ReaderFileBinaryReader extends Test {
                 Int16 int16 = fileBinaryReader.readInt16();
 
                 if (int16.getValue() != -24312) {
+                    fileBinaryReader.close();
                     this.failed("FAILED_TO_READ_INT16");
                     return;
                 }
@@ -86,6 +88,7 @@ public final class TC0012ReaderFileBinaryReader extends Test {
                 Int32 int32 = fileBinaryReader.readInt32();
 
                 if (int32.getValue() != 99974411) {
+                    fileBinaryReader.close();
                     this.failed("FAILED_TO_READ_INT32");
                     return;
                 }
@@ -93,6 +96,7 @@ public final class TC0012ReaderFileBinaryReader extends Test {
                 Int64 int64 = fileBinaryReader.readInt64();
 
                 if (!(int64.getValue().equals(new BigInteger("-300120021")))) {
+                    fileBinaryReader.close();
                     this.failed("FAILED_TO_READ_INT64");
                     return;
                 }
@@ -100,6 +104,7 @@ public final class TC0012ReaderFileBinaryReader extends Test {
                 UInt8 uInt8 = fileBinaryReader.readUInt8();
 
                 if (uInt8.getValue() != 69) {
+                    fileBinaryReader.close();
                     this.failed("FAILED_TO_READ_UINT8");
                     return;
                 }
@@ -107,6 +112,7 @@ public final class TC0012ReaderFileBinaryReader extends Test {
                 UInt16 uInt16 = fileBinaryReader.readUInt16();
 
                 if (uInt16.getValue() != 420) {
+                    fileBinaryReader.close();
                     this.failed("FAILED_TO_READ_UINT16");
                     return;
                 }
@@ -114,6 +120,7 @@ public final class TC0012ReaderFileBinaryReader extends Test {
                 UInt32 uInt32 = fileBinaryReader.readUInt32();
 
                 if (uInt32.getValue() != 945125151) {
+                    fileBinaryReader.close();
                     this.failed("FAILED_TO_READ_UINT32");
                     return;
                 }
@@ -121,6 +128,7 @@ public final class TC0012ReaderFileBinaryReader extends Test {
                 UInt64 uInt64 = fileBinaryReader.readUInt64();
 
                 if (!(uInt64.getValue().equals(new BigInteger("352523542352")))) {
+                    fileBinaryReader.close();
                     this.failed("FAILED_TO_READ_UINT64");
                     return;
                 }
@@ -128,6 +136,7 @@ public final class TC0012ReaderFileBinaryReader extends Test {
                 float binaryFloat = fileBinaryReader.readFloat();
 
                 if (binaryFloat != 85411f) {
+                    fileBinaryReader.close();
                     this.failed("FAILED_TO_READ_FLOAT");
                     return;
                 }
@@ -135,6 +144,7 @@ public final class TC0012ReaderFileBinaryReader extends Test {
                 double binaryDouble = fileBinaryReader.readDouble();
 
                 if (binaryDouble != 24255.235d) {
+                    fileBinaryReader.close();
                     this.failed("FAILED_TO_READ_DOUBLE");
                     return;
                 }
@@ -142,6 +152,7 @@ public final class TC0012ReaderFileBinaryReader extends Test {
                 String binaryString = fileBinaryReader.readString(18);
 
                 if (!(binaryString.equals("You are beautiful!"))) {
+                    fileBinaryReader.close();
                     this.failed("FAILED_TO_READ_STRING");
                     return;
                 }
@@ -149,22 +160,24 @@ public final class TC0012ReaderFileBinaryReader extends Test {
                 byte[] binaryBytes = fileBinaryReader.readBytes(1);
 
                 if (binaryBytes[0] != 0x02) {
+                    fileBinaryReader.close();
                     this.failed("FAILED_TO_READ_BYTES");
                     return;
                 }
 
                 if (fileBinaryReader.getFileOffsetPosition() != 0x44) {
+                    fileBinaryReader.close();
                     this.failed("INVALID_OFFSET_POSITION");
                     return;
                 }
 
                 if (fileBinaryReader.getFileLength() != 0x4B) {
+                    fileBinaryReader.close();
                     this.failed("INVALID_FILE_SIZE");
                     return;
                 }
 
                 fileBinaryReader.close();
-
                 Files.deleteIfExists(PathUtils.getTestSuiteFolderPath("\\test.bin"));
 
                 this.passed();

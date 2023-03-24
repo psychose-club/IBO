@@ -41,8 +41,8 @@ import club.psychose.library.ibo.datatypes.types.unsigned.UInt8;
 import club.psychose.library.ibo.exceptions.ClosedException;
 import club.psychose.library.ibo.exceptions.OpenedException;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
+import club.psychose.library.ibo.utils.HEXUtils;
 import club.psychose.testsuite.ibo.testcases.Test;
-import club.psychose.testsuite.ibo.utils.HEXUtils;
 import club.psychose.testsuite.ibo.utils.PathUtils;
 
 import java.io.IOException;
@@ -124,10 +124,12 @@ public class TC0009WriterBinaryWriterNoChunkPadding extends Test {
             String hexString = HEXUtils.convertBytesToHEXString(fileBytes);
 
             if (!(hexString.equals("00000000000000000000011877FFF2F89FFFFFFFFFFFFFFE5C02001800000037000000000000BC74436B000040B72E0000000000546869732069732061207465737420737472696E6721409413"))) {
+                binaryWriter.close();
                 this.failed("HEX_CHECK");
                 return;
             }
 
+            binaryWriter.close();
             this.passed();
         } catch (OpenedException openedException) {
             this.failed("OPENED_EXCEPTION");
