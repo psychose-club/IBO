@@ -27,16 +27,25 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package club.psychose.testsuite.ibo.utils;
+package club.psychose.library.ibo.utils;
+
+/**
+ * This class handles methods to convert specific values into their HEX values.
+ */
 
 public final class HEXUtils {
+    /**
+     * This method converts bytes into a HEX string.
+     * @param bytes The bytes to convert.
+     * @return {@link String}
+     */
     public static String convertBytesToHEXString (byte[] bytes) {
-        StringBuilder hexStringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
 
-        for (byte byteValue : bytes) {
-            hexStringBuilder.append(String.format("%02X", byteValue));
+        for (byte providedByte : bytes) {
+            stringBuilder.append(String.format("%02X", providedByte));
         }
 
-        return hexStringBuilder.toString();
+        return stringBuilder.toString();
     }
 }
