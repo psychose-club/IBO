@@ -29,6 +29,8 @@
 
 package club.psychose.library.ibo.utils;
 
+import club.psychose.library.ibo.enums.HEXFormat;
+
 /**
  * This class handles methods to convert specific values into their HEX values.
  */
@@ -40,10 +42,21 @@ public final class HEXUtils {
      * @return {@link String}
      */
     public static String convertBytesToHEXString (byte[] bytes) {
+        return convertBytesToHEXString(bytes, HEXFormat.UPPERCASE);
+    }
+
+    /**
+     * This method converts the bytes into a HEX string.
+     * @param bytes The bytes to convert.
+     * @param hexFormat The format that should be used to display the bytes.
+     * @return {@link String}
+     */
+    public static String convertBytesToHEXString (byte[] bytes, HEXFormat hexFormat) {
         StringBuilder stringBuilder = new StringBuilder();
+        String format = (hexFormat == HEXFormat.UPPERCASE) ? ("%02X") : ("%02x");
 
         for (byte providedByte : bytes) {
-            stringBuilder.append(String.format("%02X", providedByte));
+            stringBuilder.append(String.format(format, providedByte));
         }
 
         return stringBuilder.toString();
