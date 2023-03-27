@@ -31,6 +31,7 @@ package club.psychose.library.ibo.datatypes;
 
 import club.psychose.library.ibo.enums.HEXFormat;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
+import club.psychose.library.ibo.utils.HEXUtils;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -212,13 +213,6 @@ public abstract class IBODataType<DataType extends Number> {
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public String getAsHEXString (HEXFormat hexFormat, ByteOrder byteOrder) throws RangeOutOfBoundsException {
-        StringBuilder hexStringBuilder = new StringBuilder();
-        String format = (hexFormat == HEXFormat.UPPERCASE) ? ("%02X") : ("%02x");
-
-        for (byte byteValue : this.getAsBytes(byteOrder)) {
-            hexStringBuilder.append(String.format(format, byteValue));
-        }
-
-        return hexStringBuilder.toString();
+        return HEXUtils.convertBytesToHEXString(this.getAsBytes(byteOrder), hexFormat);
     }
 }
