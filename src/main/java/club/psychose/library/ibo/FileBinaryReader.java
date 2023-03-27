@@ -478,8 +478,23 @@ public final class FileBinaryReader extends SharedReaderMethods {
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void readChunkIntoTheMemory (int chunkNumber) throws ClosedException, IOException, RangeOutOfBoundsException {
+        this.readChunkIntoTheMemory(chunkNumber, 0);
+    }
+
+    /**
+     * This method reads a chunk into the memory.
+     * @param chunkNumber The chunk number.
+     * @param chunkOffsetPosition The offset position from which should be started.
+     * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
+     * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
+    public void readChunkIntoTheMemory (int chunkNumber, int chunkOffsetPosition) throws ClosedException, IOException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The FileBinaryReader is closed!");
+
+        if ((chunkOffsetPosition < 0) || (chunkOffsetPosition > this.chunkLength))
+            throw new RangeOutOfBoundsException("Invalid chunk offset position provided!");
 
         long offsetPosition = ((long) chunkNumber * this.chunkLength);
 
@@ -487,78 +502,183 @@ public final class FileBinaryReader extends SharedReaderMethods {
             offsetPosition = 0;
 
         this.readChunk(offsetPosition, this.chunkLength);
+
+        if ((this.offsetPosition + chunkOffsetPosition) > this.getFileLength())
+            throw new RangeOutOfBoundsException("Invalid chunk offset position provided!");
+
+        this.offsetPosition = ((long) this.currentChunk * this.chunkLength) + chunkOffsetPosition;
+        this.chunkOffsetPosition = chunkOffsetPosition;
     }
+
 
     /**
      * This method searches the entire chunk for the first offset position where the provided HEX string matches.
-     * @param searchForHEX The HEX String that should be matched with.
-     * @return The chunk offset position or -1 when nothing was found.
+     * @param hexValueToSearch The HEX String that should be matched with.
+     * @return The file offset position or -1 when nothing was found.
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
      * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    public int searchFirstHEXValueInChunk (String searchForHEX) throws ClosedException, IOException, RangeOutOfBoundsException {
+    @Deprecated
+    public int searchFirstHEXValueInChunk (String hexValueToSearch) throws ClosedException, IOException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The FileBinaryReader is closed!");
 
-        return this.searchFirstHEXValueInChunk(searchForHEX, 0);
+        return this.searchFirstHEXValueInChunk(hexValueToSearch, 0);
     }
 
     /**
      * This method searches the entire chunk for the first offset position where the provided HEX string matches.
-     * @param searchForHEX The HEX String that should be matched with.
-     * @param startFromChunk The chunk from which should be started.
-     * @return The chunk offset position or -1 when nothing was found.
+     * @param hexValueToSearch The HEX String that should be matched with.
+     * @param chunk The chunk from which should be used.
+     * @return The file offset position or -1 when nothing was found.
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
      * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    public int searchFirstHEXValueInChunk (String searchForHEX, int startFromChunk) throws ClosedException, IOException, RangeOutOfBoundsException {
+    @Deprecated
+    public int searchFirstHEXValueInChunk (String hexValueToSearch, int chunk) throws ClosedException, IOException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The FileBinaryReader is closed!");
+
+        return this.searchFirstHEXValueInChunk(hexValueToSearch, chunk, 0);
+    }
+
+    /**
+     * This method searches the entire chunk for the first offset position where the provided HEX string matches.
+     * @param hexValueToSearch The HEX String that should be matched with.
+     * @param chunk The chunk from which should be used.
+     * @param chunkOffsetPosition The chunk offset position from which should be started with.
+     * @return The file offset position or -1 when nothing was found.
+     * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
+     * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
+    @Deprecated
+    public int searchFirstHEXValueInChunk (String hexValueToSearch, int chunk, int chunkOffsetPosition) throws ClosedException, IOException, RangeOutOfBoundsException {
+        throw new IOException("This method isn't fully fixed yet.");
+
+        /*-if (this.isClosed())
+            throw new ClosedException("The FileBinaryReader is closed!");
+
+        if ((hexValueToSearch.length() % 2) != 0)
+            throw new IOException("The provided string contains an invalid length for HEX values!");
 
         long oldOffsetPosition = this.getFileOffsetPosition();
 
-        // Reading the startFromChunk into the memory.
-        this.readChunkIntoTheMemory(startFromChunk);
-
-        int offset = -1;
+        // Reading the chunk into the memory.
+        // TODO: FIX THIS
+        if ((chunk != 0) && (this.offsetPosition == 0)) {
+            this.readChunk(((long) chunk * this.chunkLength), this.chunkLength);
+        } else {
+            this.readChunkIntoTheMemory(chunk, chunkOffsetPosition);
+        }
 
         // Searching for the entered offset.
+        int offset;
         {
             String hexString = HEXUtils.convertBytesToHEXString(this.readBytes((int) this.getRemainingChunkBytes()));
+            int offsetIndex = this.getOffsetPositionFromHEXStrings(hexValueToSearch, hexString);
 
-            if (!(hexString.toUpperCase(Locale.ROOT).contains(searchForHEX.toUpperCase(Locale.ROOT)))) {
+            if (offsetIndex == -1) {
                 this.setOffsetPosition(oldOffsetPosition);
                 return -1;
             }
 
-            for (int index = 0; index < hexString.length(); index ++) {
-                boolean valid = true;
-
-                for (int searchIndex = 0; searchIndex < searchForHEX.length(); searchIndex ++) {
-                    int newIndex = (index + searchIndex);
-
-                    if (hexString.length() < newIndex) {
-                        valid = false;
-                        break;
-                    }
-
-                    if (hexString.charAt(index + searchIndex) != searchForHEX.charAt(searchIndex)) {
-                        valid = false;
-                        break;
-                    }
-                }
-
-                if (valid) {
-                    offset = index;
-                    break;
-                }
-            }
+           offset = this.getOffsetPositionFromHEXStrings(hexValueToSearch, hexString);
         }
 
-        if (offset > 0) {
-            offset /= 2;
+        this.setOffsetPosition(oldOffsetPosition);
+        return -1;*/
+    }
+
+    /**
+     * This method searches the entire file for the first offset position where the provided HEX string begins.
+     * @param hexValueToSearch The HEX String that should be matched with.
+     * @return {@link Long}
+     * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
+     * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
+    public long searchFirstHEXValueInAllChunks (String hexValueToSearch) throws ClosedException, IOException, RangeOutOfBoundsException {
+        if (this.isClosed())
+            throw new ClosedException("The FileBinaryReader is closed!");
+
+        return this.searchFirstHEXValueInAllChunks(hexValueToSearch, 0, 0);
+    }
+
+    /**
+     * This method searches the entire file for the first offset position where the provided HEX string begins.
+     * @param hexValueToSearch The HEX String that should be matched with.
+     * @param startFromOffsetPosition The offset position from which should be started with.
+     * @return {@link Long}
+     * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
+     * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
+    public long searchFirstHEXValueInAllChunks (String hexValueToSearch, long startFromOffsetPosition) throws ClosedException, IOException, RangeOutOfBoundsException {
+        if (this.isClosed())
+            throw new ClosedException("The FileBinaryReader is closed!");
+
+        return this.searchFirstHEXValueInAllChunks(hexValueToSearch, this.getChunk(startFromOffsetPosition), this.getChunkOffsetPosition(startFromOffsetPosition));
+    }
+
+    /**
+     * This method searches the entire file for the first offset position where the provided HEX string begins.
+     * @param hexValueToSearch The HEX String that should be matched with.
+     * @param startFromChunk The chunk from which should be started with.
+     * @return {@link Long}
+     * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
+     * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
+    public long searchFirstHEXValueInAllChunks (String hexValueToSearch, int startFromChunk) throws ClosedException, IOException, RangeOutOfBoundsException {
+        if (this.isClosed())
+            throw new ClosedException("The FileBinaryReader is closed!");
+
+        return this.searchFirstHEXValueInAllChunks(hexValueToSearch, startFromChunk, 0);
+    }
+
+    /**
+     * This method searches the entire file for the first offset position where the provided HEX string begins.
+     * @param hexValueToSearch The HEX String that should be matched with.
+     * @param startFromChunk The chunk from which should be started with.
+     * @param chunkOffsetPosition The chunk offset position from which should be started with.
+     * @return {@link Long}
+     * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
+     * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
+    public long searchFirstHEXValueInAllChunks (String hexValueToSearch, int startFromChunk, int chunkOffsetPosition) throws ClosedException, IOException, RangeOutOfBoundsException {
+        if (this.isClosed())
+            throw new ClosedException("The FileBinaryReader is closed!");
+
+        if ((hexValueToSearch.length() % 2) != 0)
+            throw new IOException("The provided string contains an invalid length for HEX values!");
+
+        long oldOffsetPosition = this.getFileOffsetPosition();
+
+        // Reading the startFromChunk into the memory.
+        this.readChunkIntoTheMemory(startFromChunk, chunkOffsetPosition);
+
+        // Searching for the entered offset.
+        long offset = -1;
+        {
+            while (true) {
+                long newOffsetPosition = this.offsetPosition + hexValueToSearch.length();
+
+                if (newOffsetPosition > this.getFileLength())
+                    break;
+
+                String hexString = HEXUtils.convertBytesToHEXString(this.readBytes(hexValueToSearch.length())).toUpperCase(Locale.ROOT);
+                int offsetIndex = this.getOffsetPositionFromHEXStrings(hexValueToSearch, hexString);
+
+                if (offsetIndex == -1)
+                    continue;
+
+                offset = newOffsetPosition - hexValueToSearch.length() + offsetIndex;
+                break;
+            }
         }
 
         this.setOffsetPosition(oldOffsetPosition);
@@ -619,10 +739,11 @@ public final class FileBinaryReader extends SharedReaderMethods {
             long remainingBytes = this.getRemainingBytes();
 
             if ((remainingBytes - this.chunkOffsetPosition) >= this.chunkLength) {
-                this.readChunkIntoTheMemory(this.getCurrentChunk());
+                this.readChunk(this.offsetPosition, (int) remainingBytes);
             } else {
-                if (this.chunkLength < remainingBytes) {
-                    this.readChunkIntoTheMemory(this.getCurrentChunk());
+                if (remainingBytes > this.chunkLength) {
+                    int remainingBytesForTheChunk = (this.chunkLength - this.chunkOffsetPosition);
+                    this.readChunk(this.offsetPosition, remainingBytesForTheChunk);
                 } else {
                     this.readChunk(this.offsetPosition, (int) remainingBytes);
                 }
@@ -697,10 +818,7 @@ public final class FileBinaryReader extends SharedReaderMethods {
         if (this.isClosed())
             throw new ClosedException("The FileBinaryReader is closed!");
 
-        if (offsetPosition == 0)
-            offsetPosition = 1;
-
-        return (int) (offsetPosition / this.chunkLength);
+        return (offsetPosition > this.chunkLength) ? ((int) (offsetPosition / this.chunkLength)) : (0);
     }
 
     /**
