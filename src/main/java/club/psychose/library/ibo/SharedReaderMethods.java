@@ -31,6 +31,8 @@ package club.psychose.library.ibo;
 
 import club.psychose.library.ibo.utils.ArrayUtils;
 
+import java.util.List;
+
 /**
  * This class provides method that is shared between the readers.
  */
@@ -82,5 +84,56 @@ class SharedReaderMethods {
         }
 
         return bytes;
+    }
+
+    /**
+     * This method gets the start of a position from two HEX strings.
+     * @param hexValueToSearch The HEX string which should be searched with.
+     * @param hexValue The HEX string that should be searched.
+     * @return {@link Integer}
+     */
+    public int getOffsetPositionFromHEXStrings (String hexValueToSearch, String hexValue) {
+        List<String> hexValueToSearchArrayList = ArrayUtils.splitHEXByteCharacters(hexValueToSearch);
+        List<String> hexValueArrayList = ArrayUtils.splitHEXByteCharacters(hexValue);
+
+        if (hexValueToSearchArrayList.size() == 0)
+            return -1;
+
+        if (hexValueArrayList.size() == 0)
+            return -1;
+
+        if (!(hexValueArrayList.contains(hexValueToSearchArrayList.get(0))))
+            return -1;
+
+        for (String hexByte : hexValueToSearchArrayList) {
+            for (int index = 0; index < hexValueArrayList.size(); index ++) {
+                String providedHexByte = hexValueArrayList.get(index);
+
+                if (hexByte.equalsIgnoreCase(providedHexByte)) {
+                    boolean valid = true;
+
+                    for (int searchIndex = 1; searchIndex < hexValueToSearchArrayList.size(); searchIndex ++) {
+                        int newIndex = index + searchIndex;
+                        if (newIndex > hexValueArrayList.size())
+                            return -1;
+
+                        String searchedHexByte = hexValueToSearchArrayList.get(searchIndex);
+                        String newProvidedHexByte = hexValueArrayList.get(newIndex);
+
+                        if (!(searchedHexByte.equalsIgnoreCase(newProvidedHexByte))) {
+                            valid = false;
+                            break;
+                        }
+                    }
+
+                    if (valid)
+                        return index;
+
+                    index += (hexValueArrayList.size() - 1); // The - 1 is because we already got the "start" byte.
+                }
+            }
+        }
+
+        return -1;
     }
 }
