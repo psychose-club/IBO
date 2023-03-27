@@ -41,32 +41,40 @@ import java.io.IOException;
 import java.nio.ByteOrder;
 import java.nio.file.Files;
 
-public final class TC0015ReaderHEXValueSearchFileBinaryReader extends Test {
-    public TC0015ReaderHEXValueSearchFileBinaryReader () {
-        super("TC_0015_READER_HEXVALUESEARCH_FILEBINARYREADER");
+public final class TC0016ReaderHEXValueSearchInOneChunkFileBinaryReader extends Test {
+    public TC0016ReaderHEXValueSearchInOneChunkFileBinaryReader () {
+        super("TC_0016_READER_HEXVALUESEARCH_INONECHUNK_FILEBINARYREADER");
     }
 
     @Override
-    public void executeTestCase() {
+    public void executeTestCase () {
         if (this.createTestFile()) {
             try {
-                FileBinaryReader fileBinaryReader = new FileBinaryReader(0x10);
+                FileBinaryReader fileBinaryReader = new FileBinaryReader(0x03);
                 fileBinaryReader.open(PathUtils.getTestSuiteFolderPath("\\test.bin"));
                 fileBinaryReader.setByteOrder(ByteOrder.BIG_ENDIAN);
 
-                int firstOffsetPosition = fileBinaryReader.searchFirstHEXValueInChunk("313837");
+                int firstOffsetPosition = fileBinaryReader.searchFirstHEXValueInChunk("0156");
 
-                if (firstOffsetPosition != 0x4) {
+                if (firstOffsetPosition != 0x01) {
                     fileBinaryReader.close();
                     this.failed("FIRST_OFFSET_POSITION_INVALID");
                     return;
                 }
 
-                int secondOffsetPosition = fileBinaryReader.searchFirstHEXValueInChunk("5569", 0x8);
+                int secondOffsetPosition = fileBinaryReader.searchFirstHEXValueInChunk("9954", 1);
 
-                if (secondOffsetPosition != 0xA) {
+                if (secondOffsetPosition != 0x03) {
                     fileBinaryReader.close();
                     this.failed("SECOND_OFFSET_POSITION_INVALID");
+                    return;
+                }
+
+                int thirdOffsetPosition = fileBinaryReader.searchFirstHEXValueInChunk("61", 3, 1);
+
+                if (thirdOffsetPosition != 0x08) {
+                    fileBinaryReader.close();
+                    this.failed("THIRD_OFFSET_POSITION_INVALID");
                     return;
                 }
 
@@ -101,22 +109,22 @@ public final class TC0015ReaderHEXValueSearchFileBinaryReader extends Test {
                 return false;
             }
 
-            binaryWriter.write((byte) 0x0);
-            binaryWriter.write((byte) 0x0);
-            binaryWriter.write((byte) 0x0);
-            binaryWriter.write((byte) 0x0);
-            binaryWriter.write((byte) 0x31);
+            binaryWriter.write((byte) 0x24);
+            binaryWriter.write((byte) 0x01);
+            binaryWriter.write((byte) 0x56);
+            binaryWriter.write((byte) 0x99);
+            binaryWriter.write((byte) 0x54);
+            binaryWriter.write((byte) 0x65);
+            binaryWriter.write((byte) 0x73);
+            binaryWriter.write((byte) 0x74);
+            binaryWriter.write((byte) 0x61);
             binaryWriter.write((byte) 0x38);
-            binaryWriter.write((byte) 0x37);
-            binaryWriter.write((byte) 0x0);
-            binaryWriter.write((byte) 0x0);
-            binaryWriter.write((byte) 0x0);
-            binaryWriter.write((byte) 0x55);
-            binaryWriter.write((byte) 0x69);
-            binaryWriter.write((byte) 0x0);
-            binaryWriter.write((byte) 0x0);
-            binaryWriter.write((byte) 0x0);
-            binaryWriter.write((byte) 0x0);
+            binaryWriter.write((byte) 0x34);
+            binaryWriter.write((byte) 0x31);
+            binaryWriter.write((byte) 0x77);
+            binaryWriter.write((byte) 0x72);
+            binaryWriter.write((byte) 0x31);
+            binaryWriter.write((byte) 0x30);
 
             long fileLength = binaryWriter.getFileLength();
             binaryWriter.close();
@@ -135,6 +143,7 @@ public final class TC0015ReaderHEXValueSearchFileBinaryReader extends Test {
             this.failed("IO_EXCEPTION");
             ioException.printStackTrace();
         }
+
         return true;
     }
 }
