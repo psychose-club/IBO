@@ -361,71 +361,52 @@ public final class MemoryBinaryReader extends SharedReaderMethods {
 
     /**
      * This method searches the entire memory for the first offset position where the provided HEX string matches.
-     * @param searchForHEX The HEX String that should be matched with.
+     * @param hexValueToSearch The HEX String that should be matched with.
      * @return The offset position or -1 when nothing was found.
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    public int searchFirstHEXValue (String searchForHEX) throws ClosedException, RangeOutOfBoundsException {
+    public int searchFirstHEXValue (String hexValueToSearch) throws ClosedException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The MemoryBinaryReader is closed!");
 
-        return this.searchFirstHEXValue(searchForHEX, 0);
+        return this.searchFirstHEXValue(hexValueToSearch, 0);
     }
 
     /**
      * This method searches the entire memory for the first offset position where the provided HEX string matches.
-     * @param searchForHEX The HEX String that should be matched with.
+     * @param hexValueToSearch The HEX String that should be matched with.
      * @param startFrom The offset position from which should be started.
      * @return The offset position or -1 when nothing was found.
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    public int searchFirstHEXValue (String searchForHEX, int startFrom) throws ClosedException, RangeOutOfBoundsException {
+    public int searchFirstHEXValue (String hexValueToSearch, int startFrom) throws ClosedException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The MemoryBinaryReader is closed!");
 
         int oldOffsetPosition = this.getOffsetPosition();
 
         this.setOffsetPosition(startFrom);
-        int offset = -1;
 
         // Searching for the entered offset.
+        int offset = -1;
         {
-            String hexString = HEXUtils.convertBytesToHEXString(this.readBytes(this.getRemainingBytes()));
+            while (true) {
+                int newOffsetPosition = this.offsetPosition + hexValueToSearch.length();
 
-            if (!(hexString.toUpperCase(Locale.ROOT).contains(searchForHEX.toUpperCase(Locale.ROOT)))) {
-                this.setOffsetPosition(oldOffsetPosition);
-                return -1;
-            }
-
-            for (int index = 0; index < hexString.length(); index ++) {
-                boolean valid = true;
-
-                for (int searchIndex = 0; searchIndex < searchForHEX.length(); searchIndex ++) {
-                    int newIndex = (index + searchIndex);
-
-                    if (hexString.length() < newIndex) {
-                        valid = false;
-                        break;
-                    }
-
-                    if (hexString.charAt(index + searchIndex) != searchForHEX.charAt(searchIndex)) {
-                        valid = false;
-                        break;
-                    }
-                }
-
-                if (valid) {
-                    offset = index;
+                if (newOffsetPosition > this.getBinaryLength())
                     break;
-                }
-            }
-        }
 
-        if (offset > 0) {
-            offset /= 2;
-            offset += startFrom;
+                String hexString = HEXUtils.convertBytesToHEXString(this.readBytes(hexValueToSearch.length())).toUpperCase(Locale.ROOT);
+                int offsetIndex = this.getOffsetPositionFromHEXStrings(hexValueToSearch, hexString);
+
+                if (offsetIndex == -1)
+                    continue;
+
+                offset = newOffsetPosition - hexValueToSearch.length() + offsetIndex;
+                break;
+            }
         }
 
         this.setOffsetPosition(oldOffsetPosition);
