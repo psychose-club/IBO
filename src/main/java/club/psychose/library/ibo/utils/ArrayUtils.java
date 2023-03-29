@@ -52,7 +52,7 @@ public final class ArrayUtils {
     /**
      * This method splits the bytes from a HEX string into pairs of two.
      * @param hexString The string that should be split.
-     * @return {@link List<String>}
+     * @return String {@link List}
      */
     public static List<String> splitHEXByteCharacters (String hexString) {
         String[] characters = hexString.split("(?<=\\G.{2})");
