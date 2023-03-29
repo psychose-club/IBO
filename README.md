@@ -68,7 +68,6 @@ Currently supported data types:
 ### Planned features
 We are considering the following features to be added when enough people ask for it:
 * More data types (If possible)
-* HEX Search for the entire file not only one chunk.
 
 If you want to contribute and add some features create an issue in the Issues tab and create a pull request! :)
 
