@@ -64,15 +64,15 @@ public final class TC0016ReaderHEXValueSearchInOneChunkFileBinaryReader extends 
 
                 int secondOffsetPosition = fileBinaryReader.searchFirstHEXValueInChunk("9954", 1);
 
-                if (secondOffsetPosition != 0x03) {
+                if (secondOffsetPosition != 0x0) {
                     fileBinaryReader.close();
                     this.failed("SECOND_OFFSET_POSITION_INVALID");
                     return;
                 }
 
-                int thirdOffsetPosition = fileBinaryReader.searchFirstHEXValueInChunk("61", 3, 1);
+                int thirdOffsetPosition = fileBinaryReader.searchFirstHEXValueInChunk("61", 2, 1);
 
-                if (thirdOffsetPosition != 0x08) {
+                if (thirdOffsetPosition != 0x02) {
                     fileBinaryReader.close();
                     this.failed("THIRD_OFFSET_POSITION_INVALID");
                     return;
