@@ -29,7 +29,7 @@
 
 package club.psychose.testsuite.ibo.testcases.structures;
 
-import club.psychose.library.ibo.datatypes.types.signed.Int8;
+import club.psychose.library.ibo.core.datatypes.types.signed.Int8;
 import club.psychose.library.ibo.enums.HEXFormat;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
 import club.psychose.testsuite.ibo.testcases.Test;

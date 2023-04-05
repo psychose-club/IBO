@@ -29,13 +29,13 @@
 
 package club.psychose.testsuite.ibo.testcases.reader;
 
-import club.psychose.library.ibo.MemoryBinaryReader;
-import club.psychose.library.ibo.datatypes.types.signed.Int16;
-import club.psychose.library.ibo.datatypes.types.signed.Int32;
-import club.psychose.library.ibo.datatypes.types.signed.Int8;
-import club.psychose.library.ibo.datatypes.types.unsigned.UInt16;
-import club.psychose.library.ibo.datatypes.types.unsigned.UInt32;
-import club.psychose.library.ibo.datatypes.types.unsigned.UInt8;
+import club.psychose.library.ibo.core.io.reader.MemoryBinaryReader;
+import club.psychose.library.ibo.core.datatypes.types.signed.Int16;
+import club.psychose.library.ibo.core.datatypes.types.signed.Int32;
+import club.psychose.library.ibo.core.datatypes.types.signed.Int8;
+import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt16;
+import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt32;
+import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt8;
 import club.psychose.library.ibo.exceptions.ClosedException;
 import club.psychose.library.ibo.exceptions.OpenedException;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
