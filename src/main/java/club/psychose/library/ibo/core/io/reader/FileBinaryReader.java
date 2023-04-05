@@ -73,6 +73,7 @@ public final class FileBinaryReader extends ChunkManagement implements ReaderInt
     public FileBinaryReader (int chunkLength) throws RangeOutOfBoundsException {
         super(chunkLength);
 
+        this.setByteOrder(ByteOrder.nativeOrder());
         this.offsetPosition = -1;
         this.setCurrentChunk(-1);
         this.setChunkOffsetPosition(-1);
@@ -87,6 +88,7 @@ public final class FileBinaryReader extends ChunkManagement implements ReaderInt
     public FileBinaryReader (int chunkLength, ByteOrder byteOrder) throws RangeOutOfBoundsException {
         super(chunkLength);
 
+        this.setByteOrder(byteOrder);
         this.offsetPosition = -1;
         this.setCurrentChunk(-1);
         this.setChunkOffsetPosition(-1);
