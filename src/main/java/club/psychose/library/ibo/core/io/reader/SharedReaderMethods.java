@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package club.psychose.library.ibo;
+package club.psychose.library.ibo.core.io.reader;
 
 import club.psychose.library.ibo.utils.ArrayUtils;
 
@@ -113,8 +113,9 @@ class SharedReaderMethods {
                     boolean valid = true;
 
                     for (int searchIndex = 1; searchIndex < hexValueToSearchArrayList.size(); searchIndex ++) {
-                        int newIndex = index + searchIndex;
-                        if (newIndex > hexValueArrayList.size())
+                        int newIndex = (index + searchIndex);
+
+                        if (newIndex >= hexValueArrayList.size())
                             return -1;
 
                         String searchedHexByte = hexValueToSearchArrayList.get(searchIndex);
@@ -129,7 +130,8 @@ class SharedReaderMethods {
                     if (valid)
                         return index;
 
-                    index += (hexValueArrayList.size() - 1); // The - 1 is because we already got the "start" byte.
+                    // We subtract one integer because we already found the first byte.
+                    index += (hexValueArrayList.size() - 1);
                 }
             }
         }
