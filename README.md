@@ -54,12 +54,12 @@ Currently supported data types:
 | Signed / Unsigned | Data type | Minimum Value        | Maximum Value        |
 |-------------------|-----------|----------------------|----------------------|
 | Signed            | Int8      | -128                 | 127                  |
-| Unsigned          | UInt8     | 0                    | 255                  |
 | Signed            | Int16     | -32768               | 32767                |
-| Unsigned          | UInt16    | 0                    | 65535                |
 | Signed            | Int32     | -2147483648          | 2147483647           |
-| Unsigned          | UInt32    | 0                    | 4294967295           |
 | Signed            | Int64     | -9223372036854775808 | 9223372036854775807  |
+| Unsigned          | UInt8     | 0                    | 255                  |
+| Unsigned          | UInt16    | 0                    | 65535                |
+| Unsigned          | UInt32    | 0                    | 4294967295           |
 | Unsigned          | UInt64    | 0                    | 18446744073709551615 |
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -95,7 +95,7 @@ _Maven_
 <dependency>
     <groupId>club.psychose</groupId>
     <artifactId>ibo</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
 </dependency>
 ```
 
@@ -103,12 +103,12 @@ _Gradle_
 
 Long:
 ```
-implementation group: 'club.psychose', name: 'ibo', version: '1.2.0'
+implementation group: 'club.psychose', name: 'ibo', version: '1.2.1'
 ```
 
 Short:
 ```
-implementation 'club.psychose:ibo:1.2.0'
+implementation 'club.psychose:ibo:1.2.1'
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

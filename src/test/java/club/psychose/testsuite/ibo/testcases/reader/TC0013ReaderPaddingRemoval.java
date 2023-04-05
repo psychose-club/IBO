@@ -29,7 +29,7 @@
 
 package club.psychose.testsuite.ibo.testcases.reader;
 
-import club.psychose.library.ibo.MemoryBinaryReader;
+import club.psychose.library.ibo.core.io.reader.MemoryBinaryReader;
 import club.psychose.library.ibo.utils.HEXUtils;
 import club.psychose.testsuite.ibo.testcases.Test;
 

@@ -29,15 +29,15 @@
 
 package club.psychose.testsuite.ibo.testcases.writer;
 
-import club.psychose.library.ibo.BinaryWriter;
-import club.psychose.library.ibo.datatypes.types.signed.Int16;
-import club.psychose.library.ibo.datatypes.types.signed.Int32;
-import club.psychose.library.ibo.datatypes.types.signed.Int64;
-import club.psychose.library.ibo.datatypes.types.signed.Int8;
-import club.psychose.library.ibo.datatypes.types.unsigned.UInt16;
-import club.psychose.library.ibo.datatypes.types.unsigned.UInt32;
-import club.psychose.library.ibo.datatypes.types.unsigned.UInt64;
-import club.psychose.library.ibo.datatypes.types.unsigned.UInt8;
+import club.psychose.library.ibo.core.io.writer.BinaryWriter;
+import club.psychose.library.ibo.core.datatypes.types.signed.Int16;
+import club.psychose.library.ibo.core.datatypes.types.signed.Int32;
+import club.psychose.library.ibo.core.datatypes.types.signed.Int64;
+import club.psychose.library.ibo.core.datatypes.types.signed.Int8;
+import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt16;
+import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt32;
+import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt64;
+import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt8;
 import club.psychose.library.ibo.exceptions.ClosedException;
 import club.psychose.library.ibo.exceptions.OpenedException;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;

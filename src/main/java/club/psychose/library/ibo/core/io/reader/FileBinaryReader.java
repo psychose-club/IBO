@@ -27,25 +27,24 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package club.psychose.library.ibo;
+package club.psychose.library.ibo.core.io.reader;
 
-import club.psychose.library.ibo.datatypes.types.signed.Int16;
-import club.psychose.library.ibo.datatypes.types.signed.Int32;
-import club.psychose.library.ibo.datatypes.types.signed.Int64;
-import club.psychose.library.ibo.datatypes.types.signed.Int8;
-import club.psychose.library.ibo.datatypes.types.unsigned.UInt16;
-import club.psychose.library.ibo.datatypes.types.unsigned.UInt32;
-import club.psychose.library.ibo.datatypes.types.unsigned.UInt64;
-import club.psychose.library.ibo.datatypes.types.unsigned.UInt8;
+import club.psychose.library.ibo.core.datatypes.types.signed.Int16;
+import club.psychose.library.ibo.core.datatypes.types.signed.Int32;
+import club.psychose.library.ibo.core.datatypes.types.signed.Int64;
+import club.psychose.library.ibo.core.datatypes.types.signed.Int8;
+import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt16;
+import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt32;
+import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt64;
+import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt8;
 import club.psychose.library.ibo.exceptions.ClosedException;
 import club.psychose.library.ibo.exceptions.OpenedException;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
+import club.psychose.library.ibo.interfaces.ReaderInterface;
 import club.psychose.library.ibo.utils.HEXUtils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -56,22 +55,14 @@ import java.util.stream.IntStream;
 
 /**
  * The FileBinaryReader class handles binary data types from a file.<p>
- * For reading a byte array that is already read into the memory look at {@link MemoryBinaryReader}.
+ * We will read file bytes as "chunks" to prevent an overflow of the memory.<p>
+ * For reading a byte array that is already read into the memory look at {@link MemoryBinaryReader}.<p>
+ * WARNING! The chunkLength will be ignored when e.g. the readBytes method called with a higher length than the chunk length!<p>
+ * However, we temporarily handle the length then as chunkLength, after the reading we will use the original chunkLength again.<p>
+ * You are responsible to make sure that length that will be used in the ByteBuffer not causes an out of memory error!
  */
-public final class FileBinaryReader extends SharedReaderMethods {
-    // NOTE: The chunkLength will be ignored when e.g. the readBytes method called with a higher length than the chunk length!
-    // However, we temporarily handle the length then as chunkLength, after the reading we will use the original chunkLength again.
-    // You are responsible to make sure that length that will be used in the ByteBuffer causes an out of memory error!
-    private final int chunkLength;
 
-    private ByteBuffer byteBuffer;
-    private ByteOrder byteOrder;
-
-    private boolean closed;
-    private Path filePath;
-
-    private int currentChunk;
-    private int chunkOffsetPosition;
+public final class FileBinaryReader extends ChunkManagement implements ReaderInterface {
     private long offsetPosition;
 
     /**
@@ -80,20 +71,12 @@ public final class FileBinaryReader extends SharedReaderMethods {
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public FileBinaryReader (int chunkLength) throws RangeOutOfBoundsException {
-        if (chunkLength <= 0)
-            throw new RangeOutOfBoundsException("The chunk length can't be negative or 0!");
+        super(chunkLength);
 
-        this.chunkLength = chunkLength;
-
-        this.byteBuffer = null;
-        this.byteOrder = ByteOrder.nativeOrder();
-
-        this.closed = true;
-        this.filePath = null;
-
-        this.currentChunk = -1;
-        this.chunkOffsetPosition = -1;
+        this.setByteOrder(ByteOrder.nativeOrder());
         this.offsetPosition = -1;
+        this.setCurrentChunk(-1);
+        this.setChunkOffsetPosition(-1);
     }
 
     /**
@@ -103,20 +86,12 @@ public final class FileBinaryReader extends SharedReaderMethods {
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public FileBinaryReader (int chunkLength, ByteOrder byteOrder) throws RangeOutOfBoundsException {
-        if (chunkLength <= 0)
-            throw new RangeOutOfBoundsException("The chunk length can't be negative or 0!");
+        super(chunkLength);
 
-        this.chunkLength = chunkLength;
-
-        this.byteBuffer = null;
-        this.byteOrder = byteOrder;
-
-        this.closed = true;
-        this.filePath = null;
-
-        this.currentChunk = -1;
-        this.chunkOffsetPosition = -1;
+        this.setByteOrder(byteOrder);
         this.offsetPosition = -1;
+        this.setCurrentChunk(-1);
+        this.setChunkOffsetPosition(-1);
     }
 
     /**
@@ -128,7 +103,7 @@ public final class FileBinaryReader extends SharedReaderMethods {
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void open (Path filePath) throws OpenedException, ClosedException, IOException, RangeOutOfBoundsException {
-        this.open(filePath, 0);
+        this.open(filePath, 0x0);
     }
 
     /**
@@ -150,12 +125,12 @@ public final class FileBinaryReader extends SharedReaderMethods {
         if ((startOffsetPosition < 0) || (startOffsetPosition > filePath.toFile().length()))
             throw new RangeOutOfBoundsException("The startOffsetPosition is out of bounds!");
 
-        this.closed = false;
-        this.filePath = filePath;
+        this.setClosed(false);
+        this.setFilePath(filePath);
 
-        this.currentChunk = 0;
-        this.chunkOffsetPosition = 0;
         this.offsetPosition = 0;
+        this.setCurrentChunk(0);
+        this.setChunkOffsetPosition(0);
 
         this.setOffsetPosition(startOffsetPosition);
     }
@@ -163,16 +138,17 @@ public final class FileBinaryReader extends SharedReaderMethods {
     /**
      * This method resets and closes the FileBinaryReader.
      */
-    public void close () {
+    @Override
+    public void close() {
         if (!(this.isClosed())) {
-            this.byteBuffer = null;
+            this.resetTheByteBuffer();
 
-            this.closed = true;
-            this.filePath = null;
+            this.setClosed(true);
+            this.setFilePath(null);
 
-            this.currentChunk = -1;
-            this.chunkOffsetPosition = -1;
             this.offsetPosition = -1;
+            this.setCurrentChunk(-1);
+            this.setChunkOffsetPosition(-1);
         }
     }
 
@@ -184,27 +160,28 @@ public final class FileBinaryReader extends SharedReaderMethods {
      * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
+    @Override
     public byte[] readBytes (int length) throws ClosedException, IOException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The FileBinaryReader is closed!");
 
-        if ((length <= 0) || ((this.offsetPosition + length) > this.getFileLength()))
-            throw new RangeOutOfBoundsException("The offset position is out of bounds or the length is negative or 0!");
+        if (length <= 0)
+            throw new RangeOutOfBoundsException("The length to read is negative or 0!");
 
         long newOffsetPosition = (this.offsetPosition + length);
-        if (this.currentChunk != this.getChunk(newOffsetPosition))
-            this.readChunk(this.offsetPosition, length);
+        if (newOffsetPosition > this.getFileLength())
+            throw new RangeOutOfBoundsException("The new offset position is out of bounds!");
 
-        long newChunkOffsetPosition = (this.chunkOffsetPosition + length);
-        if (this.byteBuffer.position() < newChunkOffsetPosition) {
-            this.readChunk(this.offsetPosition, length);
-        }
+        if (this.getCurrentChunk() != this.getChunk(newOffsetPosition))
+            this.read(this.offsetPosition, length);
 
-        // Get the read bytes.
+        // Get the bytes from the ByteBuffer.
         byte[] bytes = new byte[length];
-        IntStream.range(0, length).forEachOrdered(index -> bytes[index] = this.byteBuffer.get(this.chunkOffsetPosition + index));
 
-        // We set here the offset position again to read a new chunk if required.
+        int chunkOffsetPosition = this.getChunkOffsetPosition();
+        IntStream.range(0, length).forEach(index -> bytes[index] = this.getByteBuffer().get(chunkOffsetPosition + index));
+
+        this.setChunkOffsetPosition(chunkOffsetPosition + length);
         this.setOffsetPosition(newOffsetPosition);
 
         return bytes;
@@ -217,20 +194,22 @@ public final class FileBinaryReader extends SharedReaderMethods {
      * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
+    @Override
     public Int8 readInt8 () throws ClosedException, IOException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The FileBinaryReader is closed!");
 
-        if ((this.offsetPosition + Int8.getByteLength()) > this.getFileLength())
-            throw new RangeOutOfBoundsException("The offset position is out of bounds!");
-
         long newOffsetPosition = (this.offsetPosition + Int8.getByteLength());
-        if (this.currentChunk != this.getChunk(newOffsetPosition))
-            this.readChunk(this.offsetPosition, Int8.getByteLength());
+        if (newOffsetPosition > this.getFileLength())
+            throw new RangeOutOfBoundsException("The new offset position is out of bounds!");
 
-        Int8 int8 = new Int8(this.byteBuffer.get());
+        if (this.getCurrentChunk() != this.getChunk(newOffsetPosition))
+            this.read(this.offsetPosition, Int8.getByteLength());
 
+        Int8 int8 = new Int8(this.getByteBuffer().get());
+        this.setChunkOffsetPosition(this.getChunkOffsetPosition() + Int8.getByteLength());
         this.setOffsetPosition(newOffsetPosition);
+
         return int8;
     }
 
@@ -241,20 +220,22 @@ public final class FileBinaryReader extends SharedReaderMethods {
      * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
+    @Override
     public UInt8 readUInt8 () throws ClosedException, IOException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The FileBinaryReader is closed!");
 
-        if ((this.offsetPosition + UInt8.getByteLength()) > this.getFileLength())
-            throw new RangeOutOfBoundsException("The offset position is out of bounds!");
-
         long newOffsetPosition = (this.offsetPosition + UInt8.getByteLength());
-        if (this.currentChunk != this.getChunk(newOffsetPosition))
-            this.readChunk(this.offsetPosition, UInt8.getByteLength());
+        if (newOffsetPosition > this.getFileLength())
+            throw new RangeOutOfBoundsException("The new offset position is out of bounds!");
 
-        UInt8 uInt8 = new UInt8(this.byteBuffer.get());
+        if (this.getCurrentChunk() != this.getChunk(newOffsetPosition))
+            this.read(this.offsetPosition, UInt8.getByteLength());
 
+        UInt8 uInt8 = new UInt8(this.getByteBuffer().get());
+        this.setChunkOffsetPosition(this.getChunkOffsetPosition() + UInt8.getByteLength());
         this.setOffsetPosition(newOffsetPosition);
+
         return uInt8;
     }
 
@@ -265,18 +246,16 @@ public final class FileBinaryReader extends SharedReaderMethods {
      * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
+    @Override
     public Int16 readInt16 () throws ClosedException, IOException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The FileBinaryReader is closed!");
 
-        if ((this.offsetPosition + Int16.getByteLength()) > this.getFileLength())
-            throw new RangeOutOfBoundsException("The offset position is out of bounds!");
-
         long newOffsetPosition = (this.offsetPosition + Int16.getByteLength());
-        if (this.currentChunk != this.getChunk(newOffsetPosition))
-            this.readChunk(this.offsetPosition, Int16.getByteLength());
+        if (newOffsetPosition > this.getFileLength())
+            throw new RangeOutOfBoundsException("The new offset position is out of bounds!");
 
-        return new Int16(this.readBytes(Int16.getByteLength()), this.byteOrder);
+        return new Int16(this.readBytes(Int16.getByteLength()), this.getByteOrder());
     }
 
     /**
@@ -286,18 +265,16 @@ public final class FileBinaryReader extends SharedReaderMethods {
      * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
+    @Override
     public UInt16 readUInt16 () throws ClosedException, IOException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The FileBinaryReader is closed!");
 
-        if ((this.offsetPosition + UInt16.getByteLength()) > this.getFileLength())
-            throw new RangeOutOfBoundsException("The offset position is out of bounds!");
-
         long newOffsetPosition = (this.offsetPosition + UInt16.getByteLength());
-        if (this.currentChunk != this.getChunk(newOffsetPosition))
-            this.readChunk(this.offsetPosition, UInt16.getByteLength());
+        if (newOffsetPosition > this.getFileLength())
+            throw new RangeOutOfBoundsException("The new offset position is out of bounds!");
 
-        return new UInt16(this.readBytes(UInt16.getByteLength()), this.byteOrder);
+        return new UInt16(this.readBytes(UInt16.getByteLength()), this.getByteOrder());
     }
 
     /**
@@ -307,18 +284,16 @@ public final class FileBinaryReader extends SharedReaderMethods {
      * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
+    @Override
     public Int32 readInt32 () throws ClosedException, IOException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The FileBinaryReader is closed!");
 
-        if ((this.offsetPosition + Int32.getByteLength()) > this.getFileLength())
-            throw new RangeOutOfBoundsException("The offset position is out of bounds!");
-
         long newOffsetPosition = (this.offsetPosition + Int32.getByteLength());
-        if (this.currentChunk != this.getChunk(newOffsetPosition))
-            this.readChunk(this.offsetPosition, Int32.getByteLength());
-        
-        return new Int32(this.readBytes(Int32.getByteLength()), this.byteOrder);
+        if (newOffsetPosition > this.getFileLength())
+            throw new RangeOutOfBoundsException("The new offset position is out of bounds!");
+
+        return new Int32(this.readBytes(Int32.getByteLength()), this.getByteOrder());
     }
 
     /**
@@ -328,18 +303,16 @@ public final class FileBinaryReader extends SharedReaderMethods {
      * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
+    @Override
     public UInt32 readUInt32 () throws ClosedException, IOException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The FileBinaryReader is closed!");
 
-        if ((this.offsetPosition + UInt32.getByteLength()) > this.getFileLength())
-            throw new RangeOutOfBoundsException("The offset position is out of bounds!");
-
         long newOffsetPosition = (this.offsetPosition + UInt32.getByteLength());
-        if (this.currentChunk != this.getChunk(newOffsetPosition))
-            this.readChunk(this.offsetPosition, UInt32.getByteLength());
+        if (newOffsetPosition > this.getFileLength())
+            throw new RangeOutOfBoundsException("The new offset position is out of bounds!");
 
-        return new UInt32(this.readBytes(UInt32.getByteLength()), this.byteOrder);
+        return new UInt32(this.readBytes(UInt32.getByteLength()), this.getByteOrder());
     }
 
     /**
@@ -349,18 +322,16 @@ public final class FileBinaryReader extends SharedReaderMethods {
      * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
+    @Override
     public Int64 readInt64 () throws ClosedException, IOException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The FileBinaryReader is closed!");
 
-        if ((this.offsetPosition + Int64.getByteLength()) > this.getFileLength())
-            throw new RangeOutOfBoundsException("The offset position is out of bounds!");
-
         long newOffsetPosition = (this.offsetPosition + Int64.getByteLength());
-        if (this.currentChunk != this.getChunk(newOffsetPosition))
-            this.readChunk(this.offsetPosition, Int64.getByteLength());
+        if (newOffsetPosition > this.getFileLength())
+            throw new RangeOutOfBoundsException("The new offset position is out of bounds!");
 
-        return new Int64(this.readBytes(Int64.getByteLength()), this.byteOrder);
+        return new Int64(this.readBytes(Int64.getByteLength()), this.getByteOrder());
     }
 
     /**
@@ -370,18 +341,16 @@ public final class FileBinaryReader extends SharedReaderMethods {
      * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
+    @Override
     public UInt64 readUInt64 () throws ClosedException, IOException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The FileBinaryReader is closed!");
 
-        if ((this.offsetPosition + UInt64.getByteLength()) > this.getFileLength())
-            throw new RangeOutOfBoundsException("The offset position is out of bounds!");
-
         long newOffsetPosition = (this.offsetPosition + UInt64.getByteLength());
-        if (this.currentChunk != this.getChunk(newOffsetPosition))
-            this.readChunk(this.offsetPosition, UInt64.getByteLength());
+        if (newOffsetPosition > this.getFileLength())
+            throw new RangeOutOfBoundsException("The new offset position is out of bounds!");
 
-        return new UInt64(this.readBytes(UInt64.getByteLength()), this.byteOrder);
+        return new UInt64(this.readBytes(UInt64.getByteLength()), this.getByteOrder());
     }
 
     /**
@@ -391,20 +360,23 @@ public final class FileBinaryReader extends SharedReaderMethods {
      * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
+    @Override
     public float readFloat () throws ClosedException, IOException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The FileBinaryReader is closed!");
 
-        if ((this.offsetPosition + Float.BYTES) > this.getFileLength())
-            throw new RangeOutOfBoundsException("The offset position is out of bounds!");
-
         long newOffsetPosition = (this.offsetPosition + Float.BYTES);
-        if (this.currentChunk != this.getChunk(newOffsetPosition))
-            this.readChunk(this.offsetPosition, Float.BYTES);
+        if (newOffsetPosition > this.getFileLength())
+            throw new RangeOutOfBoundsException("The new offset position is out of bounds!");
 
-        float binaryFloat = this.byteBuffer.getFloat();
-        
+        if (this.getCurrentChunk() != this.getChunk(newOffsetPosition))
+            this.read(this.offsetPosition, Float.BYTES);
+
+        float binaryFloat = this.getByteBuffer().getFloat();
+
+        this.setChunkOffsetPosition(this.getChunkOffsetPosition() + Float.BYTES);
         this.setOffsetPosition(newOffsetPosition);
+
         return binaryFloat;
     }
 
@@ -415,31 +387,36 @@ public final class FileBinaryReader extends SharedReaderMethods {
      * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
+    @Override
     public double readDouble () throws ClosedException, IOException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The FileBinaryReader is closed!");
 
-        if ((this.offsetPosition + Double.BYTES) > this.getFileLength())
-            throw new RangeOutOfBoundsException("The offset position is out of bounds!");
-
         long newOffsetPosition = (this.offsetPosition + Double.BYTES);
-        if (this.currentChunk != this.getChunk(newOffsetPosition))
-            this.readChunk(this.offsetPosition, Double.BYTES);
+        if (newOffsetPosition > this.getFileLength())
+            throw new RangeOutOfBoundsException("The new offset position is out of bounds!");
 
-        double binaryDouble = this.byteBuffer.getDouble();
+        if (this.getCurrentChunk() != this.getChunk(newOffsetPosition))
+            this.read(this.offsetPosition, Double.BYTES);
 
+        double binaryDouble = this.getByteBuffer().getDouble();
+
+        this.setChunkOffsetPosition(this.getChunkOffsetPosition() + Double.BYTES);
         this.setOffsetPosition(newOffsetPosition);
+
         return binaryDouble;
     }
 
     /**
-     * This method read bytes as an {@code String} and returns it.
+     * This method read bytes as an {@code String} and returns it.<p>
+     * The default charset is UTF_8!
      * @param length The length that should be read.
      * @return {@code String}
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
      * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
+    @Override
     public String readString (int length) throws ClosedException, IOException, RangeOutOfBoundsException {
         return this.readString(length, StandardCharsets.UTF_8);
     }
@@ -453,66 +430,22 @@ public final class FileBinaryReader extends SharedReaderMethods {
      * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
+    @Override
     public String readString (int length, Charset charset) throws ClosedException, IOException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The FileBinaryReader is closed!");
 
-        if ((length < 0) || ((this.offsetPosition + length) > this.getFileLength()))
-            throw new RangeOutOfBoundsException("The offset position is out of bounds or the length is negative or 0!");
-
         long newOffsetPosition = (this.offsetPosition + length);
-        if (this.currentChunk != this.getChunk(newOffsetPosition))
-            this.readChunk(this.offsetPosition, length);
+        if (newOffsetPosition > this.getFileLength())
+            throw new RangeOutOfBoundsException("The new offset position is out of bounds!");
 
         byte[] stringBytes = this.readBytes(length);
-
         return new String(stringBytes, charset);
     }
 
     /**
-     * This method reads a chunk into the memory.
-     * @param chunkNumber The chunk number.
-     * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
-     * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
-     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
-     */
-    public void readChunkIntoTheMemory (int chunkNumber) throws ClosedException, IOException, RangeOutOfBoundsException {
-        this.readChunkIntoTheMemory(chunkNumber, 0);
-    }
-
-    /**
-     * This method reads a chunk into the memory.
-     * @param chunkNumber The chunk number.
-     * @param chunkOffsetPosition The offset position from which should be started.
-     * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
-     * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
-     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
-     */
-    public void readChunkIntoTheMemory (int chunkNumber, int chunkOffsetPosition) throws ClosedException, IOException, RangeOutOfBoundsException {
-        if (this.isClosed())
-            throw new ClosedException("The FileBinaryReader is closed!");
-
-        if ((chunkOffsetPosition < 0) || (chunkOffsetPosition > this.chunkLength))
-            throw new RangeOutOfBoundsException("Invalid chunk offset position provided!");
-
-        long offsetPosition = ((long) chunkNumber * this.chunkLength);
-
-        if ((chunkNumber == 0) && (this.offsetPosition == 0))
-            offsetPosition = 0;
-
-        this.readChunk(offsetPosition, this.chunkLength);
-
-        if ((this.offsetPosition + chunkOffsetPosition) > this.getFileLength())
-            throw new RangeOutOfBoundsException("Invalid chunk offset position provided!");
-
-        this.offsetPosition = ((long) this.currentChunk * this.chunkLength) + chunkOffsetPosition;
-        this.chunkOffsetPosition = chunkOffsetPosition;
-    }
-
-
-    /**
      * This method searches the entire chunk for the first offset position where the provided HEX string matches.
-     * @param hexValueToSearch The HEX String that should be matched with.
+     * @param hexValueToSearch The HEX String that should be searched for.
      * @return The chunk offset position or -1 when nothing was found.
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
      * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
@@ -527,7 +460,7 @@ public final class FileBinaryReader extends SharedReaderMethods {
 
     /**
      * This method searches the entire chunk for the first offset position where the provided HEX string matches.
-     * @param hexValueToSearch The HEX String that should be matched with.
+     * @param hexValueToSearch The HEX String that should be searched for.
      * @param chunk The chunk from which should be used.
      * @return The chunk offset position or -1 when nothing was found.
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
@@ -543,7 +476,7 @@ public final class FileBinaryReader extends SharedReaderMethods {
 
     /**
      * This method searches the entire chunk for the first offset position where the provided HEX string matches.
-     * @param hexValueToSearch The HEX String that should be matched with.
+     * @param hexValueToSearch The HEX String that should be searched for.
      * @param chunk The chunk from which should be used.
      * @param chunkOffsetPosition The chunk offset position from which should be started with.
      * @return The chunk offset position or -1 when nothing was found.
@@ -556,18 +489,20 @@ public final class FileBinaryReader extends SharedReaderMethods {
             throw new ClosedException("The FileBinaryReader is closed!");
 
         if ((hexValueToSearch.length() % 2) != 0)
-            throw new IOException("The provided string contains an invalid length for HEX values!");
+            throw new IOException("The provided string is not a HEX string!");
+
+        if ((chunkOffsetPosition < 0) || (chunkOffsetPosition > this.getChunkLength()))
+            throw new RangeOutOfBoundsException("The chunkOffsetPosition is out of bounds!");
 
         long oldOffsetPosition = this.getFileOffsetPosition();
 
-        // Reading the chunk into the memory.
         this.readChunkIntoTheMemory(chunk, chunkOffsetPosition);
 
         // Searching for the entered offset.
         int offset;
         {
-            byte[] bytes = new byte[this.byteBuffer.capacity()];
-            IntStream.range(this.chunkOffsetPosition, bytes.length).forEachOrdered(index -> bytes[index] = this.byteBuffer.get(index));
+            byte[] bytes = new byte[this.getByteBuffer().capacity()];
+            IntStream.range(0, bytes.length).forEachOrdered(index -> bytes[index] = this.getByteBuffer().get(index));
 
             String hexString = HEXUtils.convertBytesToHEXString(bytes);
             int offsetIndex = this.getOffsetPositionFromHEXStrings(hexValueToSearch, hexString);
@@ -577,7 +512,7 @@ public final class FileBinaryReader extends SharedReaderMethods {
                 return -1;
             }
 
-           offset = this.getOffsetPositionFromHEXStrings(hexValueToSearch, hexString);
+            offset = this.getOffsetPositionFromHEXStrings(hexValueToSearch, hexString) + chunkOffsetPosition;
         }
 
         this.setOffsetPosition(oldOffsetPosition);
@@ -586,7 +521,7 @@ public final class FileBinaryReader extends SharedReaderMethods {
 
     /**
      * This method searches the entire file for the first offset position where the provided HEX string begins.
-     * @param hexValueToSearch The HEX String that should be matched with.
+     * @param hexValueToSearch The HEX String that should be searched for.
      * @return {@link Long}
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
      * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
@@ -601,8 +536,8 @@ public final class FileBinaryReader extends SharedReaderMethods {
 
     /**
      * This method searches the entire file for the first offset position where the provided HEX string begins.
-     * @param hexValueToSearch The HEX String that should be matched with.
-     * @param startFromOffsetPosition The offset position from which should be started with.
+     * @param hexValueToSearch The HEX String that should be searched for.
+     * @param startFromOffsetPosition The offset position from which should be started.
      * @return {@link Long}
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
      * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
@@ -612,12 +547,15 @@ public final class FileBinaryReader extends SharedReaderMethods {
         if (this.isClosed())
             throw new ClosedException("The FileBinaryReader is closed!");
 
+        if ((startFromOffsetPosition < 0) || (startFromOffsetPosition > this.getFileLength()))
+            throw new RangeOutOfBoundsException("The offset position is out of bounds!");
+
         return this.searchFirstHEXValueInAllChunks(hexValueToSearch, this.getChunk(startFromOffsetPosition), this.getChunkOffsetPosition(startFromOffsetPosition));
     }
 
     /**
      * This method searches the entire file for the first offset position where the provided HEX string begins.
-     * @param hexValueToSearch The HEX String that should be matched with.
+     * @param hexValueToSearch The HEX String that should be searched for.
      * @param startFromChunk The chunk from which should be started with.
      * @return {@link Long}
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
@@ -633,7 +571,7 @@ public final class FileBinaryReader extends SharedReaderMethods {
 
     /**
      * This method searches the entire file for the first offset position where the provided HEX string begins.
-     * @param hexValueToSearch The HEX String that should be matched with.
+     * @param hexValueToSearch The HEX String that should be searched for.
      * @param startFromChunk The chunk from which should be started with.
      * @param chunkOffsetPosition The chunk offset position from which should be started with.
      * @return {@link Long}
@@ -646,29 +584,51 @@ public final class FileBinaryReader extends SharedReaderMethods {
             throw new ClosedException("The FileBinaryReader is closed!");
 
         if ((hexValueToSearch.length() % 2) != 0)
-            throw new IOException("The provided string contains an invalid length for HEX values!");
+            throw new IOException("The provided string is not a HEX string!");
+
+        if ((chunkOffsetPosition < 0) || (chunkOffsetPosition > this.getChunkLength()))
+            throw new RangeOutOfBoundsException("The chunkOffsetPosition is out of bounds!");
 
         long oldOffsetPosition = this.getFileOffsetPosition();
 
-        // Reading the startFromChunk into the memory.
-        this.readChunkIntoTheMemory(startFromChunk, chunkOffsetPosition);
-
-        // Searching for the entered offset.
         long offset = -1;
         {
-            while (true) {
-                long newOffsetPosition = this.offsetPosition + hexValueToSearch.length();
+            // Preparing.
+            long startOffsetPosition = ((long) startFromChunk * this.getChunkLength()) + chunkOffsetPosition;
+            this.setOffsetPosition(startOffsetPosition);
 
-                if (newOffsetPosition > this.getFileLength())
-                    break;
+            while (this.getFileOffsetPosition() < this.getFileLength()) {
+                long readLength = hexValueToSearch.length() * 2L;
+                long newOffsetPosition = this.offsetPosition + readLength;
 
-                String hexString = HEXUtils.convertBytesToHEXString(this.readBytes(hexValueToSearch.length())).toUpperCase(Locale.ROOT);
+                boolean cancelAfterThisRun = false;
+                if (newOffsetPosition > this.getFileLength()) {
+                    if ((newOffsetPosition - hexValueToSearch.length()) > this.getFileLength())
+                        break;
+
+                    readLength = hexValueToSearch.length();
+                    newOffsetPosition = this.offsetPosition + readLength;
+                    cancelAfterThisRun = true;
+                }
+
+                this.read(this.offsetPosition, (int) readLength);
+
+                // Get the bytes from the ByteBuffer.
+                byte[] bytes = new byte[(int) readLength];
+                IntStream.range(0, (int) readLength).forEach(index -> bytes[index] = this.getByteBuffer().get(index));
+                this.setOffsetPosition(newOffsetPosition);
+
+                String hexString = HEXUtils.convertBytesToHEXString(bytes).toUpperCase(Locale.ROOT);
                 int offsetIndex = this.getOffsetPositionFromHEXStrings(hexValueToSearch, hexString);
 
-                if (offsetIndex == -1)
-                    continue;
+                if (offsetIndex == -1) {
+                    if (cancelAfterThisRun)
+                        break;
 
-                offset = newOffsetPosition - hexValueToSearch.length() + offsetIndex;
+                    continue;
+                }
+
+                offset = newOffsetPosition - readLength + offsetIndex;
                 break;
             }
         }
@@ -678,8 +638,8 @@ public final class FileBinaryReader extends SharedReaderMethods {
     }
 
     /**
-     * This method sets the offset position from the file.
-     * @param offsetPosition The offset position.
+     * This method sets the current offset position to a new one.
+     * @param offsetPosition The offset position which should be set to.
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
      * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
@@ -691,16 +651,11 @@ public final class FileBinaryReader extends SharedReaderMethods {
         if ((offsetPosition < 0) || (offsetPosition > this.getFileLength()))
             throw new RangeOutOfBoundsException("The offset position is out of bounds!");
 
-        if ((this.offsetPosition == 0) || (this.currentChunk != this.getChunk(offsetPosition)))
-            this.readChunkIntoTheMemory(this.getChunk(offsetPosition));
-
         this.offsetPosition = offsetPosition;
-        this.currentChunk = this.getChunk(offsetPosition);
-        this.chunkOffsetPosition = this.getChunkOffsetPosition(offsetPosition);
+        this.setChunkOffsetPosition(this.getChunkOffsetPosition(offsetPosition));
 
-        this.checkChunkState();
-
-        this.byteBuffer.position(this.chunkOffsetPosition);
+        this.checkChunkState(offsetPosition);
+        this.getByteBuffer().position(this.getChunkOffsetPosition());
     }
 
     /**
@@ -715,163 +670,6 @@ public final class FileBinaryReader extends SharedReaderMethods {
             throw new ClosedException("The FileBinaryReader is closed!");
 
         this.setOffsetPosition(this.offsetPosition + length);
-    }
-
-    /**
-     * This method checks if fewer bytes than the chunk length was read into the memory and tries then to resolve the missing bytes.
-     * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
-     * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
-     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
-     */
-    private void checkChunkState () throws ClosedException, IOException, RangeOutOfBoundsException {
-        if (this.isClosed())
-            throw new ClosedException("The FileBinaryReader is closed!");
-
-        if (this.byteBuffer.capacity() != this.chunkLength) {
-            long remainingBytes = this.getRemainingBytes();
-
-            if ((remainingBytes - this.chunkOffsetPosition) >= this.chunkLength) {
-                this.readChunk(this.offsetPosition, (int) remainingBytes);
-            } else {
-                if (remainingBytes > this.chunkLength) {
-                    int remainingBytesForTheChunk = (this.chunkLength - this.chunkOffsetPosition);
-                    this.readChunk(this.offsetPosition, remainingBytesForTheChunk);
-                } else {
-                    this.readChunk(this.offsetPosition, (int) remainingBytes);
-                }
-            }
-        }
-    }
-
-    /**
-     * This method reads a chunk into the memory.<p>
-     * It can bypass the chunk restrictions! However, it's considered as unsafe, so we don't let user access the method.
-     * @param offsetPosition The offset position.
-     * @param readLength The length that should be read.
-     * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
-     * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
-     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
-     */
-    private void readChunk (long offsetPosition, int readLength) throws ClosedException, IOException, RangeOutOfBoundsException {
-        if (this.isClosed())
-            throw new ClosedException("The FileBinaryReader is closed!");
-
-        long newOffsetPosition = (offsetPosition + readLength);
-        if (newOffsetPosition > this.getFileLength())
-            throw new RangeOutOfBoundsException("The offset position is out of bounds!");
-
-        try (RandomAccessFile randomAccessFile = new RandomAccessFile(this.filePath.toFile(), "r")) {
-            byte[] buffer = new byte[readLength];
-
-            randomAccessFile.seek(offsetPosition);
-            randomAccessFile.read(buffer, 0, readLength);
-            randomAccessFile.close();
-
-            this.byteBuffer = ByteBuffer.wrap(buffer).order(this.byteOrder);
-            this.byteBuffer.position(0);
-            this.chunkOffsetPosition = 0;
-
-            if (this.currentChunk != this.getChunk(newOffsetPosition))
-                this.currentChunk = this.getChunk(newOffsetPosition);
-        }
-    }
-
-    /**
-     * This method sets the internal {@link ByteOrder}.
-     * @param value The {@link ByteOrder}
-     */
-    public void setByteOrder (ByteOrder value) {
-        this.byteOrder = value;
-    }
-
-    /**
-     * This method returns the closed state from the reader.
-     * @return {@code true} or {@code false}
-     */
-    public boolean isClosed () {
-        return this.closed;
-    }
-
-    /**
-     * This method returns the internal {@link ByteOrder}.
-     * @return {@link ByteOrder}
-     */
-    public ByteOrder getByteOrder () {
-        return this.byteOrder;
-    }
-
-    /**
-     * This method returns the chunk number from an offset position.
-     * @param offsetPosition The offset position.
-     * @return The chunk number.
-     * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
-     */
-    public int getChunk (long offsetPosition) throws ClosedException {
-        if (this.isClosed())
-            throw new ClosedException("The FileBinaryReader is closed!");
-
-        return (offsetPosition > this.chunkLength) ? ((int) (offsetPosition / this.chunkLength)) : (0);
-    }
-
-    /**
-     * This method returns the offset position from the current chunk.
-     * @return The current chunk offset position.
-     * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
-     */
-    public int getChunkOffsetPosition () throws ClosedException {
-        if (this.isClosed())
-            throw new ClosedException("The FileBinaryReader is closed!");
-
-        return this.chunkOffsetPosition;
-    }
-
-    /**
-     * This method calculates the chunk offset position from the file offset position.
-     * @param offsetPosition The file offset position.
-     * @return The chunk offset position.
-     * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
-     */
-    public int getChunkOffsetPosition (long offsetPosition) throws ClosedException {
-        if (this.isClosed())
-            throw new ClosedException("The FileBinaryReader is closed!");
-
-        return (int) (offsetPosition % this.chunkLength);
-    }
-
-    /**
-     * This method returns the current used chunk.
-     * @return The current chunk.
-     * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
-     */
-    public int getCurrentChunk () throws ClosedException {
-        if (this.isClosed())
-            throw new ClosedException("The FileBinaryReader is closed!");
-
-        return this.currentChunk;
-    }
-
-    /**
-     * This method returns the offset position from the file.
-     * @return The file offset position.
-     * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
-     */
-    public long getFileOffsetPosition () throws ClosedException {
-        if (this.isClosed())
-            throw new ClosedException("The FileBinaryReader is closed!");
-
-        return this.offsetPosition;
-    }
-
-    /**
-     * This method returns the file length of the binary file.
-     * @return The file length.
-     * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
-     */
-    public long getFileLength () throws ClosedException {
-        if (this.isClosed())
-            throw new ClosedException("The FileBinaryReader is closed!");
-
-        return this.filePath.toFile().length();
     }
 
     /**
@@ -895,6 +693,18 @@ public final class FileBinaryReader extends SharedReaderMethods {
         if (this.isClosed())
             throw new ClosedException("The FileBinaryReader is closed!");
 
-        return (this.chunkLength - this.getChunkOffsetPosition(this.offsetPosition));
+        return (this.getChunkLength() - this.getChunkOffsetPosition(this.offsetPosition));
+    }
+
+    /**
+     * This method returns the file length of the binary file.
+     * @return The file length.
+     * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
+     */
+    public long getFileOffsetPosition () throws ClosedException {
+        if (this.isClosed())
+            throw new ClosedException("The FileBinaryReader is closed!");
+
+        return this.offsetPosition;
     }
 }

@@ -29,8 +29,8 @@
 
 package club.psychose.testsuite.ibo.testcases.reader;
 
-import club.psychose.library.ibo.BinaryWriter;
-import club.psychose.library.ibo.FileBinaryReader;
+import club.psychose.library.ibo.core.io.reader.FileBinaryReader;
+import club.psychose.library.ibo.core.io.writer.BinaryWriter;
 import club.psychose.library.ibo.exceptions.ClosedException;
 import club.psychose.library.ibo.exceptions.OpenedException;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
