@@ -144,9 +144,9 @@ class ChunkManagement extends SharedReaderMethods {
         if ((chunkOffsetPosition < 0x0) || (chunkOffsetPosition >= this.chunkLength))
             throw new RangeOutOfBoundsException("The chunkOffsetPosition is in an invalid range!");
 
-        long chunkStartOffsetPosition = ((long) chunkNumber * this.chunkLength);
+        long chunkStartOffsetPosition = ((long) chunkNumber * this.chunkLength) + chunkOffsetPosition;
 
-        this.read(chunkStartOffsetPosition, (this.chunkLength - chunkOffsetPosition));
+        this.read(chunkStartOffsetPosition, this.chunkLength);
         this.currentChunk = chunkNumber;
         this.chunkOffsetPosition = chunkOffsetPosition;
     }
