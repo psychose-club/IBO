@@ -27,19 +27,20 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package club.psychose.library.ibo;
+package club.psychose.library.ibo.core.io.reader;
 
-import club.psychose.library.ibo.datatypes.types.signed.Int16;
-import club.psychose.library.ibo.datatypes.types.signed.Int32;
-import club.psychose.library.ibo.datatypes.types.signed.Int64;
-import club.psychose.library.ibo.datatypes.types.signed.Int8;
-import club.psychose.library.ibo.datatypes.types.unsigned.UInt16;
-import club.psychose.library.ibo.datatypes.types.unsigned.UInt32;
-import club.psychose.library.ibo.datatypes.types.unsigned.UInt64;
-import club.psychose.library.ibo.datatypes.types.unsigned.UInt8;
+import club.psychose.library.ibo.core.datatypes.types.signed.Int16;
+import club.psychose.library.ibo.core.datatypes.types.signed.Int32;
+import club.psychose.library.ibo.core.datatypes.types.signed.Int8;
+import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt16;
+import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt32;
+import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt64;
+import club.psychose.library.ibo.core.datatypes.types.signed.Int64;
+import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt8;
 import club.psychose.library.ibo.exceptions.ClosedException;
 import club.psychose.library.ibo.exceptions.OpenedException;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
+import club.psychose.library.ibo.interfaces.ReaderInterface;
 import club.psychose.library.ibo.utils.HEXUtils;
 
 import java.nio.ByteBuffer;
@@ -49,7 +50,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.stream.IntStream;
 
-public final class MemoryBinaryReader extends SharedReaderMethods {
+public final class MemoryBinaryReader extends SharedReaderMethods implements ReaderInterface {
     private ByteBuffer byteBuffer;
     private ByteOrder byteOrder;
 
@@ -116,6 +117,7 @@ public final class MemoryBinaryReader extends SharedReaderMethods {
     /**
      * This method resets and closes the MemoryBinaryReader.
      */
+    @Override
     public void close () {
         if (!(this.isClosed())) {
             this.byteBuffer = null;
@@ -131,6 +133,7 @@ public final class MemoryBinaryReader extends SharedReaderMethods {
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
+    @Override
     public byte[] readBytes (int length) throws ClosedException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The MemoryBinaryReader is closed!");
@@ -156,6 +159,7 @@ public final class MemoryBinaryReader extends SharedReaderMethods {
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
+    @Override
     public Int8 readInt8 () throws ClosedException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The MemoryBinaryReader is closed!");
@@ -176,6 +180,7 @@ public final class MemoryBinaryReader extends SharedReaderMethods {
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
+    @Override
     public UInt8 readUInt8 () throws ClosedException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The MemoryBinaryReader is closed!");
@@ -196,6 +201,7 @@ public final class MemoryBinaryReader extends SharedReaderMethods {
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
+    @Override
     public Int16 readInt16 () throws ClosedException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The MemoryBinaryReader is closed!");
@@ -212,6 +218,7 @@ public final class MemoryBinaryReader extends SharedReaderMethods {
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
+    @Override
     public UInt16 readUInt16 () throws ClosedException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The MemoryBinaryReader is closed!");
@@ -228,6 +235,7 @@ public final class MemoryBinaryReader extends SharedReaderMethods {
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
+    @Override
     public Int32 readInt32 () throws ClosedException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The MemoryBinaryReader is closed!");
@@ -244,6 +252,7 @@ public final class MemoryBinaryReader extends SharedReaderMethods {
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
+    @Override
     public UInt32 readUInt32 () throws ClosedException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The MemoryBinaryReader is closed!");
@@ -260,6 +269,7 @@ public final class MemoryBinaryReader extends SharedReaderMethods {
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
+    @Override
     public Int64 readInt64 () throws ClosedException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The MemoryBinaryReader is closed!");
@@ -276,6 +286,7 @@ public final class MemoryBinaryReader extends SharedReaderMethods {
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
+    @Override
     public UInt64 readUInt64 () throws ClosedException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The MemoryBinaryReader is closed!");
@@ -292,6 +303,7 @@ public final class MemoryBinaryReader extends SharedReaderMethods {
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
+    @Override
     public float readFloat () throws ClosedException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The MemoryBinaryReader is closed!");
@@ -312,6 +324,7 @@ public final class MemoryBinaryReader extends SharedReaderMethods {
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
+    @Override
     public double readDouble () throws ClosedException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The MemoryBinaryReader is closed!");
@@ -333,6 +346,7 @@ public final class MemoryBinaryReader extends SharedReaderMethods {
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
+    @Override
     public String readString (int length) throws ClosedException, RangeOutOfBoundsException {
         return this.readString(length, StandardCharsets.UTF_8);
     }
@@ -345,6 +359,7 @@ public final class MemoryBinaryReader extends SharedReaderMethods {
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
+    @Override
     public String readString (int length, Charset charset) throws ClosedException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The MemoryBinaryReader is closed!");
@@ -447,6 +462,7 @@ public final class MemoryBinaryReader extends SharedReaderMethods {
      * This method sets the internal {@link ByteOrder}.
      * @param value The {@link ByteOrder}
      */
+    @Override
     public void setByteOrder (ByteOrder value) {
         this.byteOrder = value;
     }
@@ -455,6 +471,7 @@ public final class MemoryBinaryReader extends SharedReaderMethods {
      * This method returns the closed state from the reader.
      * @return {@code true} or {@code false}
      */
+    @Override
     public boolean isClosed () {
         return this.closed;
     }
@@ -463,6 +480,7 @@ public final class MemoryBinaryReader extends SharedReaderMethods {
      * This method returns the internal {@link ByteOrder}.
      * @return {@link ByteOrder}
      */
+    @Override
     public ByteOrder getByteOrder () {
         return this.byteOrder;
     }
