@@ -27,9 +27,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package club.psychose.library.ibo.datatypes.types.unsigned;
+package club.psychose.library.ibo.core.datatypes.types.unsigned;
 
-import club.psychose.library.ibo.datatypes.IBODataType;
+import club.psychose.library.ibo.core.datatypes.IBODataType;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
 
 import java.math.BigInteger;

@@ -27,9 +27,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package club.psychose.library.ibo.datatypes.types.signed;
+package club.psychose.library.ibo.core.datatypes.types.signed;
 
-import club.psychose.library.ibo.datatypes.IBODataType;
+import club.psychose.library.ibo.core.datatypes.IBODataType;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
 
 import java.math.BigInteger;
@@ -38,100 +38,100 @@ import java.nio.ByteOrder;
 import java.util.Objects;
 
 /**
- * This class handles the Int16 data type.
+ * This class handles the Int32 data type.
  */
 
-public final class Int16 extends IBODataType<Integer> {
-    public Int16 (byte[] dataBytes) throws RangeOutOfBoundsException {
-        super((int) ByteBuffer.wrap(dataBytes, 0, 2).getShort());
+public final class Int32 extends IBODataType<Long> {
+    public Int32 (byte[] dataBytes) throws RangeOutOfBoundsException {
+        super((long) ByteBuffer.wrap(dataBytes, 0, 4).getInt());
     }
 
-    public Int16 (byte[] dataBytes, ByteOrder byteOrder) throws RangeOutOfBoundsException {
-        super((int) ByteBuffer.wrap(dataBytes, 0, 2).order(byteOrder).getShort());
+    public Int32 (byte[] dataBytes, ByteOrder byteOrder) throws RangeOutOfBoundsException {
+        super((long) ByteBuffer.wrap(dataBytes, 0, 4).order(byteOrder).getInt());
     }
 
-    public Int16 (byte value) throws RangeOutOfBoundsException {
-        super((int) value);
+    public Int32 (byte value) throws RangeOutOfBoundsException {
+        super((long) value);
     }
 
-    public Int16 (short value) throws RangeOutOfBoundsException {
-        super((int) value);
+    public Int32 (short value) throws RangeOutOfBoundsException {
+        super((long) value);
     }
 
-    public Int16 (int value) throws RangeOutOfBoundsException {
+    public Int32 (int value) throws RangeOutOfBoundsException {
+        super((long) value);
+    }
+
+    public Int32 (long value) throws RangeOutOfBoundsException {
         super(value);
     }
 
-    public Int16 (long value) throws RangeOutOfBoundsException {
-        super((int) value);
+    public Int32 (float value) throws RangeOutOfBoundsException {
+        super((long) value);
     }
 
-    public Int16 (float value) throws RangeOutOfBoundsException {
-        super((int) value);
+    public Int32 (double value) throws RangeOutOfBoundsException {
+        super((long) value);
     }
 
-    public Int16 (double value) throws RangeOutOfBoundsException {
-        super((int) value);
+    public Int32 (BigInteger value) throws RangeOutOfBoundsException {
+        super(value.longValue());
     }
 
-    public Int16 (BigInteger value) throws RangeOutOfBoundsException {
-        super(value.intValue());
-    }
-
-    public Int16 (String value) throws RangeOutOfBoundsException {
-        super(Integer.parseInt(value));
+    public Int32 (String value) throws RangeOutOfBoundsException {
+        super(Long.parseLong(value));
     }
 
     public void setValue (byte value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
-            this.dataObject = (int) value;
+            this.dataObject = (long) value;
         } else {
-            throw new RangeOutOfBoundsException("The value for the Int16 data type is out of bounds!");
+            throw new RangeOutOfBoundsException("The value for the Int32 data type is out of bounds!");
         }
     }
 
     public void setValue (short value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
-            this.dataObject = (int) value;
+            this.dataObject = (long) value;
         } else {
-            throw new RangeOutOfBoundsException("The value for the Int16 data type is out of bounds!");
+            throw new RangeOutOfBoundsException("The value for the Int32 data type is out of bounds!");
         }
-    }
-
-    @Override
-    public void setValue (Integer value) throws RangeOutOfBoundsException {
-        this.setValue((int) value);
     }
 
     public void setValue (int value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
-            this.dataObject = value;
+            this.dataObject = (long) value;
         } else {
-            throw new RangeOutOfBoundsException("The value for the Int16 data type is out of bounds!");
+            throw new RangeOutOfBoundsException("The value for the Int32 data type is out of bounds!");
         }
+    }
+
+    @Override
+    public void setValue (Long value) throws RangeOutOfBoundsException {
+        this.setValue((long) value);
     }
 
     public void setValue (long value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
-            this.dataObject = (int) value;
+            this.dataObject = value;
         } else {
-            throw new RangeOutOfBoundsException("The value for the Int16 data type is out of bounds!");
+            throw new RangeOutOfBoundsException("The value for the Int32 data type is out of bounds!");
         }
     }
 
     public void setValue (float value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
-            this.dataObject = (int) value;
+            this.dataObject = (long) value;
         } else {
-            throw new RangeOutOfBoundsException("The value for the Int16 data type is out of bounds!");
+            throw new RangeOutOfBoundsException("The value for the Int32 data type is out of bounds!");
         }
     }
 
     public void setValue (double value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
-            this.dataObject = (int) value;
+            this.dataObject = (long) value;
         } else {
-            throw new RangeOutOfBoundsException("The value for the Int16 data type is out of bounds!");
+            throw new RangeOutOfBoundsException("The value for the Int32 data type is out of bounds!");
         }
     }
 
@@ -140,52 +140,52 @@ public final class Int16 extends IBODataType<Integer> {
         BigInteger convertedMaximumValue = BigInteger.valueOf(getMaximumValue());
 
         if (((value.compareTo(convertedMinimumValue) > 0) || (value.equals(convertedMinimumValue))) && ((value.compareTo(convertedMaximumValue) < 0) || (value.equals(convertedMaximumValue)))) {
-            this.dataObject = value.intValue();
+            this.dataObject = value.longValue();
         } else {
-            throw new RangeOutOfBoundsException("The value for the Int16 data type is out of bounds!");
+            throw new RangeOutOfBoundsException("The value for the Int32 data type is out of bounds!");
         }
     }
 
     public void setValue (String value) throws RangeOutOfBoundsException {
-        int convertedValue = Integer.parseInt(value);
+        long convertedValue = Long.parseLong(value);
 
         if ((convertedValue >= getMinimumValue()) && (convertedValue <= getMaximumValue())) {
             this.dataObject = convertedValue;
         } else {
-            throw new RangeOutOfBoundsException("The value for the Int16 data type is out of bounds!");
+            throw new RangeOutOfBoundsException("The value for the Int32 data type is out of bounds!");
         }
     }
 
     @Override
     public byte[] getAsBytes (ByteOrder byteOrder) throws RangeOutOfBoundsException {
-        byte[] integerBytes;
+        byte[] longBytes;
 
         {
-            integerBytes = (byteOrder != null) ? (ByteBuffer.allocate(4).order(byteOrder).putInt(this.dataObject).array()) : (ByteBuffer.allocate(4).putInt(this.dataObject).array());
+            longBytes = (byteOrder != null) ? (ByteBuffer.allocate(8).order(byteOrder).putLong(this.dataObject).array()) : (ByteBuffer.allocate(8).putLong(this.dataObject).array());
         }
 
         boolean isValueNegative = (this.dataObject < 0);
-        return this.extractBytes(integerBytes, byteOrder, 2, 2, isValueNegative);
+        return this.extractBytes(longBytes, byteOrder, 4, 4, isValueNegative);
     }
 
     /**
      * This function compares the internal data type with another data object from the same type.
-     * @param int16 The other data object.
+     * @param int32 The other data object.
      * @return True or False
      */
-    public boolean equals (Int16 int16) {
-        return Objects.equals(this.dataObject, int16.getValue());
+    public boolean equals (Int32 int32) {
+        return Objects.equals(this.dataObject, int32.getValue());
     }
 
     public static short getByteLength () {
-        return 2;
+        return 4;
     }
 
-    public static short getMinimumValue () {
-        return -32768;
+    public static long getMinimumValue () {
+        return -2147483648;
     }
 
-    public static short getMaximumValue () {
-        return 32767;
+    public static long getMaximumValue () {
+        return 2147483647;
     }
 }
