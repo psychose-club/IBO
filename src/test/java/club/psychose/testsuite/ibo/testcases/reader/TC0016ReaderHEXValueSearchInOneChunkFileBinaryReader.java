@@ -54,7 +54,7 @@ public final class TC0016ReaderHEXValueSearchInOneChunkFileBinaryReader extends 
                 fileBinaryReader.open(PathUtils.getTestSuiteFolderPath("\\test.bin"));
                 fileBinaryReader.setByteOrder(ByteOrder.BIG_ENDIAN);
 
-                /*int firstOffsetPosition = fileBinaryReader.searchFirstHEXValueInChunk("0156");
+                int firstOffsetPosition = fileBinaryReader.searchFirstHEXValueInChunk("0156");
 
                 if (firstOffsetPosition != 0x01) {
                     fileBinaryReader.close();
@@ -79,7 +79,7 @@ public final class TC0016ReaderHEXValueSearchInOneChunkFileBinaryReader extends 
                 }
 
                 fileBinaryReader.close();
-                Files.deleteIfExists(PathUtils.getTestSuiteFolderPath("\\test.bin"));*/
+                Files.deleteIfExists(PathUtils.getTestSuiteFolderPath("\\test.bin"));
 
                 this.passed();
             } catch (OpenedException openedException) {
