@@ -54,7 +54,7 @@ public final class TC0015ReaderHEXValueSearchAllChunksFileBinaryReader extends T
                 fileBinaryReader.open(PathUtils.getTestSuiteFolderPath("\\test.bin"));
                 fileBinaryReader.setByteOrder(ByteOrder.BIG_ENDIAN);
 
-/*                long firstOffsetPosition = fileBinaryReader.searchFirstHEXValueInAllChunks("ABCDEF", (long) 0xA);
+                long firstOffsetPosition = fileBinaryReader.searchFirstHEXValueInAllChunks("ABCDEF", (long) 0xA);
 
                 if (firstOffsetPosition != 0x16) {
                     fileBinaryReader.close();
@@ -87,7 +87,7 @@ public final class TC0015ReaderHEXValueSearchAllChunksFileBinaryReader extends T
                 }
 
                 fileBinaryReader.close();
-                Files.deleteIfExists(PathUtils.getTestSuiteFolderPath("\\test.bin"));*/
+                Files.deleteIfExists(PathUtils.getTestSuiteFolderPath("\\test.bin"));
 
                 this.passed();
             } catch (OpenedException openedException) {
