@@ -583,6 +583,24 @@ public final class FileBinaryReader extends ChunkManagement implements ReaderInt
         if (this.isClosed())
             throw new ClosedException("The FileBinaryReader is closed!");
 
+        return this.searchFirstHEXValueInAllChunks(hexValueToSearch, startFromChunk, chunkOffsetPosition, 0);
+    }
+
+    /**
+     * This method searches the entire file for the first offset position where the provided HEX string begins.
+     * @param hexValueToSearch The HEX String that should be searched for.
+     * @param startFromChunk The chunk from which should be started with.
+     * @param chunkOffsetPosition The chunk offset position from which should be started with.
+     * @param additionalReadLength An additional length that should be read. (Can improve read speed, but also it didn't care about the chunk length).
+     * @return {@link Long}
+     * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
+     * @throws IOException This exception will be thrown when something goes wrong while reading a new chunk.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
+    public long searchFirstHEXValueInAllChunks (String hexValueToSearch, int startFromChunk, int chunkOffsetPosition, int additionalReadLength) throws ClosedException, IOException, RangeOutOfBoundsException {
+        if (this.isClosed())
+            throw new ClosedException("The FileBinaryReader is closed!");
+
         if ((hexValueToSearch.length() % 2) != 0)
             throw new IOException("The provided string is not a HEX string!");
 
@@ -611,7 +629,14 @@ public final class FileBinaryReader extends ChunkManagement implements ReaderInt
                     cancelAfterThisRun = true;
                 }
 
-                this.read(this.offsetPosition, (int) readLength);
+                if ((newOffsetPosition + additionalReadLength) <= this.getFileLength()) {
+                    readLength += additionalReadLength;
+                    newOffsetPosition = this.offsetPosition + readLength;
+
+                    this.read(this.offsetPosition, (int) readLength);
+                } else {
+                    this.read(this.offsetPosition, (int) readLength);
+                }
 
                 // Get the bytes from the ByteBuffer.
                 byte[] bytes = new byte[(int) readLength];
