@@ -64,6 +64,7 @@ public final class IBOTestSuite {
         testCasesArrayList.add(new TC0014ReaderHEXValueSearchMemoryBinaryReader()); // Searches for a HEX value in the memory.
         testCasesArrayList.add(new TC0015ReaderHEXValueSearchAllChunksFileBinaryReader()); // Searches for a HEX value in a file through all chunks.
         testCasesArrayList.add(new TC0016ReaderHEXValueSearchInOneChunkFileBinaryReader()); // Searches for a HEX value in a file through one specified chunk.
+        testCasesArrayList.add(new TC0017ReaderStayOnOffsetPosition()); // Checks if the readers are staying on the current offset when it should be updated.
     }
 
     private static void runTests () {
