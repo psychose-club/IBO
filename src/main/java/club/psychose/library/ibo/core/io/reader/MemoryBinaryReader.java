@@ -55,6 +55,8 @@ public final class MemoryBinaryReader extends SharedReaderMethods implements Rea
     private ByteOrder byteOrder;
 
     private boolean closed;
+
+    private boolean stayOnOffsetPosition;
     private int offsetPosition;
 
     /**
@@ -65,6 +67,7 @@ public final class MemoryBinaryReader extends SharedReaderMethods implements Rea
         this.byteOrder = ByteOrder.nativeOrder();
 
         this.closed = true;
+        this.stayOnOffsetPosition = false;
         this.offsetPosition = -1;
     }
 
@@ -77,6 +80,7 @@ public final class MemoryBinaryReader extends SharedReaderMethods implements Rea
         this.byteOrder = byteOrder;
 
         this.closed = true;
+        this.stayOnOffsetPosition = false;
         this.offsetPosition = -1;
     }
 
@@ -429,6 +433,14 @@ public final class MemoryBinaryReader extends SharedReaderMethods implements Rea
     }
 
     /**
+     * This method sets the state if the offset should be the same even after reading something. (Default: false)
+     * @param value The state.
+     */
+    public void setStayOnOffsetPosition (boolean value) {
+        this.stayOnOffsetPosition = value;
+    }
+
+    /**
      * This method sets the offset position from the file.
      * @param offsetPosition The offset position.
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
@@ -440,6 +452,10 @@ public final class MemoryBinaryReader extends SharedReaderMethods implements Rea
 
         if ((offsetPosition < 0) || (offsetPosition > this.getBinaryLength()))
             throw new RangeOutOfBoundsException("The offset position is out of bounds!");
+
+        // When enabled the offset position wouldn't be updated.
+        if (this.stayOnOffsetPosition)
+            return;
 
         this.offsetPosition = offsetPosition;
         this.byteBuffer.position(offsetPosition);
@@ -507,6 +523,14 @@ public final class MemoryBinaryReader extends SharedReaderMethods implements Rea
             throw new ClosedException("The MemoryBinaryReader is closed!");
 
         return this.byteBuffer.capacity();
+    }
+
+    /**
+     * Returns the state if the offset should be the same even after reading something. (Default: false)
+     * @return true or false.
+     */
+    public boolean isStayOnOffsetPositionEnabled () {
+        return this.stayOnOffsetPosition;
     }
 
     /**
