@@ -63,6 +63,7 @@ import java.util.stream.IntStream;
  */
 
 public final class FileBinaryReader extends ChunkManagement implements ReaderInterface {
+    private boolean stayOnOffsetPosition;
     private long offsetPosition;
 
     /**
@@ -74,6 +75,7 @@ public final class FileBinaryReader extends ChunkManagement implements ReaderInt
         super(chunkLength);
 
         this.setByteOrder(ByteOrder.nativeOrder());
+        this.stayOnOffsetPosition = false;
         this.offsetPosition = -1;
         this.setCurrentChunk(-1);
         this.setChunkOffsetPosition(-1);
@@ -89,6 +91,7 @@ public final class FileBinaryReader extends ChunkManagement implements ReaderInt
         super(chunkLength);
 
         this.setByteOrder(byteOrder);
+        this.stayOnOffsetPosition = false;
         this.offsetPosition = -1;
         this.setCurrentChunk(-1);
         this.setChunkOffsetPosition(-1);
@@ -663,6 +666,14 @@ public final class FileBinaryReader extends ChunkManagement implements ReaderInt
     }
 
     /**
+     * This method sets the state if the offset should be the same even after reading something. (Default: false)
+     * @param value The state.
+     */
+    public void setStayOnOffsetPosition (boolean value) {
+        this.stayOnOffsetPosition = value;
+    }
+
+    /**
      * This method sets the current offset position to a new one.
      * @param offsetPosition The offset position which should be set to.
      * @throws ClosedException This exception will be thrown when the BinaryReader is closed but the user tries to access it.
@@ -675,6 +686,10 @@ public final class FileBinaryReader extends ChunkManagement implements ReaderInt
 
         if ((offsetPosition < 0) || (offsetPosition > this.getFileLength()))
             throw new RangeOutOfBoundsException("The offset position is out of bounds!");
+
+        // When enabled the offset position wouldn't be updated.
+        if (this.stayOnOffsetPosition)
+            return;
 
         this.offsetPosition = offsetPosition;
         this.setChunkOffsetPosition(this.getChunkOffsetPosition(offsetPosition));
@@ -695,6 +710,14 @@ public final class FileBinaryReader extends ChunkManagement implements ReaderInt
             throw new ClosedException("The FileBinaryReader is closed!");
 
         this.setOffsetPosition(this.offsetPosition + length);
+    }
+
+    /**
+     * Returns the state if the offset should be the same even after reading something. (Default: false)
+     * @return true or false.
+     */
+    public boolean isStayOnOffsetPositionEnabled () {
+        return this.stayOnOffsetPosition;
     }
 
     /**
