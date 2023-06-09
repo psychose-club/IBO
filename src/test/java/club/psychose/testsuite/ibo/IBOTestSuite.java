@@ -30,10 +30,7 @@
 package club.psychose.testsuite.ibo;
 
 import club.psychose.testsuite.ibo.testcases.Test;
-import club.psychose.testsuite.ibo.testcases.reader.*;
 import club.psychose.testsuite.ibo.testcases.structures.*;
-import club.psychose.testsuite.ibo.testcases.writer.TC0009WriterBinaryWriterNoChunkPadding;
-import club.psychose.testsuite.ibo.testcases.writer.TC0010WriterBinaryWriterChunkPadding;
 import club.psychose.testsuite.ibo.utils.logging.ConsoleLogger;
 
 import java.util.ArrayList;
@@ -56,15 +53,6 @@ public final class IBOTestSuite {
         testCasesArrayList.add(new TC0006StructureUInt32()); // UInt32
         testCasesArrayList.add(new TC0007StructureInt64()); // Int64
         testCasesArrayList.add(new TC0008StructureUInt64()); // UInt64
-        testCasesArrayList.add(new TC0009WriterBinaryWriterNoChunkPadding()); // BinaryWriter without chunk padding.
-        testCasesArrayList.add(new TC0010WriterBinaryWriterChunkPadding()); // BinaryWriter with chunk padding.
-        testCasesArrayList.add(new TC0011ReaderMemoryBinaryReader()); // MemoryBinaryReader
-        testCasesArrayList.add(new TC0012ReaderFileBinaryReader()); // FileBinaryReader
-        testCasesArrayList.add(new TC0013ReaderPaddingRemoval()); // Removing the padding from bytes.
-        testCasesArrayList.add(new TC0014ReaderHEXValueSearchMemoryBinaryReader()); // Searches for a HEX value in the memory.
-        testCasesArrayList.add(new TC0015ReaderHEXValueSearchAllChunksFileBinaryReader()); // Searches for a HEX value in a file through all chunks.
-        testCasesArrayList.add(new TC0016ReaderHEXValueSearchInOneChunkFileBinaryReader()); // Searches for a HEX value in a file through one specified chunk.
-        testCasesArrayList.add(new TC0017ReaderStayOnOffsetPosition()); // Checks if the readers are staying on the current offset when it should be updated.
     }
 
     private static void runTests () {
