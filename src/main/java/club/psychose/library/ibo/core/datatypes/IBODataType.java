@@ -163,7 +163,7 @@ public abstract class IBODataType<DataType extends Number> {
 
     /**
      * This function converts the data type to a byte array with the correct byte length.<p>
-     * As ByteOrder {@code null} will be inserted which means that the default ByteOrder should be used.
+     * As ByteOrder {@code null} will be inserted which means that the native ByteOrder should be used.
      * @return Byte Array
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */

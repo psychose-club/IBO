@@ -38,52 +38,108 @@ import java.nio.ByteOrder;
 import java.util.Objects;
 
 /**
- * This class handles the UInt8 data type.
+ * This class handles the UInt32 data type.
  */
 
 public final class UInt32 extends IBODataType<Long> {
+    /**
+     * The default constructor.
+     * @param dataBytes The bytes that should be interpreted as {@link UInt32}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt32 (byte[] dataBytes) throws RangeOutOfBoundsException {
         super(0L);
         this.setValue(new BigInteger(1, ByteBuffer.wrap(this.getBytesAsBigEndianByteOrder(dataBytes, null), 0, 4).array()));
     }
 
+    /**
+     * The default constructor.
+     * @param dataBytes The bytes that should be interpreted as {@link UInt32}.
+     * @param byteOrder The used {@link ByteOrder}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt32 (byte[] dataBytes, ByteOrder byteOrder) throws RangeOutOfBoundsException {
         super(0L);
         this.setValue(new BigInteger(1, ByteBuffer.wrap(this.getBytesAsBigEndianByteOrder(dataBytes, byteOrder), 0, 4).array()));
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link UInt32}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt32 (byte value) throws RangeOutOfBoundsException {
         super((long) (value & 0xFF));
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link UInt32}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt32 (short value) throws RangeOutOfBoundsException {
         super((long) value);
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link UInt32}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt32 (int value) throws RangeOutOfBoundsException {
         super((long) value);
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link UInt32}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt32 (long value) throws RangeOutOfBoundsException {
         super(value);
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link UInt32}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt32 (float value) throws RangeOutOfBoundsException {
         super((long) value);
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link UInt32}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt32 (double value) throws RangeOutOfBoundsException {
         super((long) value);
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link UInt32}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt32 (BigInteger value) throws RangeOutOfBoundsException {
         super(value.longValue());
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link UInt32}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt32 (String value) throws RangeOutOfBoundsException {
         super(Long.parseLong(value));
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt32}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (byte value) throws RangeOutOfBoundsException {
         long convertedValue = (value & 0xFF);
 
@@ -94,6 +150,11 @@ public final class UInt32 extends IBODataType<Long> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt32}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (short value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
             this.dataObject = (long) value;
@@ -102,6 +163,11 @@ public final class UInt32 extends IBODataType<Long> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt32}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (int value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
             this.dataObject = (long) value;
@@ -110,11 +176,21 @@ public final class UInt32 extends IBODataType<Long> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt32}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     @Override
     public void setValue (Long value) throws RangeOutOfBoundsException {
         this.setValue((long) value);
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt32}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (long value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
             this.dataObject = value;
@@ -123,6 +199,11 @@ public final class UInt32 extends IBODataType<Long> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt32}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (float value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
             this.dataObject = (long) value;
@@ -131,6 +212,11 @@ public final class UInt32 extends IBODataType<Long> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt32}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (double value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
             this.dataObject = (long) value;
@@ -139,6 +225,11 @@ public final class UInt32 extends IBODataType<Long> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt32}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (BigInteger value) throws RangeOutOfBoundsException {
         BigInteger convertedMinimumValue = BigInteger.valueOf(getMinimumValue());
         BigInteger convertedMaximumValue = BigInteger.valueOf(getMaximumValue());
@@ -150,6 +241,11 @@ public final class UInt32 extends IBODataType<Long> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt32}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (String value) throws RangeOutOfBoundsException {
         long convertedValue = Long.parseLong(value);
 
@@ -160,14 +256,14 @@ public final class UInt32 extends IBODataType<Long> {
         }
     }
 
+    /**
+     * This method returns the data type as an array of {@link Byte}.
+     * @param byteOrder ByteOrder for the bytes.
+     * @return An array of {@link Byte}
+     */
     @Override
     public byte[] getAsBytes (ByteOrder byteOrder) throws RangeOutOfBoundsException {
-        byte[] longBytes;
-
-        {
-            longBytes = (byteOrder != null) ? (ByteBuffer.allocate(8).order(byteOrder).putLong(this.dataObject).array()) : (ByteBuffer.allocate(8).putLong(this.dataObject).array());
-        }
-
+        byte[] longBytes = (byteOrder != null) ? (ByteBuffer.allocate(getByteLength() * 2).order(byteOrder).putLong(this.dataObject).array()) : (ByteBuffer.allocate(getByteLength() * 2).order(ByteOrder.nativeOrder()).putLong(this.dataObject).array());
         return this.extractBytes(longBytes, byteOrder, 4, 4, false);
     }
 
@@ -180,14 +276,26 @@ public final class UInt32 extends IBODataType<Long> {
         return Objects.equals(this.dataObject, uInt32.getValue());
     }
 
+    /**
+     * This method returns the length of the data type.
+     * @return {@link Short}
+     */
     public static short getByteLength () {
         return 4;
     }
 
+    /**
+     * This method returns the minimum value for this data type.
+     * @return {@link Long}
+     */
     public static long getMinimumValue () {
         return 0;
     }
 
+    /**
+     * This method returns the maximum value for this data type.
+     * @return {@link Long}
+     */
     public static long getMaximumValue () {
         return 4294967295L;
     }
