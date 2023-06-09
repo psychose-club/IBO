@@ -42,46 +42,102 @@ import java.util.Objects;
  */
 
 public final class UInt16 extends IBODataType<Integer> {
+    /**
+     * The default constructor.
+     * @param dataBytes The bytes that should be interpreted as {@link UInt16}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt16 (byte[] dataBytes) throws RangeOutOfBoundsException {
         super(Short.toUnsignedInt(ByteBuffer.wrap(dataBytes, 0, 2).getShort()));
     }
 
+    /**
+     * The default constructor.
+     * @param dataBytes The bytes that should be interpreted as {@link UInt16}.
+     * @param byteOrder The used {@link ByteOrder}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt16 (byte[] dataBytes, ByteOrder byteOrder) throws RangeOutOfBoundsException {
         super(Short.toUnsignedInt(ByteBuffer.wrap(dataBytes, 0, 2).order(byteOrder).getShort()));
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link UInt16}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt16 (byte value) throws RangeOutOfBoundsException {
         super(value & 0xFF);
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link UInt16}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt16 (short value) throws RangeOutOfBoundsException {
         super((int) value);
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link UInt16}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt16 (int value) throws RangeOutOfBoundsException {
         super(value);
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link UInt16}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt16 (long value) throws RangeOutOfBoundsException {
         super((int) value);
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link UInt16}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt16 (float value) throws RangeOutOfBoundsException {
         super((int) value);
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link UInt16}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt16 (double value) throws RangeOutOfBoundsException {
         super((int) value);
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link UInt16}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt16 (BigInteger value) throws RangeOutOfBoundsException {
         super(value.intValue());
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link UInt16}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt16 (String value) throws RangeOutOfBoundsException {
         super(Integer.parseInt(value));
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt16}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (byte value) throws RangeOutOfBoundsException {
         int convertedValue = (value & 0xFF);
 
@@ -92,6 +148,11 @@ public final class UInt16 extends IBODataType<Integer> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt16}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (short value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
             this.dataObject = (int) value;
@@ -100,11 +161,21 @@ public final class UInt16 extends IBODataType<Integer> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt16}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     @Override
     public void setValue (Integer value) throws RangeOutOfBoundsException {
         this.setValue((int) value);
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt16}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (int value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
             this.dataObject = value;
@@ -113,6 +184,11 @@ public final class UInt16 extends IBODataType<Integer> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt16}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (long value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
             this.dataObject = (int) value;
@@ -121,6 +197,11 @@ public final class UInt16 extends IBODataType<Integer> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt16}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (float value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
             this.dataObject = (int) value;
@@ -129,6 +210,11 @@ public final class UInt16 extends IBODataType<Integer> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt16}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (double value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
             this.dataObject = (int) value;
@@ -137,6 +223,11 @@ public final class UInt16 extends IBODataType<Integer> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt16}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (BigInteger value) throws RangeOutOfBoundsException {
         BigInteger convertedMinimumValue = BigInteger.valueOf(getMinimumValue());
         BigInteger convertedMaximumValue = BigInteger.valueOf(getMaximumValue());
@@ -148,6 +239,11 @@ public final class UInt16 extends IBODataType<Integer> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt16}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (String value) throws RangeOutOfBoundsException {
         int convertedValue = Integer.parseInt(value);
 
@@ -158,14 +254,14 @@ public final class UInt16 extends IBODataType<Integer> {
         }
     }
 
+    /**
+     * This method returns the data type as an array of {@link Byte}.
+     * @param byteOrder ByteOrder for the bytes.
+     * @return An array of {@link Byte}
+     */
     @Override
     public byte[] getAsBytes (ByteOrder byteOrder) throws RangeOutOfBoundsException {
-        byte[] integerBytes;
-
-        {
-            integerBytes = (byteOrder != null) ? (ByteBuffer.allocate(4).order(byteOrder).putInt(this.dataObject).array()) : (ByteBuffer.allocate(4).putInt(this.dataObject).array());
-        }
-
+        byte[] integerBytes = (byteOrder != null) ? (ByteBuffer.allocate(getByteLength() * 2).order(byteOrder).putInt(this.dataObject).array()) : (ByteBuffer.allocate(getByteLength() * 2).order(ByteOrder.nativeOrder()).putInt(this.dataObject).array());
         return this.extractBytes(integerBytes, byteOrder, 2, 2, false);
     }
 
@@ -178,14 +274,26 @@ public final class UInt16 extends IBODataType<Integer> {
         return Objects.equals(this.dataObject, uInt16.getValue());
     }
 
+    /**
+     * This method returns the length of the data type.
+     * @return {@link Short}
+     */
     public static short getByteLength () {
         return 2;
     }
 
+    /**
+     * This method returns the minimum value for this data type.
+     * @return {@link Short}
+     */
     public static short getMinimumValue () {
         return 0;
     }
 
+    /**
+     * This method returns the maximum value for this data type.
+     * @return {@link Short}
+     */
     public static int getMaximumValue () {
         return 65535;
     }

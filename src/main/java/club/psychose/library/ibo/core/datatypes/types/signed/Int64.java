@@ -43,48 +43,104 @@ import java.util.stream.IntStream;
  */
 
 public final class Int64 extends IBODataType<BigInteger> {
+    /**
+     * The default constructor.
+     * @param dataBytes The bytes that should be interpreted as {@link Int64}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public Int64 (byte[] dataBytes) throws RangeOutOfBoundsException {
         super(BigInteger.valueOf(0));
         this.setValue(new BigInteger(ByteBuffer.wrap(this.getBytesAsBigEndianByteOrder(dataBytes, null), 0, 8).array()));
     }
 
+    /**
+     * The default constructor.
+     * @param dataBytes The bytes that should be interpreted as {@link Int64}.
+     * @param byteOrder The used {@link ByteOrder}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public Int64 (byte[] dataBytes, ByteOrder byteOrder) throws RangeOutOfBoundsException {
         super(BigInteger.valueOf(0));
         this.setValue(new BigInteger(ByteBuffer.wrap(this.getBytesAsBigEndianByteOrder(dataBytes, byteOrder), 0, 8).array()));
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link Int64}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public Int64 (byte value) throws RangeOutOfBoundsException {
         super(BigInteger.valueOf(value));
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link Int64}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public Int64 (short value) throws RangeOutOfBoundsException {
         super(BigInteger.valueOf(value));
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link Int64}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public Int64 (int value) throws RangeOutOfBoundsException {
         super(BigInteger.valueOf(value));
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link Int64}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public Int64 (long value) throws RangeOutOfBoundsException {
         super(BigInteger.valueOf(value));
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link Int64}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public Int64 (float value) throws RangeOutOfBoundsException {
         super(BigInteger.valueOf((long) value));
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link Int64}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public Int64 (double value) throws RangeOutOfBoundsException {
         super(BigInteger.valueOf((long) value));
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link Int64}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public Int64 (BigInteger value) throws RangeOutOfBoundsException {
         super(value);
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link Int64}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public Int64 (String value) throws RangeOutOfBoundsException {
         super(new BigInteger(value));
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link Int64}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (byte value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue().longValue()) && (value <= getMaximumValue().longValue())) {
             this.dataObject = BigInteger.valueOf(value);
@@ -93,6 +149,11 @@ public final class Int64 extends IBODataType<BigInteger> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link Int64}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (short value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue().longValue()) && (value <= getMaximumValue().longValue())) {
             this.dataObject = BigInteger.valueOf(value);
@@ -101,6 +162,11 @@ public final class Int64 extends IBODataType<BigInteger> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link Int64}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (int value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue().longValue()) && (value <= getMaximumValue().longValue())) {
             this.dataObject = BigInteger.valueOf(value);
@@ -109,6 +175,11 @@ public final class Int64 extends IBODataType<BigInteger> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link Int64}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (long value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue().longValue()) && (value <= getMaximumValue().longValue())) {
             this.dataObject = BigInteger.valueOf(value);
@@ -117,6 +188,11 @@ public final class Int64 extends IBODataType<BigInteger> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link Int64}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (float value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue().longValue()) && (value <= getMaximumValue().longValue())) {
             this.dataObject = BigInteger.valueOf((long) value);
@@ -125,6 +201,11 @@ public final class Int64 extends IBODataType<BigInteger> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link Int64}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (double value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue().longValue()) && (value <= getMaximumValue().longValue())) {
             this.dataObject = BigInteger.valueOf((long) value);
@@ -133,6 +214,11 @@ public final class Int64 extends IBODataType<BigInteger> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link Int64}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     @Override
     public void setValue (BigInteger value) throws RangeOutOfBoundsException {
         if (((value.compareTo(getMinimumValue()) > 0) || (value.equals(getMinimumValue()))) && ((value.compareTo(getMaximumValue()) < 0) || (value.equals(getMaximumValue())))) {
@@ -142,22 +228,32 @@ public final class Int64 extends IBODataType<BigInteger> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link Int64}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (String value) throws RangeOutOfBoundsException {
         BigInteger convertedValue = new BigInteger(value);
         this.setValue(convertedValue);
     }
 
+    /**
+     * This method returns the data type as an array of {@link Byte}.
+     * @param byteOrder ByteOrder for the bytes.
+     * @return An array of {@link Byte}
+     */
     @Override
     public byte[] getAsBytes (ByteOrder byteOrder) throws RangeOutOfBoundsException {
         if (byteOrder == null)
             byteOrder = ByteOrder.nativeOrder();
 
         byte[] byteArray = this.dataObject.toByteArray();
-        byte[] buffer = new byte[8];
+        byte[] buffer = new byte[getByteLength()];
 
         boolean isValueNegative = (this.dataObject.compareTo(BigInteger.ZERO) < 0);
-        IntStream.range(0, (8 - byteArray.length)).forEachOrdered(index -> buffer[index] = (isValueNegative) ? ((byte) 0xFF) : ((byte) 0x0));
-        IntStream.range((8 - byteArray.length), 8).forEachOrdered(index -> buffer[index] = byteArray[(index - (8 - byteArray.length))]);
+        IntStream.range(0, (getByteLength() - byteArray.length)).forEachOrdered(index -> buffer[index] = (isValueNegative) ? ((byte) 0xFF) : ((byte) 0x0));
+        IntStream.range((getByteLength() - byteArray.length), getByteLength()).forEachOrdered(index -> buffer[index] = byteArray[(index - (getByteLength() - byteArray.length))]);
 
         return this.getBytesAsBigEndianByteOrder(buffer, byteOrder);
     }
@@ -171,14 +267,26 @@ public final class Int64 extends IBODataType<BigInteger> {
         return Objects.equals(this.dataObject, int64.getValue());
     }
 
+    /**
+     * This method returns the length of the data type.
+     * @return {@link Short}
+     */
     public static short getByteLength () {
         return 8;
     }
 
+    /**
+     * This method returns the minimum value for this data type.
+     * @return {@link BigInteger}
+     */
     public static BigInteger getMinimumValue () {
         return BigInteger.valueOf(-9223372036854775808L);
     }
 
+    /**
+     * This method returns the maximum value for this data type.
+     * @return {@link BigInteger}
+     */
     public static BigInteger getMaximumValue () {
         return BigInteger.valueOf(9223372036854775807L);
     }

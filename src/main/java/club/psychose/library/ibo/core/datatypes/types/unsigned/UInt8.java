@@ -42,46 +42,102 @@ import java.util.Objects;
  */
 
 public final class UInt8 extends IBODataType<Short> {
+    /**
+     * The default constructor.
+     * @param dataBytes The bytes that should be interpreted as {@link UInt8}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt8 (byte[] dataBytes) throws RangeOutOfBoundsException {
         super(ByteBuffer.wrap(dataBytes, 0, 1).getShort());
     }
 
+    /**
+     * The default constructor.
+     * @param dataBytes The bytes that should be interpreted as {@link UInt8}.
+     * @param byteOrder The used {@link ByteOrder}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt8 (byte[] dataBytes, ByteOrder byteOrder) throws RangeOutOfBoundsException {
         super(ByteBuffer.wrap(dataBytes, 0, 1).order(byteOrder).getShort());
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link UInt8}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt8 (byte value) throws RangeOutOfBoundsException {
         super((short) (value & 0xFF));
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link UInt8}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt8 (short value) throws RangeOutOfBoundsException {
         super(value);
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link UInt8}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt8 (int value) throws RangeOutOfBoundsException {
         super((short) value);
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link UInt8}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt8 (long value) throws RangeOutOfBoundsException {
         super((short) value);
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link UInt8}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt8 (float value) throws RangeOutOfBoundsException {
         super((short) value);
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link UInt8}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt8 (double value) throws RangeOutOfBoundsException {
         super((short) value);
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link UInt8}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt8 (BigInteger value) throws RangeOutOfBoundsException {
         super(value.shortValue());
     }
 
+    /**
+     * The default constructor.
+     * @param value The value that should be interpreted as {@link UInt8}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public UInt8 (String value) throws RangeOutOfBoundsException {
         super(Short.parseShort(value));
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt8}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (byte value) throws RangeOutOfBoundsException {
         short convertedValue = (short) (value & 0xFF);
 
@@ -92,11 +148,21 @@ public final class UInt8 extends IBODataType<Short> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt8}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     @Override
     public void setValue (Short value) throws RangeOutOfBoundsException {
         this.setValue((short) value);
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt8}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (short value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
             this.dataObject = value;
@@ -105,6 +171,11 @@ public final class UInt8 extends IBODataType<Short> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt8}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (int value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
             this.dataObject = (short) value;
@@ -113,6 +184,11 @@ public final class UInt8 extends IBODataType<Short> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt8}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (long value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
             this.dataObject = (short) value;
@@ -121,6 +197,11 @@ public final class UInt8 extends IBODataType<Short> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt8}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (float value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
             this.dataObject = (short) value;
@@ -129,6 +210,11 @@ public final class UInt8 extends IBODataType<Short> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt8}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (double value) throws RangeOutOfBoundsException {
         if ((value >= getMinimumValue()) && (value <= getMaximumValue())) {
             this.dataObject = (short) value;
@@ -137,6 +223,11 @@ public final class UInt8 extends IBODataType<Short> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt8}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (BigInteger value) throws RangeOutOfBoundsException {
         BigInteger convertedMinimumValue = BigInteger.valueOf(getMinimumValue());
         BigInteger convertedMaximumValue = BigInteger.valueOf(getMaximumValue());
@@ -148,6 +239,11 @@ public final class UInt8 extends IBODataType<Short> {
         }
     }
 
+    /**
+     * This method sets a new value for the data type.
+     * @param value The value that should be interpreted as {@link UInt8}.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setValue (String value) throws RangeOutOfBoundsException {
         short convertedValue = Short.parseShort(value);
 
@@ -160,12 +256,7 @@ public final class UInt8 extends IBODataType<Short> {
 
     @Override
     public byte[] getAsBytes (ByteOrder byteOrder) throws RangeOutOfBoundsException {
-        byte[] shortBytes;
-
-        {
-            shortBytes = (byteOrder != null) ? (ByteBuffer.allocate(2).order(byteOrder).putShort(this.dataObject).array()) : (ByteBuffer.allocate(2).putShort(this.dataObject).array());
-        }
-
+        byte[] shortBytes = (byteOrder != null) ? (ByteBuffer.allocate(getByteLength() * 2).order(byteOrder).putShort(this.dataObject).array()) : (ByteBuffer.allocate(getByteLength() * 2).order(ByteOrder.nativeOrder()).putShort(this.dataObject).array());
         return this.extractBytes(shortBytes, byteOrder, 1, 1, false);
     }
 
@@ -178,14 +269,26 @@ public final class UInt8 extends IBODataType<Short> {
         return Objects.equals(this.dataObject, uInt8.getValue());
     }
 
+    /**
+     * This method returns the length of the data type.
+     * @return {@link Short}
+     */
     public static short getByteLength () {
         return 1;
     }
 
+    /**
+     * This method returns the minimum value for this data type.
+     * @return {@link Short}
+     */
     public static short getMinimumValue () {
         return 0;
     }
 
+    /**
+     * This method returns the maximum value for this data type.
+     * @return {@link Short}
+     */
     public static short getMaximumValue () {
         return 255;
     }
