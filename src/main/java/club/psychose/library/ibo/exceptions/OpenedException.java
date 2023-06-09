@@ -30,7 +30,7 @@
 package club.psychose.library.ibo.exceptions;
 
 /**
- * This exception will be thrown when the BinaryReader or the BinaryWriter is opened but should be closed and the user tries to access it.
+ * This exception will be thrown when the {@link club.psychose.library.ibo.core.io.BinaryFile} is tried to be accessed while it's opened.
  */
 
 public final class OpenedException extends Exception {
