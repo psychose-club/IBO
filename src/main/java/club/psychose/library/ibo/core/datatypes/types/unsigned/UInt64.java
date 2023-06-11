@@ -56,6 +56,16 @@ public final class UInt64 extends IBODataType<BigInteger> {
         if (dataBytes.length < 8)
             throw new RangeOutOfBoundsException("The dataBytes are shorter than eight bytes.");
 
+        if (dataBytes.length > 8) {
+            byte[] newBytes = new byte[8];
+
+            for (byte index = 0; index < 8; index ++) {
+                newBytes[index] = dataBytes[index];
+            }
+
+            dataBytes = newBytes;
+        }
+
         this.setValue(new BigInteger(1, ByteBuffer.wrap(this.getBytesAsBigEndianByteOrder(dataBytes, ByteOrder.nativeOrder()), 0, 8).array()));
     }
 
@@ -71,6 +81,16 @@ public final class UInt64 extends IBODataType<BigInteger> {
 
         if (dataBytes.length < 8)
             throw new RangeOutOfBoundsException("The dataBytes are shorter than eight bytes.");
+
+        if (dataBytes.length > 8) {
+            byte[] newBytes = new byte[8];
+
+            for (byte index = 0; index < 8; index ++) {
+                newBytes[index] = dataBytes[index];
+            }
+
+            dataBytes = newBytes;
+        }
 
         this.setValue(new BigInteger(1, ByteBuffer.wrap(this.getBytesAsBigEndianByteOrder(dataBytes, byteOrder), 0, 8).array()));
     }

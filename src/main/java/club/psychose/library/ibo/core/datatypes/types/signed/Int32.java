@@ -55,6 +55,16 @@ public final class Int32 extends IBODataType<Long> {
         if (dataBytes.length < 4)
             throw new RangeOutOfBoundsException("The dataBytes are shorter than four bytes.");
 
+        if (dataBytes.length > 4) {
+            byte[] newBytes = new byte[4];
+
+            for (byte index = 0; index < 4; index ++) {
+                newBytes[index] = dataBytes[index];
+            }
+
+            dataBytes = newBytes;
+        }
+
         this.setValue((long) ByteBuffer.wrap(dataBytes, 0, 4).order(ByteOrder.nativeOrder()).getInt());
     }
 
@@ -70,6 +80,16 @@ public final class Int32 extends IBODataType<Long> {
 
         if (dataBytes.length < 4)
             throw new RangeOutOfBoundsException("The dataBytes are shorter than four bytes.");
+
+        if (dataBytes.length > 4) {
+            byte[] newBytes = new byte[4];
+
+            for (byte index = 0; index < 4; index ++) {
+                newBytes[index] = dataBytes[index];
+            }
+
+            dataBytes = newBytes;
+        }
 
         this.setValue((long) ByteBuffer.wrap(dataBytes, 0, 4).order(byteOrder).getInt());
     }

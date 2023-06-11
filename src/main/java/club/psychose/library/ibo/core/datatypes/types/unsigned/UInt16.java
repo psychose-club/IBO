@@ -55,6 +55,16 @@ public final class UInt16 extends IBODataType<Integer> {
         if (dataBytes.length < 2)
             throw new RangeOutOfBoundsException("The dataBytes are shorter than two bytes.");
 
+        if (dataBytes.length > 2) {
+            byte[] newBytes = new byte[2];
+
+            for (byte index = 0; index < 2; index ++) {
+                newBytes[index] = dataBytes[index];
+            }
+
+            dataBytes = newBytes;
+        }
+
         this.setValue(Short.toUnsignedInt(ByteBuffer.wrap(dataBytes, 0, 2).order(ByteOrder.nativeOrder()).getShort()));
     }
 
@@ -70,6 +80,16 @@ public final class UInt16 extends IBODataType<Integer> {
 
         if (dataBytes.length < 2)
             throw new RangeOutOfBoundsException("The dataBytes are shorter than two bytes.");
+
+        if (dataBytes.length > 2) {
+            byte[] newBytes = new byte[2];
+
+            for (byte index = 0; index < 2; index ++) {
+                newBytes[index] = dataBytes[index];
+            }
+
+            dataBytes = newBytes;
+        }
 
         this.setValue(Short.toUnsignedInt(ByteBuffer.wrap(dataBytes, 0, 2).order(byteOrder).getShort()));
     }
