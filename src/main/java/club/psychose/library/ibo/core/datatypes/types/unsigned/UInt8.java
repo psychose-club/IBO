@@ -95,7 +95,9 @@ public final class UInt8 extends IBODataType<Short> {
     }
 
     /**
-     * The default constructor.
+     * The default constructor.<p>
+     * Information: The data type didn't handle floating points.<p>
+     * So the floating points will be automatically cut from the value.
      * @param value The value that should be interpreted as {@link UInt8}.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
@@ -104,7 +106,9 @@ public final class UInt8 extends IBODataType<Short> {
     }
 
     /**
-     * The default constructor.
+     * The default constructor.<p>
+     * Information: The data type didn't handle floating points.<p>
+     * So the floating points will be automatically cut from the value.
      * @param value The value that should be interpreted as {@link UInt8}.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
@@ -195,7 +199,9 @@ public final class UInt8 extends IBODataType<Short> {
     }
 
     /**
-     * This method sets a new value for the data type.
+     * This method sets a new value for the data type.<p>
+     * Information: The data type didn't handle floating points.<p>
+     * So the floating points will be automatically cut from the value.
      * @param value The value that should be interpreted as {@link UInt8}.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
@@ -208,7 +214,9 @@ public final class UInt8 extends IBODataType<Short> {
     }
 
     /**
-     * This method sets a new value for the data type.
+     * This method sets a new value for the data type.<p>
+     * Information: The data type didn't handle floating points.<p>
+     * So the floating points will be automatically cut from the value.
      * @param value The value that should be interpreted as {@link UInt8}.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
