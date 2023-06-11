@@ -63,6 +63,7 @@ class FileByteManagement {
             throw new IOException("You need to set the chunk length before you enabling the usage of chunks!");
 
         this.chunksUsed = value;
+        this.chunkOffsetPosition = this.calculateChunkOffsetPosition(this.offsetPosition);
     }
 
     /**
@@ -82,17 +83,18 @@ class FileByteManagement {
      * @param chunkLength The chunk length that should be used.
      * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    public void enableChunkUsage (boolean value, int chunkLength) throws ClosedException, InvalidFileModeException, RangeOutOfBoundsException {
+    public void enableChunkUsage (boolean value, int chunkLength) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The BinaryFile is closed!");
 
         if (this.fileMode.equals(FileMode.WRITE))
             throw new InvalidFileModeException("Insufficient permissions to access the chunk methods in the WRITE mode!");
 
-        this.setChunkLength(chunkLength);
         this.chunksUsed = value;
+        this.setChunkLength(chunkLength);
     }
 
     /**
@@ -168,9 +170,10 @@ class FileByteManagement {
      * @param chunkLength The chunk length that should be used.
      * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    public void setChunkLength (int chunkLength) throws ClosedException, InvalidFileModeException, RangeOutOfBoundsException {
+    public void setChunkLength (int chunkLength) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The BinaryFile is closed!");
 
@@ -182,6 +185,9 @@ class FileByteManagement {
 
         this.chunkLengthSet = true;
         this.chunkLength = chunkLength;
+
+        if (this.chunksUsed)
+            this.chunkOffsetPosition = this.calculateChunkOffsetPosition(this.offsetPosition);
     }
 
     public void setChunkOffsetPosition (int chunkOffsetPosition) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -229,8 +235,10 @@ class FileByteManagement {
 
         this.offsetPosition = offsetPosition;
 
-        if (this.isChunkUsageEnabled())
+        if (this.isChunkUsageEnabled()) {
             this.checkChunk();
+            this.chunkOffsetPosition = this.calculateChunkOffsetPosition(this.offsetPosition);
+        }
     }
 
     /**
@@ -590,6 +598,9 @@ class FileByteManagement {
         if (!(this.chunkLengthSet))
             throw new IOException("You need to set the chunk length before you can update the chunks!");
 
+        if (this.currentChunk == -1)
+            this.currentChunk = this.calculateChunk(this.offsetPosition);
+
         // When the capacity is not equals to the chunk length or the offset position is in another chunk, then we will read new bytes to the ByteBuffer.
         if ((this.byteBuffer.capacity() != this.chunkLength) || (this.currentChunk != this.calculateChunk(this.offsetPosition))) {
             long remainingBytes = (this.getFileLength() - offsetPosition);
@@ -599,7 +610,7 @@ class FileByteManagement {
                 return;
             }
 
-            this.loadChunkIntoTheMemory(this.offsetPosition, 0);
+            this.loadChunkIntoTheMemory(this.calculateChunkStartOffsetPosition(this.calculateChunk(this.offsetPosition)), 0);
             this.chunkOffsetPosition = this.calculateChunkOffsetPosition(this.offsetPosition);
         }
     }
@@ -676,8 +687,6 @@ class FileByteManagement {
             this.byteBuffer = ByteBuffer.wrap(buffer).order(this.byteOrder);
             this.byteBuffer.position(0);
         }
-
-        this.randomAccessFile.getFD().sync();
     }
 
     /**
