@@ -27,9 +27,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package club.psychose.testsuite.ibo.testcases.structures;
+package club.psychose.testsuite.ibo.testcases.datatypes;
 
-import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt8;
+import club.psychose.library.ibo.core.datatypes.types.signed.Int8;
 import club.psychose.library.ibo.enums.HEXFormat;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
 import club.psychose.testsuite.ibo.testcases.Test;
@@ -37,110 +37,110 @@ import club.psychose.testsuite.ibo.testcases.Test;
 import java.math.BigInteger;
 import java.nio.ByteOrder;
 
-public final class TC0002StructureUInt8 extends Test {
-    public TC0002StructureUInt8 () {
-        super("TC_0002_STRUCTURE_UINT8");
+public final class TC0001DatatypeInt8 extends Test {
+    public TC0001DatatypeInt8() {
+        super("TC_0001_DATATYPE_INT8");
     }
 
     @Override
     public void executeTestCase () {
         // Out of Bounds Test.
         try {
-            new UInt8(UInt8.getMinimumValue() - 1);
+            new Int8(Int8.getMinimumValue() - 1);
             this.failed("OUT_OF_BOUNDS_CHECK");
             return;
         } catch (RangeOutOfBoundsException ignoredException) {}
 
         try {
-            new UInt8(UInt8.getMaximumValue() + 1);
+            new Int8(Int8.getMaximumValue() + 1);
             this.failed("OUT_OF_BOUNDS_CHECK");
             return;
         } catch (RangeOutOfBoundsException ignoredException) {}
 
         // Storing and fetching values.
         try {
-            UInt8 uInt8 = new UInt8(213);
-            short storedValue = uInt8.getValue();
+            Int8 int8 = new Int8(55);
+            short storedValue = int8.getValue();
 
-            if (storedValue != 213) {
+            if (storedValue != 55) {
                 this.failed("ASSIGNING_VALUE");
                 return;
             }
 
-            storedValue = 69;
+            storedValue = 9;
 
-            if (uInt8.getValue() == storedValue) {
+            if (int8.getValue() == storedValue) {
                 this.failed("COMPARING_VALUE");
                 return;
             }
 
-            uInt8.setValue(42);
-            UInt8 secondUInt8 = new UInt8((double) 42);
+            int8.setValue(-22);
+            Int8 secondInt8 = new Int8((float) -22);
 
-            if (uInt8.getValue() != (byte) 42) {
+            if (int8.getValue() != -22) {
                 this.failed("COMPARING_NEW_VALUE");
                 return;
             }
 
-            if (!(uInt8.equals(secondUInt8))) {
+            if (!(int8.equals(secondInt8))) {
                 this.failed("COMPARING_NEW_VALUE");
                 return;
             }
 
-            String valueAsString = uInt8.getAsString();
-            if (!(valueAsString.equals("42"))) {
+            String valueAsString = int8.getAsString();
+            if (!(valueAsString.equals("-22"))) {
                 this.failed("CONVERT_TO_STRING");
                 return;
             }
 
             // getAsBytes is executed in the HEX string method, so we don't check it here.
-            String hexString = uInt8.getAsHEXString(HEXFormat.UPPERCASE, ByteOrder.BIG_ENDIAN);
+            String hexString = int8.getAsHEXString(HEXFormat.UPPERCASE, ByteOrder.BIG_ENDIAN);
 
-            if (!(hexString.equals("2A"))) {
+            if (!(hexString.equals("EA"))) {
                 this.failed("CONVERT_TO_HEX_STRING");
                 return;
             }
 
             // Check the other constructors.
-            byte[] bytes = new byte[153];
-            bytes[0] = 0x10;
-            if (new UInt8(bytes).getValue() != 0x10) {
+            byte[] bytes = new byte[2];
+            bytes[0] = 0x02;
+            if (new Int8(bytes).getValue() != 0x02) {
                 this.failed("OTHER_CONSTRUCTORS_01");
                 return;
             }
 
-            if (new UInt8((byte) 2).getValue() != 2) {
+            if (new Int8((byte) 33).getValue() != 33) {
                 this.failed("OTHER_CONSTRUCTORS_02");
                 return;
             }
 
-            if (new UInt8((short) 149).getValue() != 149) {
+            if (new Int8((short) 69).getValue() != 69) {
                 this.failed("OTHER_CONSTRUCTORS_03");
                 return;
             }
 
-            if (new UInt8((long) 242).getValue() != 242) {
+            if (new Int8((long) 49).getValue() != 49) {
                 this.failed("OTHER_CONSTRUCTORS_04");
                 return;
             }
 
-            if (new UInt8(24f).getValue() != 24f) {
+            if (new Int8(-23f).getValue() != -23f) {
                 this.failed("OTHER_CONSTRUCTORS_05");
                 return;
             }
 
-            if (new UInt8(123.5d).getValue() != 123) {
+            if (new Int8((double) 29).getValue() != 29) {
                 this.failed("OTHER_CONSTRUCTORS_06");
                 return;
             }
 
-            if (new UInt8(BigInteger.ONE).getValue() != 1) {
+            if (new Int8(BigInteger.TEN).getValue() != 10) {
                 this.failed("OTHER_CONSTRUCTORS_07");
                 return;
             }
 
-            if (new UInt8("234").getValue() != 234) {
-                this.failed("OTHER_CONSTRUCTORS_08");
+            if (new Int8("-54").getValue() != -54) {
+                this.failed("OTHER_CONSTRUCTORS_0/8");
                 return;
             }
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {

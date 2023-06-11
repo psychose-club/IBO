@@ -30,7 +30,7 @@
 package club.psychose.testsuite.ibo;
 
 import club.psychose.testsuite.ibo.testcases.Test;
-import club.psychose.testsuite.ibo.testcases.structures.*;
+import club.psychose.testsuite.ibo.testcases.datatypes.*;
 import club.psychose.testsuite.ibo.utils.logging.ConsoleLogger;
 
 import java.util.ArrayList;
@@ -45,19 +45,19 @@ public final class IBOTestSuite {
     }
 
     private static void registerTestCases() {
-        testCasesArrayList.add(new TC0001StructureInt8()); // Int8
-        testCasesArrayList.add(new TC0002StructureUInt8()); // UInt8
-        testCasesArrayList.add(new TC0003StructureInt16()); // Int16
-        testCasesArrayList.add(new TC0004StructureUInt16()); // UInt16
-        testCasesArrayList.add(new TC0005StructureInt32()); // Int32
-        testCasesArrayList.add(new TC0006StructureUInt32()); // UInt32
-        testCasesArrayList.add(new TC0007StructureInt64()); // Int64
-        testCasesArrayList.add(new TC0008StructureUInt64()); // UInt64
+        testCasesArrayList.add(new TC0001DatatypeInt8()); // Int8
+        testCasesArrayList.add(new TC0002DatatypeUInt8()); // UInt8
+        testCasesArrayList.add(new TC0003DatatypeInt16()); // Int16
+        testCasesArrayList.add(new TC0004DatatypeUInt16()); // UInt16
+        testCasesArrayList.add(new TC0005DatatypeInt32()); // Int32
+        testCasesArrayList.add(new TC0006DatatypeUInt32()); // UInt32
+        testCasesArrayList.add(new TC0007DatatypeInt64()); // Int64
+        testCasesArrayList.add(new TC0008DatatypeUInt64()); // UInt64
     }
 
     private static void runTests () {
         testCasesArrayList.forEach((test) -> {
-            ConsoleLogger.printConsole("Running \"" + test.getTestCaseName() + "\"...");
+            ConsoleLogger.printConsole("[RUNNING] \"" + test.getTestCaseName() + "\"...");
 
             test.executeTestCase();
             if (test.isPassed())
