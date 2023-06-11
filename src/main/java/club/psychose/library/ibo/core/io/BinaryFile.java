@@ -27,7 +27,8 @@ import java.util.Arrays;
 /**
  * This class provides the ability to modify binary files.<p>
  * Files can be accessed in READ, WRITE and READ_AND_WRITE mode.<p>
- * Also, the usage of chunks are supported to reduce memory consumption.
+ * Also, the usage of chunks are supported to reduce memory consumption.<p>
+ * Information: If you read something larger in the chunk mode than the chunk itself the missing bytes that are required for the read process will be read into the memory with the already read chunk.
  */
 
 public final class BinaryFile extends FileByteManagement {
@@ -188,7 +189,7 @@ public final class BinaryFile extends FileByteManagement {
         }
 
         if (this.getCurrentChunk() != this.calculateChunk(newOffsetPosition))
-            this.readIntoTheMemory(this.getFileOffsetPosition(), length);
+            this.readIntoTheMemory(this.calculateChunkOffsetPosition(this.getFileOffsetPosition()), this.getChunkLength() + length);
 
         byte[] bytes = new byte[length];
         for (int bufferIndex = 0; bufferIndex < length; bufferIndex ++) {
@@ -292,13 +293,13 @@ public final class BinaryFile extends FileByteManagement {
         if (!(this.isChunkUsageEnabled())) {
             byte[] bytes = this.readBytesFromFile(Int16.getByteLength());
             this.skipOffsetPosition(Int16.getByteLength());
-            return new Int16(bytes);
+            return new Int16(bytes, this.getByteOrder());
         }
 
         if (this.getCurrentChunk() != this.calculateChunk(newOffsetPosition))
             this.readIntoTheMemory(this.getFileOffsetPosition(), Int16.getByteLength());
 
-        return new Int16(this.readBytes(Int16.getByteLength()));
+        return new Int16(this.readBytes(Int16.getByteLength()), this.getByteOrder());
     }
 
     /**
@@ -323,13 +324,13 @@ public final class BinaryFile extends FileByteManagement {
         if (!(this.isChunkUsageEnabled())) {
             byte[] bytes = this.readBytesFromFile(UInt16.getByteLength());
             this.skipOffsetPosition(UInt16.getByteLength());
-            return new UInt16(bytes);
+            return new UInt16(bytes, this.getByteOrder());
         }
 
         if (this.getCurrentChunk() != this.calculateChunk(newOffsetPosition))
             this.readIntoTheMemory(this.getFileOffsetPosition(), UInt16.getByteLength());
 
-        return new UInt16(this.readBytes(UInt16.getByteLength()));
+        return new UInt16(this.readBytes(UInt16.getByteLength()), this.getByteOrder());
     }
 
     /**
@@ -354,13 +355,13 @@ public final class BinaryFile extends FileByteManagement {
         if (!(this.isChunkUsageEnabled())) {
             byte[] bytes = this.readBytesFromFile(Int32.getByteLength());
             this.skipOffsetPosition(Int32.getByteLength());
-            return new Int32(bytes);
+            return new Int32(bytes, this.getByteOrder());
         }
 
         if (this.getCurrentChunk() != this.calculateChunk(newOffsetPosition))
             this.readIntoTheMemory(this.getFileOffsetPosition(), Int32.getByteLength());
 
-        return new Int32(this.readBytes(Int32.getByteLength()));
+        return new Int32(this.readBytes(Int32.getByteLength()), this.getByteOrder());
     }
 
     /**
@@ -385,13 +386,13 @@ public final class BinaryFile extends FileByteManagement {
         if (!(this.isChunkUsageEnabled())) {
             byte[] bytes = this.readBytesFromFile(UInt32.getByteLength());
             this.skipOffsetPosition(UInt32.getByteLength());
-            return new UInt32(bytes);
+            return new UInt32(bytes, this.getByteOrder());
         }
 
         if (this.getCurrentChunk() != this.calculateChunk(newOffsetPosition))
             this.readIntoTheMemory(this.getFileOffsetPosition(), UInt32.getByteLength());
 
-        return new UInt32(this.readBytes(UInt32.getByteLength()));
+        return new UInt32(this.readBytes(UInt32.getByteLength()), this.getByteOrder());
     }
 
     /**
@@ -416,13 +417,13 @@ public final class BinaryFile extends FileByteManagement {
         if (!(this.isChunkUsageEnabled())) {
             byte[] bytes = this.readBytesFromFile(Int64.getByteLength());
             this.skipOffsetPosition(Int64.getByteLength());
-            return new Int64(bytes);
+            return new Int64(bytes, this.getByteOrder());
         }
 
         if (this.getCurrentChunk() != this.calculateChunk(newOffsetPosition))
             this.readIntoTheMemory(this.getFileOffsetPosition(), Int64.getByteLength());
 
-        return new Int64(this.readBytes(Int64.getByteLength()));
+        return new Int64(this.readBytes(Int64.getByteLength()), this.getByteOrder());
     }
 
     /**
@@ -447,13 +448,13 @@ public final class BinaryFile extends FileByteManagement {
         if (!(this.isChunkUsageEnabled())) {
             byte[] bytes = this.readBytesFromFile(UInt64.getByteLength());
             this.skipOffsetPosition(UInt64.getByteLength());
-            return new UInt64(bytes);
+            return new UInt64(bytes, this.getByteOrder());
         }
 
         if (this.getCurrentChunk() != this.calculateChunk(newOffsetPosition))
             this.readIntoTheMemory(this.getFileOffsetPosition(), UInt64.getByteLength());
 
-        return new UInt64(this.readBytes(UInt64.getByteLength()));
+        return new UInt64(this.readBytes(UInt64.getByteLength()), this.getByteOrder());
     }
 
     /**
@@ -684,7 +685,7 @@ public final class BinaryFile extends FileByteManagement {
         if (this.getFileMode().equals(FileMode.READ))
             throw new InvalidFileModeException("Insufficient permissions to access the write methods in the READ mode!");
 
-        this.write(int8.getAsBytes());
+        this.write(int8.getAsBytes(this.getByteOrder()));
     }
 
     /**
@@ -702,7 +703,7 @@ public final class BinaryFile extends FileByteManagement {
         if (this.getFileMode().equals(FileMode.READ))
             throw new InvalidFileModeException("Insufficient permissions to access the write methods in the READ mode!");
 
-        this.write(uInt8.getAsBytes());
+        this.write(uInt8.getAsBytes(this.getByteOrder()));
     }
 
     /**
@@ -720,7 +721,7 @@ public final class BinaryFile extends FileByteManagement {
         if (this.getFileMode().equals(FileMode.READ))
             throw new InvalidFileModeException("Insufficient permissions to access the write methods in the READ mode!");
 
-        this.write(int16.getAsBytes());
+        this.write(int16.getAsBytes(this.getByteOrder()));
     }
 
     /**
@@ -738,7 +739,7 @@ public final class BinaryFile extends FileByteManagement {
         if (this.getFileMode().equals(FileMode.READ))
             throw new InvalidFileModeException("Insufficient permissions to access the write methods in the READ mode!");
 
-        this.write(uInt16.getAsBytes());
+        this.write(uInt16.getAsBytes(this.getByteOrder()));
     }
 
     /**
@@ -756,7 +757,7 @@ public final class BinaryFile extends FileByteManagement {
         if (this.getFileMode().equals(FileMode.READ))
             throw new InvalidFileModeException("Insufficient permissions to access the write methods in the READ mode!");
 
-        this.write(int32.getAsBytes());
+        this.write(int32.getAsBytes(this.getByteOrder()));
     }
 
     /**
@@ -774,7 +775,7 @@ public final class BinaryFile extends FileByteManagement {
         if (this.getFileMode().equals(FileMode.READ))
             throw new InvalidFileModeException("Insufficient permissions to access the write methods in the READ mode!");
 
-        this.write(uInt32.getAsBytes());
+        this.write(uInt32.getAsBytes(this.getByteOrder()));
     }
 
     /**
@@ -792,7 +793,7 @@ public final class BinaryFile extends FileByteManagement {
         if (this.getFileMode().equals(FileMode.READ))
             throw new InvalidFileModeException("Insufficient permissions to access the write methods in the READ mode!");
 
-        this.write(int64.getAsBytes());
+        this.write(int64.getAsBytes(this.getByteOrder()));
     }
 
     /**
@@ -810,7 +811,7 @@ public final class BinaryFile extends FileByteManagement {
         if (this.getFileMode().equals(FileMode.READ))
             throw new InvalidFileModeException("Insufficient permissions to access the write methods in the READ mode!");
 
-        this.write(uInt64.getAsBytes());
+        this.write(uInt64.getAsBytes(this.getByteOrder()));
     }
 
     /**
