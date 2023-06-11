@@ -344,14 +344,10 @@ class FileByteManagement {
      * This method returns the state if chunks are used or not.
      * @return The state if chunks are used.
      * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
      */
-    public boolean isChunkUsageEnabled () throws ClosedException, InvalidFileModeException {
+    public boolean isChunkUsageEnabled () throws ClosedException {
         if (this.isClosed())
             throw new ClosedException("The BinaryFile is closed!");
-
-        if (this.fileMode.equals(FileMode.WRITE))
-            throw new InvalidFileModeException("Insufficient permissions to access the chunk methods in the WRITE mode!");
 
         return this.chunksUsed;
     }
@@ -724,13 +720,13 @@ class FileByteManagement {
         }
 
         // Sets the file offset position.
-        long oldOffsetPosition = this.offsetPosition;
         this.randomAccessFile.seek(offsetPosition);
-
         this.randomAccessFile.write(bytes);
 
-        // Set the offset position to the old offset position.
-        this.randomAccessFile.seek(oldOffsetPosition);
+        // Set the offset position.
+        long newOffsetPosition = (offsetPosition + bytes.length);
+        if (!(this.isStayOnOffsetPositionEnabled()))
+            this.setOffsetPosition(newOffsetPosition);
 
         if (!(this.isStayFileOpenEnabled()))
             this.randomAccessFile.close();
@@ -740,9 +736,17 @@ class FileByteManagement {
             if (this.getByteBuffer() == null)
                 return;
 
-            int offsetPositionChunkNumber = this.calculateChunk(offsetPosition);
-            if (offsetPositionChunkNumber == this.getCurrentChunk())
+            if (!(this.isStayOnOffsetPositionEnabled()))
+                return;
+
+            int offsetPositionChunkNumber = this.calculateChunk(newOffsetPosition);
+
+            if (offsetPositionChunkNumber == this.getCurrentChunk()) {
                 this.updateChunk();
+            } else {
+                this.byteBuffer = null;
+                this.chunkOffsetPosition = this.calculateChunkOffsetPosition(newOffsetPosition);
+            }
         }
     }
 
