@@ -27,9 +27,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package club.psychose.testsuite.ibo.testcases.structures;
+package club.psychose.testsuite.ibo.testcases.datatypes;
 
-import club.psychose.library.ibo.core.datatypes.types.signed.Int16;
+import club.psychose.library.ibo.core.datatypes.types.signed.Int64;
 import club.psychose.library.ibo.enums.HEXFormat;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
 import club.psychose.testsuite.ibo.testcases.Test;
@@ -38,116 +38,122 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-public final class TC0003StructureInt16 extends Test {
-    public TC0003StructureInt16 () {
-        super("TC_0003_STRUCTURE_INT16");
+public final class TC0007DatatypeInt64 extends Test {
+    public TC0007DatatypeInt64() {
+        super("TC_0007_DATATYPE_INT64");
     }
 
     @Override
     public void executeTestCase () {
         // Out of Bounds Test.
         try {
-            new Int16(Int16.getMinimumValue() - 1);
+            new Int64(new BigInteger(Int64.getMinimumValue().toString()).subtract(BigInteger.valueOf(1)));
             this.failed("OUT_OF_BOUNDS_CHECK");
             return;
         } catch (RangeOutOfBoundsException ignoredException) {}
 
         try {
-            new Int16(Int16.getMaximumValue() + 1);
+            new Int64(new BigInteger(Int64.getMaximumValue().toString()).add(BigInteger.valueOf(1)));
             this.failed("OUT_OF_BOUNDS_CHECK");
             return;
         } catch (RangeOutOfBoundsException ignoredException) {}
 
         // Storing and fetching values.
         try {
-            Int16 int16 = new Int16(1234);
-            int storedValue = int16.getValue();
+            Int64 int64 = new Int64(969699);
+            BigInteger storedValue = int64.getValue();
 
-            if (storedValue != 1234) {
+            if (!(storedValue.equals(BigInteger.valueOf(969699)))) {
                 this.failed("ASSIGNING_VALUE");
                 return;
             }
 
-            storedValue = 77;
+            storedValue = new BigInteger("24242455");
 
-            if (int16.getValue() == storedValue) {
+            if (int64.getValue().equals(storedValue)) {
                 this.failed("COMPARING_VALUE");
                 return;
             }
 
-            int16.setValue(4333);
-            Int16 secondInt16 = new Int16(BigInteger.valueOf(4333L));
+            int64.setValue(545252121212L);
+            Int64 secondInt64 = new Int64(545252121212L);
 
-            if (int16.getValue() != 4333) {
+            if (int64.getValue().longValue() != 545252121212L) {
                 this.failed("COMPARING_NEW_VALUE");
                 return;
             }
 
-            if (!(int16.equals(secondInt16))) {
+            if (!(int64.equals(secondInt64))) {
                 this.failed("COMPARING_NEW_VALUE");
                 return;
             }
 
-            String valueAsString = int16.getAsString();
-            if (!(valueAsString.equals("4333"))) {
+            String valueAsString = int64.getAsString();
+            if (!(valueAsString.equals("545252121212"))) {
                 this.failed("CONVERT_TO_STRING");
                 return;
             }
 
             // getAsBytes is executed in the HEX string method, so we don't check it here.
-            String hexString = int16.getAsHEXString(HEXFormat.UPPERCASE, ByteOrder.LITTLE_ENDIAN);
+            String hexString = int64.getAsHEXString(HEXFormat.UPPERCASE, ByteOrder.BIG_ENDIAN);
 
-            if (!(hexString.equals("ED10"))) {
+            if (!(hexString.equals("0000007EF38F1A7C"))) {
                 this.failed("CONVERT_TO_HEX_STRING");
                 return;
             }
 
             // Check the other constructors.
-            byte[] bytesWithoutSetByteOrder = ByteBuffer.allocate(2).order(ByteOrder.nativeOrder()).putShort((short) 24).array();
-            if (new Int16(bytesWithoutSetByteOrder).getValue() != 24) {
+            byte[] bytesWithoutSetByteOrder = ByteBuffer.allocate(8).order(ByteOrder.nativeOrder()).putLong(-24124).array();
+            if (new Int64(bytesWithoutSetByteOrder).getValue().longValue() != -24124) {
                 this.failed("OTHER_CONSTRUCTORS_01");
                 return;
             }
 
-            byte[] bytesWithByteOrder = new byte[53];
-            bytesWithByteOrder[0] = 0x50;
-            bytesWithByteOrder[1] = (byte) 0xFE;
-            if (new Int16(bytesWithByteOrder, ByteOrder.LITTLE_ENDIAN).getValue() != -432) {
+            byte[] bytesWithByteOrder = new byte[123];
+            bytesWithByteOrder[0] = 0x00;
+            bytesWithByteOrder[1] = 0x00;
+            bytesWithByteOrder[2] = 0x00;
+            bytesWithByteOrder[3] = 0x00;
+            bytesWithByteOrder[4] = 0x00;
+            bytesWithByteOrder[5] = 0x00;
+            bytesWithByteOrder[6] = (byte) 0xB0;
+            bytesWithByteOrder[7] = (byte) 0xBD;
+            if (new Int64(bytesWithByteOrder, ByteOrder.BIG_ENDIAN).getValue().longValue() != 45245) {
                 this.failed("OTHER_CONSTRUCTORS_02");
                 return;
             }
 
-            if (new Int16((byte) -22).getValue() != -22) {
+            if (new Int64((byte) 111).getValue().longValue() != 111) {
                 this.failed("OTHER_CONSTRUCTORS_03");
                 return;
             }
 
-            if (new Int16((short) -149).getValue() != -149) {
+            if (new Int64((short) 213).getValue().longValue() != 213) {
                 this.failed("OTHER_CONSTRUCTORS_04");
                 return;
             }
 
-            if (new Int16((long) 2432).getValue() != 2432) {
+            if (new Int64((long) 123).getValue().longValue() != 123) {
                 this.failed("OTHER_CONSTRUCTORS_05");
                 return;
             }
 
-            if (new Int16(234.54f).getValue() != 234f) {
+            if (new Int64(2.2512f).getValue().longValue() != 2f) {
                 this.failed("OTHER_CONSTRUCTORS_06");
                 return;
             }
 
-            if (new Int16(723.61446).getValue() != 723) {
+            if (new Int64(12321.3).getValue().longValue() != 12321) {
                 this.failed("OTHER_CONSTRUCTORS_07");
                 return;
             }
 
-            if (new Int16(BigInteger.valueOf(32767)).getValue() != 32767) {
+            if (new Int64(BigInteger.valueOf(1231341535)).getValue().longValue() != 1231341535) {
                 this.failed("OTHER_CONSTRUCTORS_08");
                 return;
             }
 
-            if (new Int16("123").getValue() != 123) {
+            if (new Int64("-2341").getValue().longValue() != -2341) {
                 this.failed("OTHER_CONSTRUCTORS_09");
                 return;
             }

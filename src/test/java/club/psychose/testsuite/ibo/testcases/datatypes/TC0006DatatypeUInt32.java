@@ -27,9 +27,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package club.psychose.testsuite.ibo.testcases.structures;
+package club.psychose.testsuite.ibo.testcases.datatypes;
 
-import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt16;
+import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt32;
 import club.psychose.library.ibo.enums.HEXFormat;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
 import club.psychose.testsuite.ibo.testcases.Test;
@@ -38,116 +38,118 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-public final class TC0004StructureUInt16 extends Test {
-    public TC0004StructureUInt16 () {
-        super("TC_0004_STRUCTURE_UINT16");
+public final class TC0006DatatypeUInt32 extends Test {
+    public TC0006DatatypeUInt32() {
+        super("TC_0006_DATATYPE_UINT32");
     }
 
     @Override
     public void executeTestCase () {
         // Out of Bounds Test.
         try {
-            new UInt16(UInt16.getMinimumValue() - 1);
+            new UInt32(UInt32.getMinimumValue() - 1);
             this.failed("OUT_OF_BOUNDS_CHECK");
             return;
         } catch (RangeOutOfBoundsException ignoredException) {}
 
         try {
-            new UInt16(UInt16.getMaximumValue() + 1);
+            new UInt32(UInt32.getMaximumValue() + 1);
             this.failed("OUT_OF_BOUNDS_CHECK");
             return;
         } catch (RangeOutOfBoundsException ignoredException) {}
 
         // Storing and fetching values.
         try {
-            UInt16 uint16 = new UInt16(1337);
-            int storedValue = uint16.getValue();
+            UInt32 uInt32 = new UInt32(41441041);
+            long storedValue = uInt32.getValue();
 
-            if (storedValue != 1337) {
+            if (storedValue != 41441041) {
                 this.failed("ASSIGNING_VALUE");
                 return;
             }
 
-            storedValue = 420;
+            storedValue = 463456;
 
-            if (uint16.getValue() == storedValue) {
+            if (uInt32.getValue() == storedValue) {
                 this.failed("COMPARING_VALUE");
                 return;
             }
 
-            uint16.setValue(12);
-            UInt16 secondUInt16 = new UInt16(12);
+            uInt32.setValue(new BigInteger("465774"));
+            UInt32 secondUInt32 = new UInt32(465774);
 
-            if (uint16.getValue() != 12) {
+            if (uInt32.getValue() != 465774) {
                 this.failed("COMPARING_NEW_VALUE");
                 return;
             }
 
-            if (!(uint16.equals(secondUInt16))) {
+            if (!(uInt32.equals(secondUInt32))) {
                 this.failed("COMPARING_NEW_VALUE");
                 return;
             }
 
-            String valueAsString = uint16.getAsString();
-            if (!(valueAsString.equals("12"))) {
+            String valueAsString = uInt32.getAsString();
+            if (!(valueAsString.equals("465774"))) {
                 this.failed("CONVERT_TO_STRING");
                 return;
             }
 
             // getAsBytes is executed in the HEX string method, so we don't check it here.
-            String hexString = uint16.getAsHEXString(HEXFormat.UPPERCASE, ByteOrder.LITTLE_ENDIAN);
+            String hexString = uInt32.getAsHEXString(HEXFormat.UPPERCASE, ByteOrder.BIG_ENDIAN);
 
-            if (!(hexString.equals("0C00"))) {
+            if (!(hexString.equals("00071B6E"))) {
                 this.failed("CONVERT_TO_HEX_STRING");
                 return;
             }
 
             // Check the other constructors.
-            byte[] bytesWithoutSetByteOrder = ByteBuffer.allocate(2).order(ByteOrder.nativeOrder()).putShort((short) 2641).array();
-            if (new UInt16(bytesWithoutSetByteOrder).getValue() != 2641) {
+            byte[] bytesWithoutSetByteOrder = ByteBuffer.allocate(4).order(ByteOrder.nativeOrder()).putInt(5441854).array();
+            if (new UInt32(bytesWithoutSetByteOrder).getValue() != 5441854) {
                 this.failed("OTHER_CONSTRUCTORS_01");
                 return;
             }
 
             byte[] bytesWithByteOrder = new byte[124];
-            bytesWithByteOrder[0] = 0x4F;
-            bytesWithByteOrder[1] = 0x15;
-            if (new UInt16(bytesWithByteOrder, ByteOrder.LITTLE_ENDIAN).getValue() != 5455) {
+            bytesWithByteOrder[0] = 0x00;
+            bytesWithByteOrder[1] = 0x0F;
+            bytesWithByteOrder[2] = 0x34;
+            bytesWithByteOrder[3] = 0x68;
+            if (new UInt32(bytesWithByteOrder, ByteOrder.BIG_ENDIAN).getValue() != 996456) {
                 this.failed("OTHER_CONSTRUCTORS_02");
                 return;
             }
 
-            if (new UInt16((byte) 232).getValue() != 232) {
+            if (new UInt32((byte) 11).getValue() != 11) {
                 this.failed("OTHER_CONSTRUCTORS_03");
                 return;
             }
 
-            if (new UInt16((short) 1451).getValue() != 1451) {
+            if (new UInt32((short) 124).getValue() != 124) {
                 this.failed("OTHER_CONSTRUCTORS_04");
                 return;
             }
 
-            if (new UInt16((long) 23414).getValue() != 23414) {
+            if (new UInt32((long) 1254123513).getValue() != 1254123513) {
                 this.failed("OTHER_CONSTRUCTORS_05");
                 return;
             }
 
-            if (new UInt16(2344.141f).getValue() != 2344f) {
+            if (new UInt32(2512.2512f).getValue() != 2512f) {
                 this.failed("OTHER_CONSTRUCTORS_06");
                 return;
             }
 
-            if (new UInt16((double) 6453).getValue() != 6453) {
+            if (new UInt32(1641.3).getValue() != 1641) {
                 this.failed("OTHER_CONSTRUCTORS_07");
                 return;
             }
 
-            if (new UInt16(BigInteger.valueOf(65535)).getValue() != 65535) {
+            if (new UInt32(BigInteger.valueOf(13513512)).getValue() != 13513512) {
                 this.failed("OTHER_CONSTRUCTORS_08");
                 return;
             }
 
-            if (new UInt16("5235").getValue() != 5235) {
+            if (new UInt32("1351351210").getValue() != 1351351210) {
                 this.failed("OTHER_CONSTRUCTORS_09");
                 return;
             }
