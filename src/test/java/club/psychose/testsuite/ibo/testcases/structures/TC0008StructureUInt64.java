@@ -35,6 +35,7 @@ import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
 import club.psychose.testsuite.ibo.testcases.Test;
 
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 public final class TC0008StructureUInt64 extends Test {
@@ -98,6 +99,62 @@ public final class TC0008StructureUInt64 extends Test {
 
             if (!(hexString.equals("0000000000000000"))) {
                 this.failed("CONVERT_TO_HEX_STRING");
+                return;
+            }
+
+            // Check the other constructors.
+            byte[] bytesWithoutSetByteOrder = ByteBuffer.allocate(8).order(ByteOrder.nativeOrder()).putLong(249664).array();
+            if (new UInt64(bytesWithoutSetByteOrder).getValue().longValue() != 249664) {
+                this.failed("OTHER_CONSTRUCTORS_01");
+                return;
+            }
+
+            byte[] bytesWithByteOrder = new byte[123];
+            bytesWithByteOrder[0] = 0x11;
+            bytesWithByteOrder[1] = 0x18;
+            bytesWithByteOrder[2] = 0x00;
+            bytesWithByteOrder[3] = 0x00;
+            bytesWithByteOrder[4] = 0x00;
+            bytesWithByteOrder[5] = 0x00;
+            bytesWithByteOrder[6] = 0x00;
+            bytesWithByteOrder[7] = 0x00;
+            if (new UInt64(bytesWithByteOrder, ByteOrder.LITTLE_ENDIAN).getValue().longValue() != 6161) {
+                this.failed("OTHER_CONSTRUCTORS_02");
+                return;
+            }
+
+            if (new UInt64((byte) 13).getValue().longValue() != 13) {
+                this.failed("OTHER_CONSTRUCTORS_03");
+                return;
+            }
+
+            if (new UInt64((short) 21).getValue().longValue() != 21) {
+                this.failed("OTHER_CONSTRUCTORS_04");
+                return;
+            }
+
+            if (new UInt64((long) 2222).getValue().longValue() != 2222) {
+                this.failed("OTHER_CONSTRUCTORS_05");
+                return;
+            }
+
+            if (new UInt64(0.1f).getValue().longValue() != 0f) {
+                this.failed("OTHER_CONSTRUCTORS_06");
+                return;
+            }
+
+            if (new UInt64(0.69).getValue().longValue() != 0) {
+                this.failed("OTHER_CONSTRUCTORS_07");
+                return;
+            }
+
+            if (new UInt64(BigInteger.valueOf(1234)).getValue().longValue() != 1234) {
+                this.failed("OTHER_CONSTRUCTORS_08");
+                return;
+            }
+
+            if (new UInt64("42").getValue().longValue() != 42) {
+                this.failed("OTHER_CONSTRUCTORS_09");
                 return;
             }
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
