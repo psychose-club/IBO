@@ -877,7 +877,7 @@ public final class BinaryFile extends FileByteManagement {
         if (this.getFileMode().equals(FileMode.READ))
             throw new InvalidFileModeException("Insufficient permissions to access the write methods in the READ mode!");
 
-        this.write(ByteBuffer.allocate(stringValue.length()).order(this.getByteOrder()).put(stringValue.getBytes(StandardCharsets.UTF_8)).array());
+        this.write(stringValue, StandardCharsets.UTF_8);
     }
 
     /**
