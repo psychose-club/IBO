@@ -111,7 +111,9 @@ public final class UInt16 extends IBODataType<Integer> {
     }
 
     /**
-     * The default constructor.
+     * The default constructor.<p>
+     * Information: The data type didn't handle floating points.<p>
+     * So the floating points will be automatically cut from the value.
      * @param value The value that should be interpreted as {@link UInt16}.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
@@ -120,7 +122,9 @@ public final class UInt16 extends IBODataType<Integer> {
     }
 
     /**
-     * The default constructor.
+     * The default constructor.<p>
+     * Information: The data type didn't handle floating points.<p>
+     * So the floating points will be automatically cut from the value.
      * @param value The value that should be interpreted as {@link UInt16}.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
@@ -211,7 +215,9 @@ public final class UInt16 extends IBODataType<Integer> {
     }
 
     /**
-     * This method sets a new value for the data type.
+     * This method sets a new value for the data type.<p>
+     * Information: The data type didn't handle floating points.<p>
+     * So the floating points will be automatically cut from the value.
      * @param value The value that should be interpreted as {@link UInt16}.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
@@ -224,7 +230,9 @@ public final class UInt16 extends IBODataType<Integer> {
     }
 
     /**
-     * This method sets a new value for the data type.
+     * This method sets a new value for the data type.<p>
+     * Information: The data type didn't handle floating points.<p>
+     * So the floating points will be automatically cut from the value.
      * @param value The value that should be interpreted as {@link UInt16}.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
