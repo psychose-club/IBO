@@ -662,6 +662,11 @@ public final class BinaryFile extends FileByteManagement {
             throw new InvalidFileModeException("Insufficient permissions to access the write methods in the READ mode!");
 
         this.writeBytes(this.getFileOffsetPosition(), bytes);
+
+        if (this.isPaddingEnabled()) {
+            int paddingLength = (this.paddingChunkLength - (bytes.length % this.paddingChunkLength));
+            this.fillWithoutPadding(this.paddingByte, paddingLength);
+        }
     }
 
     /**
