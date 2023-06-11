@@ -43,22 +43,35 @@ import java.util.Objects;
 
 public final class Int32 extends IBODataType<Long> {
     /**
-     * The default constructor.
+     * The default constructor.<p>
+     * Information: The byte array will be only using the first four bytes, more bytes will be thrown away.<p>
+     * The default {@link ByteOrder} is the native order.
      * @param dataBytes The bytes that should be interpreted as {@link Int32}.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int32 (byte[] dataBytes) throws RangeOutOfBoundsException {
-        super((long) ByteBuffer.wrap(dataBytes, 0, 4).getInt());
+        super(0L);
+
+        if (dataBytes.length < 4)
+            throw new RangeOutOfBoundsException("The dataBytes are shorter than four bytes.");
+
+        this.setValue((long) ByteBuffer.wrap(dataBytes, 0, 4).order(ByteOrder.nativeOrder()).getInt());
     }
 
     /**
-     * The default constructor.
+     * The default constructor.<p>
+     * Information: The byte array will be only using the first four bytes, more bytes will be thrown away.
      * @param dataBytes The bytes that should be interpreted as {@link Int32}.
      * @param byteOrder The used {@link ByteOrder}.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int32 (byte[] dataBytes, ByteOrder byteOrder) throws RangeOutOfBoundsException {
-        super((long) ByteBuffer.wrap(dataBytes, 0, 4).order(byteOrder).getInt());
+        super(0L);
+
+        if (dataBytes.length < 4)
+            throw new RangeOutOfBoundsException("The dataBytes are shorter than four bytes.");
+
+        this.setValue((long) ByteBuffer.wrap(dataBytes, 0, 4).order(byteOrder).getInt());
     }
 
     /**

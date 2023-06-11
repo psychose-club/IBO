@@ -43,22 +43,35 @@ import java.util.Objects;
 
 public final class UInt16 extends IBODataType<Integer> {
     /**
-     * The default constructor.
+     * The default constructor.<p>
+     * Information: The byte array will be only using the first two bytes, more bytes will be thrown away.<p>
+     * The default {@link ByteOrder} is the native order.
      * @param dataBytes The bytes that should be interpreted as {@link UInt16}.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public UInt16 (byte[] dataBytes) throws RangeOutOfBoundsException {
-        super(Short.toUnsignedInt(ByteBuffer.wrap(dataBytes, 0, 2).getShort()));
+        super(0);
+
+        if (dataBytes.length < 2)
+            throw new RangeOutOfBoundsException("The dataBytes are shorter than two bytes.");
+
+        this.setValue(Short.toUnsignedInt(ByteBuffer.wrap(dataBytes, 0, 2).order(ByteOrder.nativeOrder()).getShort()));
     }
 
     /**
-     * The default constructor.
+     * The default constructor.<p>
+     * Information: The byte array will be only using the first two bytes, more bytes will be thrown away.
      * @param dataBytes The bytes that should be interpreted as {@link UInt16}.
      * @param byteOrder The used {@link ByteOrder}.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public UInt16 (byte[] dataBytes, ByteOrder byteOrder) throws RangeOutOfBoundsException {
-        super(Short.toUnsignedInt(ByteBuffer.wrap(dataBytes, 0, 2).order(byteOrder).getShort()));
+        super(0);
+
+        if (dataBytes.length < 2)
+            throw new RangeOutOfBoundsException("The dataBytes are shorter than two bytes.");
+
+        this.setValue(Short.toUnsignedInt(ByteBuffer.wrap(dataBytes, 0, 2).order(byteOrder).getShort()));
     }
 
     /**
