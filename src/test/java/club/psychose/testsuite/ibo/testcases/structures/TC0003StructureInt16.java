@@ -35,6 +35,7 @@ import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
 import club.psychose.testsuite.ibo.testcases.Test;
 
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 public final class TC0003StructureInt16 extends Test {
@@ -98,6 +99,56 @@ public final class TC0003StructureInt16 extends Test {
 
             if (!(hexString.equals("ED10"))) {
                 this.failed("CONVERT_TO_HEX_STRING");
+                return;
+            }
+
+            // Check the other constructors.
+            byte[] bytesWithoutSetByteOrder = ByteBuffer.allocate(2).order(ByteOrder.nativeOrder()).putShort((short) 24).array();
+            if (new Int16(bytesWithoutSetByteOrder).getValue() != 24) {
+                this.failed("OTHER_CONSTRUCTORS_01");
+                return;
+            }
+
+            byte[] bytesWithByteOrder = new byte[53];
+            bytesWithByteOrder[0] = 0x50;
+            bytesWithByteOrder[1] = (byte) 0xFE;
+            if (new Int16(bytesWithByteOrder, ByteOrder.LITTLE_ENDIAN).getValue() != -432) {
+                this.failed("OTHER_CONSTRUCTORS_02");
+                return;
+            }
+
+            if (new Int16((byte) -22).getValue() != -22) {
+                this.failed("OTHER_CONSTRUCTORS_03");
+                return;
+            }
+
+            if (new Int16((short) -149).getValue() != -149) {
+                this.failed("OTHER_CONSTRUCTORS_04");
+                return;
+            }
+
+            if (new Int16((long) 2432).getValue() != 2432) {
+                this.failed("OTHER_CONSTRUCTORS_05");
+                return;
+            }
+
+            if (new Int16(234.54f).getValue() != 234f) {
+                this.failed("OTHER_CONSTRUCTORS_06");
+                return;
+            }
+
+            if (new Int16(723.61446).getValue() != 723) {
+                this.failed("OTHER_CONSTRUCTORS_07");
+                return;
+            }
+
+            if (new Int16(BigInteger.valueOf(32767)).getValue() != 32767) {
+                this.failed("OTHER_CONSTRUCTORS_08");
+                return;
+            }
+
+            if (new Int16("123").getValue() != 123) {
+                this.failed("OTHER_CONSTRUCTORS_09");
                 return;
             }
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {

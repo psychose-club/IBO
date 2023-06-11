@@ -34,6 +34,8 @@ import club.psychose.library.ibo.enums.HEXFormat;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
 import club.psychose.testsuite.ibo.testcases.Test;
 
+import java.math.BigInteger;
+import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 public final class TC0004StructureUInt16 extends Test {
@@ -97,6 +99,56 @@ public final class TC0004StructureUInt16 extends Test {
 
             if (!(hexString.equals("0C00"))) {
                 this.failed("CONVERT_TO_HEX_STRING");
+                return;
+            }
+
+            // Check the other constructors.
+            byte[] bytesWithoutSetByteOrder = ByteBuffer.allocate(2).order(ByteOrder.nativeOrder()).putShort((short) 2641).array();
+            if (new UInt16(bytesWithoutSetByteOrder).getValue() != 2641) {
+                this.failed("OTHER_CONSTRUCTORS_01");
+                return;
+            }
+
+            byte[] bytesWithByteOrder = new byte[124];
+            bytesWithByteOrder[0] = 0x4F;
+            bytesWithByteOrder[1] = 0x15;
+            if (new UInt16(bytesWithByteOrder, ByteOrder.LITTLE_ENDIAN).getValue() != 5455) {
+                this.failed("OTHER_CONSTRUCTORS_02");
+                return;
+            }
+
+            if (new UInt16((byte) 232).getValue() != 232) {
+                this.failed("OTHER_CONSTRUCTORS_03");
+                return;
+            }
+
+            if (new UInt16((short) 1451).getValue() != 1451) {
+                this.failed("OTHER_CONSTRUCTORS_04");
+                return;
+            }
+
+            if (new UInt16((long) 23414).getValue() != 23414) {
+                this.failed("OTHER_CONSTRUCTORS_05");
+                return;
+            }
+
+            if (new UInt16(2344.141f).getValue() != 2344f) {
+                this.failed("OTHER_CONSTRUCTORS_06");
+                return;
+            }
+
+            if (new UInt16((double) 6453).getValue() != 6453) {
+                this.failed("OTHER_CONSTRUCTORS_07");
+                return;
+            }
+
+            if (new UInt16(BigInteger.valueOf(65535)).getValue() != 65535) {
+                this.failed("OTHER_CONSTRUCTORS_08");
+                return;
+            }
+
+            if (new UInt16("5235").getValue() != 5235) {
+                this.failed("OTHER_CONSTRUCTORS_09");
                 return;
             }
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {

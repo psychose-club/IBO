@@ -34,6 +34,7 @@ import club.psychose.library.ibo.enums.HEXFormat;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
 import club.psychose.testsuite.ibo.testcases.Test;
 
+import java.math.BigInteger;
 import java.nio.ByteOrder;
 
 public final class TC0001StructureInt8 extends Test {
@@ -97,6 +98,49 @@ public final class TC0001StructureInt8 extends Test {
 
             if (!(hexString.equals("EA"))) {
                 this.failed("CONVERT_TO_HEX_STRING");
+                return;
+            }
+
+            // Check the other constructors.
+            byte[] bytes = new byte[2];
+            bytes[0] = 0x02;
+            if (new Int8(bytes).getValue() != 0x02) {
+                this.failed("OTHER_CONSTRUCTORS_01");
+                return;
+            }
+
+            if (new Int8((byte) 33).getValue() != 33) {
+                this.failed("OTHER_CONSTRUCTORS_02");
+                return;
+            }
+
+            if (new Int8((short) 69).getValue() != 69) {
+                this.failed("OTHER_CONSTRUCTORS_03");
+                return;
+            }
+
+            if (new Int8((long) 49).getValue() != 49) {
+                this.failed("OTHER_CONSTRUCTORS_04");
+                return;
+            }
+
+            if (new Int8(-23f).getValue() != -23f) {
+                this.failed("OTHER_CONSTRUCTORS_05");
+                return;
+            }
+
+            if (new Int8((double) 29).getValue() != 29) {
+                this.failed("OTHER_CONSTRUCTORS_06");
+                return;
+            }
+
+            if (new Int8(BigInteger.TEN).getValue() != 10) {
+                this.failed("OTHER_CONSTRUCTORS_07");
+                return;
+            }
+
+            if (new Int8("-54").getValue() != -54) {
+                this.failed("OTHER_CONSTRUCTORS_0/8");
                 return;
             }
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
