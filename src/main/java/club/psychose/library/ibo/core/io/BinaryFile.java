@@ -132,6 +132,7 @@ public final class BinaryFile extends FileByteManagement {
         this.setFilePath(filePath);
         this.setByteOrder(this.getByteOrder()); // Sets the ByteBuffer ByteOrder.
 
+        this.openRandomAccessFile();
         this.setOffsetPosition(startOffsetPosition);
     }
 
@@ -152,7 +153,6 @@ public final class BinaryFile extends FileByteManagement {
             this.resetChunkUsage();
             this.resetChunkManagement();
             this.setStayOnOffsetPosition(false);
-            this.setStayFileOpen(false);
 
             this.resetOffsetPosition();
         }

@@ -5,6 +5,7 @@ import club.psychose.library.ibo.exceptions.ClosedException;
 import club.psychose.library.ibo.exceptions.InvalidFileModeException;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
@@ -26,7 +27,6 @@ class FileByteManagement {
     private boolean chunksUsed;
     private boolean chunkLengthSet;
     private boolean stayOnOffsetPosition;
-    private boolean stayOpen;
 
     private int chunkLength;
     private int currentChunk;
@@ -258,15 +258,6 @@ class FileByteManagement {
     }
 
     /**
-     * This method didn't close the file to access the file faster.<p>
-     * Notice: This will be reset when the close function is called and can consume more memory usage.
-     * @param value The state of the option.
-     */
-    public void setStayFileOpen (boolean value) {
-        this.stayOpen = value;
-    }
-
-    /**
      * This method returns the chunk from a provided offset position.
      * @param offsetPosition The offset position that should be calculated from.
      * @return The calculated chunk. (It is -1 when no chunk length is defined)
@@ -358,14 +349,6 @@ class FileByteManagement {
      */
     public boolean isClosed () {
         return this.closed;
-    }
-
-    /**
-     * This method returns the state if the file shouldn't be closed.
-     * @return The state of the option.
-     */
-    public boolean isStayFileOpenEnabled () {
-        return this.stayOpen;
     }
 
     /**
@@ -540,6 +523,14 @@ class FileByteManagement {
      * Notice: This method is only accessible for an inherited class.
      */
     protected void resetRandomAccessFile () {
+        try {
+            if (this.randomAccessFile.getFD().valid()) {
+                this.randomAccessFile.close();
+            }
+        } catch (IOException ioException) {
+            ioException.printStackTrace(); // <- This really shouldn't happen. | Make sure to close the file before you want to edit it again!
+        }
+
         this.randomAccessFile = null;
     }
 
@@ -663,11 +654,6 @@ class FileByteManagement {
         if ((newOffsetPosition < 0) || (newOffsetPosition > this.getFileLength()))
             throw new RangeOutOfBoundsException("The new offset position is out of bounds!");
 
-        if (!(this.isStayFileOpenEnabled())) {
-            String randomAccessFileMode = (this.getFileMode().equals(FileMode.READ)) ? ("r") : ("rw");
-            this.randomAccessFile = new RandomAccessFile(this.filePath.toFile(), randomAccessFileMode);
-        }
-
         // Sets the file offset position.
         this.randomAccessFile.seek(offsetPosition);
 
@@ -683,16 +669,24 @@ class FileByteManagement {
         {
             byte[] buffer = new byte[length];
 
-            randomAccessFile.seek(offsetPosition);
-            randomAccessFile.read(buffer, 0, length);
-            randomAccessFile.close();
+            this.randomAccessFile.seek(offsetPosition);
+            this.randomAccessFile.read(buffer, 0, length);
+            this.randomAccessFile.getFD().sync();
 
             this.byteBuffer = ByteBuffer.wrap(buffer).order(this.byteOrder);
             this.byteBuffer.position(0);
         }
 
-        if (!(this.isStayFileOpenEnabled()))
-            this.randomAccessFile.close();
+        this.randomAccessFile.getFD().sync();
+    }
+
+    /**
+     * This method opens the random access file.
+     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws FileNotFoundException This exception will be thrown when the required file was not found.
+     */
+    protected void openRandomAccessFile () throws ClosedException, FileNotFoundException {
+        this.randomAccessFile = new RandomAccessFile(this.filePath.toFile(), (this.getFileMode().equals(FileMode.READ)) ? ("r") : ("rw"));
     }
 
     /**
@@ -714,11 +708,6 @@ class FileByteManagement {
         if ((offsetPosition < 0) || (offsetPosition > this.getFileLength()))
             throw new RangeOutOfBoundsException("The offset position is out of bounds!");
 
-        if (!(this.isStayFileOpenEnabled())) {
-            String randomAccessFileMode = (this.getFileMode().equals(FileMode.WRITE)) ? ("w") : ("rw");
-            this.randomAccessFile = new RandomAccessFile(this.filePath.toFile(), randomAccessFileMode);
-        }
-
         // Sets the file offset position.
         this.randomAccessFile.seek(offsetPosition);
         this.randomAccessFile.write(bytes);
@@ -728,8 +717,7 @@ class FileByteManagement {
         if (!(this.isStayOnOffsetPositionEnabled()))
             this.setOffsetPosition(newOffsetPosition);
 
-        if (!(this.isStayFileOpenEnabled()))
-            this.randomAccessFile.close();
+        this.randomAccessFile.getFD().sync();
 
         // Should be automatically READ_AND_WRITE, but we will check it for safety reasons again.
         if ((this.isChunkUsageEnabled()) && (this.getFileMode().equals(FileMode.READ_AND_WRITE))) {
