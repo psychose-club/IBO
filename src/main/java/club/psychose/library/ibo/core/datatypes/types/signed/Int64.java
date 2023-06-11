@@ -44,23 +44,34 @@ import java.util.stream.IntStream;
 
 public final class Int64 extends IBODataType<BigInteger> {
     /**
-     * The default constructor.
+     * The default constructor.<p>
+     * Information: The byte array will be only using the first eight bytes, more bytes will be thrown away.<p>
+     * The default {@link ByteOrder} is the native order.
      * @param dataBytes The bytes that should be interpreted as {@link Int64}.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int64 (byte[] dataBytes) throws RangeOutOfBoundsException {
         super(BigInteger.valueOf(0));
-        this.setValue(new BigInteger(ByteBuffer.wrap(this.getBytesAsBigEndianByteOrder(dataBytes, null), 0, 8).array()));
+
+        if (dataBytes.length < 8)
+            throw new RangeOutOfBoundsException("The dataBytes are shorter than eight bytes.");
+
+        this.setValue(new BigInteger(ByteBuffer.wrap(this.getBytesAsBigEndianByteOrder(dataBytes, ByteOrder.nativeOrder()), 0, 8).array()));
     }
 
     /**
-     * The default constructor.
+     * The default constructor.<p>
+     * Information: The byte array will be only using the first eight bytes, more bytes will be thrown away.
      * @param dataBytes The bytes that should be interpreted as {@link Int64}.
      * @param byteOrder The used {@link ByteOrder}.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int64 (byte[] dataBytes, ByteOrder byteOrder) throws RangeOutOfBoundsException {
         super(BigInteger.valueOf(0));
+
+        if (dataBytes.length < 8)
+            throw new RangeOutOfBoundsException("The dataBytes are shorter than eight bytes.");
+
         this.setValue(new BigInteger(ByteBuffer.wrap(this.getBytesAsBigEndianByteOrder(dataBytes, byteOrder), 0, 8).array()));
     }
 

@@ -43,22 +43,19 @@ import java.util.Objects;
 
 public final class Int8 extends IBODataType<Short> {
     /**
-     * The default constructor.
+     * The default constructor.<p>
+     * Information: The byte array will be only using the first byte, more bytes will be thrown away.<p>
+     * Also since it's only one byte the {@link ByteOrder} really didn't matter here.
      * @param dataBytes The bytes that should be interpreted as {@link Int8}.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int8 (byte[] dataBytes) throws RangeOutOfBoundsException {
-        super(ByteBuffer.wrap(dataBytes, 0, 2).getShort());
-    }
+        super((short) 0);
 
-    /**
-     * The default constructor.
-     * @param dataBytes The bytes that should be interpreted as {@link Int8}.
-     * @param byteOrder The used {@link ByteOrder}.
-     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
-     */
-    public Int8 (byte[] dataBytes, ByteOrder byteOrder) throws RangeOutOfBoundsException {
-        super(ByteBuffer.wrap(dataBytes, 0, 2).order(byteOrder).getShort());
+        if (dataBytes.length < 1)
+            throw new RangeOutOfBoundsException("The dataBytes are shorter than one byte.");
+
+        this.setValue((short) dataBytes[0]);
     }
 
     /**

@@ -43,23 +43,34 @@ import java.util.Objects;
 
 public final class UInt32 extends IBODataType<Long> {
     /**
-     * The default constructor.
+     * The default constructor.<p>
+     * Information: The byte array will be only using the first four bytes, more bytes will be thrown away.<p>
+     * The default {@link ByteOrder} is the native order.
      * @param dataBytes The bytes that should be interpreted as {@link UInt32}.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public UInt32 (byte[] dataBytes) throws RangeOutOfBoundsException {
         super(0L);
-        this.setValue(new BigInteger(1, ByteBuffer.wrap(this.getBytesAsBigEndianByteOrder(dataBytes, null), 0, 4).array()));
+
+        if (dataBytes.length < 4)
+            throw new RangeOutOfBoundsException("The dataBytes are shorter than four bytes.");
+
+        this.setValue(new BigInteger(1, ByteBuffer.wrap(this.getBytesAsBigEndianByteOrder(dataBytes, ByteOrder.nativeOrder()), 0, 4).array()));
     }
 
     /**
-     * The default constructor.
+     * The default constructor.<p>
+     * Information: The byte array will be only using the first four bytes, more bytes will be thrown away.
      * @param dataBytes The bytes that should be interpreted as {@link UInt32}.
      * @param byteOrder The used {@link ByteOrder}.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public UInt32 (byte[] dataBytes, ByteOrder byteOrder) throws RangeOutOfBoundsException {
         super(0L);
+
+        if (dataBytes.length < 4)
+            throw new RangeOutOfBoundsException("The dataBytes are shorter than four bytes.");
+
         this.setValue(new BigInteger(1, ByteBuffer.wrap(this.getBytesAsBigEndianByteOrder(dataBytes, byteOrder), 0, 4).array()));
     }
 
