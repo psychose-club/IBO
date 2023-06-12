@@ -44,28 +44,6 @@ class FileByteManagement {
     }
 
 /* PUBLIC METHODS. */
-
-    /**
-     * This method sets the usage of the chunk system.
-     * @param value The state if chunks should be used or not.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException This exception will be thrown when the chunk length is not set.
-     */
-    public void enableChunkUsage (boolean value) throws ClosedException, InvalidFileModeException, IOException {
-        if (this.isClosed())
-            throw new ClosedException("The BinaryFile is closed!");
-
-        if (this.fileMode.equals(FileMode.WRITE))
-            throw new InvalidFileModeException("Insufficient permissions to access the chunk methods in the WRITE mode!");
-
-        if ((value) && (!(this.chunkLengthSet)))
-            throw new IOException("You need to set the chunk length before you enabling the usage of chunks!");
-
-        this.chunksUsed = value;
-        this.chunkOffsetPosition = this.calculateChunkOffsetPosition(this.offsetPosition);
-    }
-
     /**
      * This method sets the {@link ByteBuffer} of the read bytes.
      * @param value The {@link ByteBuffer}.
@@ -80,13 +58,34 @@ class FileByteManagement {
     /**
      * This method sets the usage of the chunk system.
      * @param value The state if chunks should be used or not.
+     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException This exception will be thrown when the chunk length is not set.
+     */
+    public void setChunkUsage (boolean value) throws ClosedException, InvalidFileModeException, IOException {
+        if (this.isClosed())
+            throw new ClosedException("The BinaryFile is closed!");
+
+        if (this.fileMode.equals(FileMode.WRITE))
+            throw new InvalidFileModeException("Insufficient permissions to access the chunk methods in the WRITE mode!");
+
+        if ((value) && (!(this.chunkLengthSet)))
+            throw new IOException("You need to set the chunk length before you enabling the usage of chunks!");
+
+        this.chunksUsed = value;
+        this.chunkOffsetPosition = (value) ? (this.calculateChunkOffsetPosition(this.offsetPosition)) : (-1);
+    }
+
+    /**
+     * This method sets the usage of the chunk system.
+     * @param value The state if chunks should be used or not.
      * @param chunkLength The chunk length that should be used.
      * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
      * @throws IOException Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    public void enableChunkUsage (boolean value, int chunkLength) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
+    public void setChunkUsage (boolean value, int chunkLength) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The BinaryFile is closed!");
 
