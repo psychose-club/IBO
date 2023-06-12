@@ -37,15 +37,6 @@ import club.psychose.library.ibo.enums.HEXFormat;
 
 public final class HEXUtils {
     /**
-     * This method converts bytes into a HEX string.
-     * @param bytes The bytes to convert.
-     * @return {@link String}
-     */
-    public static String convertBytesToHEXString (byte[] bytes) {
-        return convertBytesToHEXString(bytes, HEXFormat.UPPERCASE);
-    }
-
-    /**
      * This method converts the bytes into a HEX string.
      * @param bytes The bytes to convert.
      * @param hexFormat The format that should be used to display the bytes.
