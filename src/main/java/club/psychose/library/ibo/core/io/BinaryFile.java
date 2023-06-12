@@ -189,7 +189,7 @@ public final class BinaryFile extends FileByteManagement {
         }
 
         if (this.getCurrentChunk() != this.calculateChunk(newOffsetPosition))
-            this.readIntoTheMemory(this.calculateChunkOffsetPosition(this.getFileOffsetPosition()), this.getChunkLength() + length);
+            this.readIntoTheMemory(this.calculateChunkStartOffsetPosition(this.calculateChunk(this.getFileOffsetPosition())), this.getChunkLength() + length);
 
         byte[] bytes = new byte[length];
         for (int bufferIndex = 0; bufferIndex < length; bufferIndex ++) {
@@ -197,7 +197,7 @@ public final class BinaryFile extends FileByteManagement {
         }
 
         this.skipOffsetPosition(length);
-        this.setChunkOffsetPosition(this.getChunkOffsetPosition() + length);
+        this.setChunkOffsetPosition(this.calculateChunkOffsetPosition(newOffsetPosition));
         return bytes;
     }
 
@@ -950,6 +950,7 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method searches for the next available offset position from a specific HEX value.
+     * Information: If the chunk mode is enabled, the usage of chunks will be ignored!
      * @param hexValue The HEX string.
      * @return The next available offset position or -1 when nothing was found.
      * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
@@ -978,7 +979,8 @@ public final class BinaryFile extends FileByteManagement {
     }
 
     /**
-     * This method searches for the next available offset position from a provided byte sequence / array.
+     * This method searches for the next available offset position from a provided byte sequence / array.<p>
+     * Information: If the chunk mode is enabled, the usage of chunks will be ignored!
      * @param bytes The byte sequence to search.
      * @return The next available offset position or -1 when nothing was found.
      * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
@@ -986,7 +988,6 @@ public final class BinaryFile extends FileByteManagement {
      * @throws IOException Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    // TODO: Additional read length?
     public long searchNextByteSequence (byte[] bytes)  throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The BinaryFile is closed!");
@@ -994,58 +995,58 @@ public final class BinaryFile extends FileByteManagement {
         if (this.getFileMode().equals(FileMode.WRITE))
             throw new InvalidFileModeException("Insufficient permissions to access the read methods in the WRITE mode!");
 
-        long newOffsetPosition = (this.isChunkUsageEnabled()) ? (this.getFileOffsetPosition() + (bytes.length * 2L)) : (this.getFileOffsetPosition() + bytes.length);
+        long newOffsetPosition = this.getFileOffsetPosition() + bytes.length;
         if (newOffsetPosition > this.getFileLength())
             return -1;
 
         long oldOffsetPosition = this.getFileOffsetPosition();
-        long foundSequenceAt = -1;
 
-        while (this.getFileOffsetPosition() < this.getFileLength()) {
-            newOffsetPosition = (this.getFileOffsetPosition() + bytes.length);
+        boolean wasChunkUsageEnabled = this.isChunkUsageEnabled();
+        if (wasChunkUsageEnabled)
+            this.setChunkUsage(false);
 
+        for (long offsetAt = oldOffsetPosition; offsetAt < this.getFileLength(); offsetAt += bytes.length) {
             int amountOfBytesToRead = bytes.length;
-            long offsetPositionToUse = this.getFileOffsetPosition();
 
-            // Checks if the new offset position is inbound, if not it should be read the last available bytes.
-            if (newOffsetPosition > this.getFileLength()) {
-                // Casting should be safe because it shouldn't be larger than the Integer.MAX_VALUE!
-                amountOfBytesToRead = (this.isChunkUsageEnabled()) ? (bytes.length + (int) ((bytes.length * 2L) - this.getRemainingFileBytes())) : (bytes.length + (int) (bytes.length - this.getRemainingFileBytes()));
-                offsetPositionToUse = this.getFileLength() - amountOfBytesToRead;
+            // Reading the last bytes from the file.
+            if ((offsetAt + bytes.length) > this.getFileLength()) {
+                offsetAt -= bytes.length;
+                amountOfBytesToRead = (int) this.getRemainingFileBytes() + bytes.length;
             }
 
-            this.setOffsetPosition(offsetPositionToUse);
-            byte[] readBytes = this.readBytes(amountOfBytesToRead);
+            this.setOffsetPosition(offsetAt);
+            byte[] fileBytes = this.readBytes(amountOfBytesToRead);
 
-            // Check if the sequence is in the read bytes.
-            for (int readIndex = 0; readIndex < readBytes.length;) {
-                boolean invalid = false;
-                int amountRead = 0;
+            for (int byteIndex = 0; byteIndex < amountOfBytesToRead; byteIndex ++) {
+                if (byteIndex > this.getFileLength())
+                    break;
 
-                for (int sequenceIndex = 0; sequenceIndex < bytes.length; sequenceIndex ++) {
-                    if (readBytes[readIndex + sequenceIndex] != bytes[sequenceIndex]) {
-                        invalid = true;
+                boolean valid = true;
+                for (int searchIndex = 0; searchIndex < bytes.length; searchIndex ++) {
+                    if (fileBytes[byteIndex + searchIndex] != bytes[searchIndex]) {
+                        valid = false;
                         break;
                     }
-
-                    amountRead ++;
                 }
 
-                if (invalid) {
-                    if (amountRead == 0)
-                        amountRead ++;
-
-                    readIndex += amountRead;
-                    continue;
+                if (valid) {
+                    this.setOffsetPosition(oldOffsetPosition);
+                    return (offsetAt + byteIndex);
                 }
 
-                foundSequenceAt = newOffsetPosition - readIndex;
-                break;
+                // This is to prevent an out-of-bounds exception if the number of bytes to read is equal to the bytes'
+                // length.
+                if (amountOfBytesToRead == bytes.length)
+                    break;
             }
         }
 
         this.setOffsetPosition(oldOffsetPosition);
-        return foundSequenceAt;
+
+        if (wasChunkUsageEnabled)
+            this.setChunkUsage(true);
+
+        return -1;
     }
 
     /**
