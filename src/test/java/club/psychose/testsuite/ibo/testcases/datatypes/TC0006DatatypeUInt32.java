@@ -45,7 +45,7 @@ public final class TC0006DatatypeUInt32 extends Test {
 
     @Override
     public void executeTestCase () {
-        // Out of Bounds Test.
+        // Out-of-Bounds Test.
         try {
             new UInt32(UInt32.getMinimumValue() - 1);
             this.failed("OUT_OF_BOUNDS_CHECK");

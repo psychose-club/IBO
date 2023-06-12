@@ -44,7 +44,7 @@ public final class TC0001DatatypeInt8 extends Test {
 
     @Override
     public void executeTestCase () {
-        // Out of Bounds Test.
+        // Out-of-Bounds Test.
         try {
             new Int8(Int8.getMinimumValue() - 1);
             this.failed("OUT_OF_BOUNDS_CHECK");

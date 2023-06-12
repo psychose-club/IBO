@@ -45,7 +45,7 @@ public final class TC0003DatatypeInt16 extends Test {
 
     @Override
     public void executeTestCase () {
-        // Out of Bounds Test.
+        // Out-of-Bounds Test.
         try {
             new Int16(Int16.getMinimumValue() - 1);
             this.failed("OUT_OF_BOUNDS_CHECK");

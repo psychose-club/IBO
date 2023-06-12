@@ -27,8 +27,9 @@ import java.util.Arrays;
 /**
  * This class provides the ability to modify binary files.<p>
  * Files can be accessed in READ, WRITE and READ_AND_WRITE mode.<p>
- * Also, the usage of chunks are supported to reduce memory consumption.<p>
- * Information: If you read something larger in the chunk mode than the chunk itself the missing bytes that are required for the read process will be read into the memory with the already read chunk.
+ * Also, the usage of chunks is supported to reduce memory consumption.<p>
+ * Information: If you read something larger in the chunk mode than the chunk itself,
+ * the missing bytes that are required for the read process will be read into the memory with the already read chunk.
  */
 
 public final class BinaryFile extends FileByteManagement {
@@ -1098,7 +1099,7 @@ public final class BinaryFile extends FileByteManagement {
     }
 
     /**
-     * This method returns the remaining amount of bytes until the file ends.
+     * This method returns the remaining number of bytes until the file ends.
      * @return The remaining bytes until the end of the file.
      * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      */
