@@ -58,19 +58,19 @@ public abstract class IBODataType<DataType extends Number> {
     public abstract void setValue (DataType value) throws RangeOutOfBoundsException;
 
     /**
-     * This method extracts the required bytes from the data type to return it as byte array.<p>
+     * This method extracts the required bytes from the data type to return it as a byte array.<p>
      * The main problem is that the {@link ByteBuffer} didn't support the right extraction method to remove byte padding.<p>
      * As an example when we want to get short bytes but saved them as an Integer we cannot just convert the Integer as an array of bytes we need to remove the padding from it.<p>
      * We check for a positive value with the paddedBytesLength parameter if an occurrences of {@code 0x0} happens and interpret these as padding.<p>
      * For a negative value we will cast the byte to an Integer with the masking of {@code 0xFF} and checking if the Integer contains the HEX string {@code FF} to interpret theses as padding byte.<p>
      * However, it can happen that the original data type has the exact padding byte also as bytes which we want to extract than too.<p>
-     * When the padding is not already happened we will reset an internal counter and write the bytes in the {@link ByteBuffer}.
+     * When the padding is not yet happened we will reset an internal counter and write the bytes in the {@link ByteBuffer}.
      * @param bytes The bytes to extract.
      * @param byteOrder The ByteOrder how the bytes should be sorted.
      * @param extractLength The length to extract.
      * @param paddedBytesLength The bytes that are padded to the bytes.
      * @param isValueNegative A negative value is using another padding detection algorithm than a positive one.
-     * @return Extracted byte array.
+     * @return Extracted a byte array.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     protected byte[] extractBytes (byte[] bytes, ByteOrder byteOrder, int extractLength, int paddedBytesLength, boolean isValueNegative) throws RangeOutOfBoundsException {
@@ -106,7 +106,7 @@ public abstract class IBODataType<DataType extends Number> {
                     continue;
                 }
 
-                // If the byte is not indicated as padding we will reset the padding counter.
+                // If the byte is not indicated as padding, we will reset the padding counter.
                 paddingCount = 0;
 
                 if (wasLastByteIndicatedAsPadding) {
@@ -130,7 +130,8 @@ public abstract class IBODataType<DataType extends Number> {
     /**
      * This method returns the byte array as big endian.<p>
      * When the {@link ByteOrder} is little endian the bytes will be reversed.<p>
-     * To be honest the method could also reverse the bytes from little endian to big endian but while Java interpret bytes as big endian we do it too.
+     * To be honest, the method could also reverse the bytes from little endian to big endian,
+     * but while Java interprets bytes as big endian, we do it too.
      * @param bytes The byte array that should be returned.
      * @param byteOrder The {@link ByteOrder}.
      * @return The byte array.

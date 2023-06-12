@@ -189,6 +189,14 @@ class FileByteManagement {
             this.chunkOffsetPosition = this.calculateChunkOffsetPosition(this.offsetPosition);
     }
 
+    /**
+     * This method sets the current chunk-offset position.
+     * @param chunkOffsetPosition The chunk-offset position.
+     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
     public void setChunkOffsetPosition (int chunkOffsetPosition) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The BinaryFile is closed!");
@@ -241,7 +249,7 @@ class FileByteManagement {
     }
 
     /**
-     * This method skips a specified amount of bytes from the current offset position.
+     * This method skips a specified number of bytes from the current offset position.
      * @param length The length of the bytes that should be skipped.
      * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
@@ -476,7 +484,7 @@ class FileByteManagement {
     }
 
     /**
-     * This method returns the current file offset position.
+     * This method returns the current file-offset position.
      * @return The current file offset position.
      * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      */
@@ -500,10 +508,9 @@ class FileByteManagement {
     }
 
 /* PROTECTED METHODS. */
-
     /**
      * This method initializes the {@link ByteBuffer}.
-     * @param capacity The maximum amount of bytes that should be used.
+     * @param capacity The maximum number of bytes that should be used.
      */
     protected void initializeByteBuffer (int capacity) {
         this.byteBuffer = ByteBuffer.allocate(capacity).order(this.byteOrder);

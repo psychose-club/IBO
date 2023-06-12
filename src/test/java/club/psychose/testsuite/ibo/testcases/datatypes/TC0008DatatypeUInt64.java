@@ -45,7 +45,7 @@ public final class TC0008DatatypeUInt64 extends Test {
 
     @Override
     public void executeTestCase () {
-        // Out of Bounds Test.
+        // Out-of-Bounds Test.
         try {
             new UInt64(new BigInteger(UInt64.getMinimumValue().toString()).subtract(BigInteger.valueOf(1)));
             this.failed("OUT_OF_BOUNDS_CHECK");

@@ -44,7 +44,7 @@ public final class TC0002DatatypeUInt8 extends Test {
 
     @Override
     public void executeTestCase () {
-        // Out of Bounds Test.
+        // Out-of-Bounds Test.
         try {
             new UInt8(UInt8.getMinimumValue() - 1);
             this.failed("OUT_OF_BOUNDS_CHECK");
