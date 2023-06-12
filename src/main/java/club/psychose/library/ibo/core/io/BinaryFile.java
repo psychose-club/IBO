@@ -909,13 +909,14 @@ public final class BinaryFile extends FileByteManagement {
     /**
      * This method enables the padding for the writing process.<p>
      * The padding processes uses a chunk system to understand it better here are some examples:<p>
-     * {@code Padding Chunk Length: 20} & {@code Fill length: 15} = {@code Padding Length: 5}<p>
-     * {@code Padding Chunk Length: 20} & {@code Fill length: 21} = {@code Padding Length: 19}<p>
-     * {@code Padding Chunk Length: 13} & {@code Fill length: 56} = {@code Padding Length: 9}<p>
+     * {@code Padding Chunk Length: 20} and {@code Fill length: 15} = {@code Padding Length: 5}<p>
+     * {@code Padding Chunk Length: 20} and {@code Fill length: 21} = {@code Padding Length: 19}<p>
+     * {@code Padding Chunk Length: 13} and {@code Fill length: 56} = {@code Padding Length: 9}<p>
      * @param paddingChunkLength The padding length of the file chunks.
      * @param paddingByte The byte that should be used for the padding process.
      * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void enablePadding (int paddingChunkLength, byte paddingByte) throws ClosedException, InvalidFileModeException, RangeOutOfBoundsException {
         if (this.isClosed())
