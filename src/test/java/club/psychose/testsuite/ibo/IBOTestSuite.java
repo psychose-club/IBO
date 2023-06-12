@@ -31,6 +31,7 @@ package club.psychose.testsuite.ibo;
 
 import club.psychose.testsuite.ibo.testcases.Test;
 import club.psychose.testsuite.ibo.testcases.datatypes.*;
+import club.psychose.testsuite.ibo.testcases.io.TC0009BinaryFile;
 import club.psychose.testsuite.ibo.utils.logging.ConsoleLogger;
 
 import java.util.ArrayList;
@@ -53,6 +54,7 @@ public final class IBOTestSuite {
         testCasesArrayList.add(new TC0006DatatypeUInt32()); // UInt32
         testCasesArrayList.add(new TC0007DatatypeInt64()); // Int64
         testCasesArrayList.add(new TC0008DatatypeUInt64()); // UInt64
+        testCasesArrayList.add(new TC0009BinaryFile()); // BinaryFile
     }
 
     private static void runTests () {
