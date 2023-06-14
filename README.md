@@ -9,7 +9,8 @@
 <div align="center">
 <h3 align="center">IBO</h3>
   <p align="center">
-    IBO stands for "Internal binary operations" and it is a library for Java to read, write and handle binary files and data types that aren't officially in Java.
+    IBO stands for "Internal binary operations" and it is a library for Java to read,
+    write, and handle binary files and data types that aren't available in Java.
     <br />
     <a href="#documentation"><strong>Explore the docs »</strong></a>
     <br />
@@ -47,7 +48,8 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-IBO stands for "Internal binary operations" and it is a library for Java to read, write and handle binary files and data types that aren't officially in Java.
+IBO stands for "Internal binary operations" and it is a library for Java to read,
+ write, and handle binary files and data types that aren't available in Java.
 
 Currently supported data types:
 
@@ -71,7 +73,7 @@ Currently supported data types:
 We are considering the following features to be added when enough people ask for it:
 * More data types (If possible)
 
-If you want to contribute and add some features create an issue in the Issues tab and create a pull request! :)
+If you want to contribute and add some features, create an issue in the Issues tab and create a pull request! :)
 
 For more information see <a href="#contributing">Contributing</a>
 
@@ -80,7 +82,7 @@ For more information see <a href="#contributing">Contributing</a>
 <!-- GETTING STARTED -->
 ## Getting Started
 
-To install the library follow these steps:
+To install the library, follow these steps:
 
 ### Prerequisites
 
@@ -216,7 +218,7 @@ class Foo {
 }
 ```
 
-_Writes a String to a file without padding_
+_Write a String to a file without padding_
 
 ```java
 class Foo {
@@ -289,7 +291,7 @@ For the README
 
 and you <3
 
-Stay safe and make the  world to a better place!
+Stay safe, love and accept other people, please! <3
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
