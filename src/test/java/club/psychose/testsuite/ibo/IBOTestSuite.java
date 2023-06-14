@@ -56,6 +56,7 @@ public final class IBOTestSuite {
         testCasesArrayList.add(new TC0007DatatypeInt64()); // Int64
         testCasesArrayList.add(new TC0008DatatypeUInt64()); // UInt64
         testCasesArrayList.add(new TC0010DatatypeInt24()); // Int24
+        testCasesArrayList.add(new TC0011DatatypeUInt24()); // UInt24
 
         // IO
         testCasesArrayList.add(new TC0009BinaryFile()); // BinaryFile
