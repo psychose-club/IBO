@@ -46,6 +46,7 @@ public final class IBOTestSuite {
     }
 
     private static void registerTestCases() {
+        // Data types.
         testCasesArrayList.add(new TC0001DatatypeInt8()); // Int8
         testCasesArrayList.add(new TC0002DatatypeUInt8()); // UInt8
         testCasesArrayList.add(new TC0003DatatypeInt16()); // Int16
@@ -54,6 +55,9 @@ public final class IBOTestSuite {
         testCasesArrayList.add(new TC0006DatatypeUInt32()); // UInt32
         testCasesArrayList.add(new TC0007DatatypeInt64()); // Int64
         testCasesArrayList.add(new TC0008DatatypeUInt64()); // UInt64
+        testCasesArrayList.add(new TC0010DatatypeInt24()); // Int24
+
+        // IO
         testCasesArrayList.add(new TC0009BinaryFile()); // BinaryFile
     }
 
