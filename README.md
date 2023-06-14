@@ -164,46 +164,8 @@ class Foo {
         }
     }
 }
+
 ```
-<h3>MemoryBinaryReader</h3>
-
-_Read an UInt16 from the memory offset: 0x0_
-
-```java
-class Foo {
-    public void bar () {
-        byte[] bytesThatShouldBeRead = new byte[2];
-        bytesThatShouldBeRead[0] = (byte) 0x94;
-        bytesThatShouldBeRead[1] = 0x01;
-
-        try {
-            MemoryBinaryReader memoryBinaryReader = new MemoryBinaryReader(ByteOrder.LITTLE_ENDIAN); // <- Understanding the bytes as LITTLE_ENDIAN.
-
-            memoryBinaryReader.open(bytesThatShouldBeRead);
-
-            if (!(memoryBinaryReader.isClosed())) {
-                UInt16 uInt16 = memoryBinaryReader.readUInt16();
-
-                if (uInt16.getValue() == 404) {
-                    System.out.println("It's working!");
-                }
-
-                memoryBinaryReader.close();
-            }
-        } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
-            System.out.println("Oh no! A value is out of bounds!");
-            rangeOutOfBoundsException.printStackTrace();
-        } catch (ClosedException closedException) {
-            System.out.println("Oh no! The reader is closed but shouldn't be!");
-            closedException.printStackTrace();
-        } catch (OpenedException openedException) {
-            System.out.println("Oh no! The reader is opened but shouldn't be!");
-            openedException.printStackTrace();
-        }
-    }
-}
-```
-
 <h3>BinaryWriter</h3>
 
 _Writes an UInt8 to a file with padding_
