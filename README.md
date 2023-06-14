@@ -120,11 +120,13 @@ implementation 'club.psychose:ibo:1.2.2'
 
 Here are some features that are also included with the data types.
 
-The FileBinaryReader, MemoryBinaryReader and BinaryWriter have more features that are here not listed which are documented in the class, so look at  it if you want! :)
+The BinaryFile has more features that are not listed here, 
+but which are documented in the class, so look at it if you want! 
+:)
 
 Also, you can look at the <a href="https://github.com/psychose-club/IBO/tree/production/src/test/java/club/psychose/testsuite/ibo/testcases/">TestCases</a> to see more in-depth test code implementations.
 
-<h3>FileBinaryReader</h3>
+<h3>BinaryFile</h3>
 
 _Read an Int32 from the file offset: 0x4_
 
@@ -132,42 +134,45 @@ _Read an Int32 from the file offset: 0x4_
 class Foo {
     public void bar () {
         try {
-            FileBinaryReader fileBinaryReader = new FileBinaryReader(4096); // <- The bytes that should be loaded as chunks into the memory.
-
-            fileBinaryReader.open(Paths.get("FILE_PATH"));
+            BinaryFile binaryFile = new BinaryFile(ByteOrder.BIG_ENDIAN);
             
-            if (!(fileBinaryReader.isClosed())) {
-                fileBinaryReader.setByteOrder(ByteOrder.BIG_ENDIAN); // <- Understanding the bytes as BIG_ENDIAN.
+            // You can also change the ByteOrder if you want.
+            //binaryFile.setByteOrder(ByteOrder.BIG_ENDIAN); 
 
-                fileBinaryReader.setOffsetPosition(0x4); // Skips the first bytes.
+            binaryFile.open(Paths.get("FILE_PATH"), 0x0, FileMode.READ_AND_WRITE);
 
-                Int32 int32 = fileBinaryReader.readInt32();
+            if (!(binaryFile.isClosed())) {
+                binaryFile.setOffsetPosition(0x4); // Sets the offset position.
+                // Alternative: binaryFile.skipOffsetPosition(0x04); Skips the first four bytes.
+
+                Int32 int32 = binaryFile.readInt32();
 
                 if (int32.getValue() == 1337) { // Bytes that got read as HEX: 00 00 05 39
                     System.out.println("It's working!");
                 }
 
-                fileBinaryReader.close();
+                binaryFile.close();
             }
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
             System.out.println("Oh no! A value is out of bounds!");
             rangeOutOfBoundsException.printStackTrace();
+        } catch (InvalidFileModeException invalidFileModeException) {
+            System.out.println("Oh no! The file is opened in the wrong mode!");
+            closedException.printStackTrace();
         } catch (ClosedException closedException) {
-            System.out.println("Oh no! The reader is closed but shouldn't be!");
+            System.out.println("Oh no! The file is closed but shouldn't be!");
             closedException.printStackTrace();
         } catch (OpenedException openedException) {
-            System.out.println("Oh no! The reader is opened but shouldn't be!");
+            System.out.println("Oh no! The file is opened but shouldn't be!");
             openedException.printStackTrace();
         } catch (IOException ioException) {
-            System.out.println("Oh no! An IOException occurred while reading the file into chunks!");
+            System.out.println("Oh no! An IOException occurred!");
             ioException.printStackTrace();
         }
     }
 }
 
 ```
-<h3>BinaryWriter</h3>
-
 _Writes an UInt8 to a file with padding_
 
 ```java
@@ -184,25 +189,28 @@ class Foo {
         }
 
         try {
-            BinaryWriter binaryWriter = new BinaryWriter();
-            binaryWriter.setByteOrder(ByteOrder.BIG_ENDIAN); // Writes the bytes as BIG_ENDIAN.
+            BinaryFile binaryFile = new BinaryFile();
+            binaryFile.setByteOrder(ByteOrder.BIG_ENDIAN); // Writes the bytes as BIG_ENDIAN.
 
-            binaryWriter.open(Paths.get("FILE_PATH"), false); // overwrite = false; Writes to the end of the file when the file already exists!
-            binaryWriter.enableChunkPadding(0x0F, (byte) 0x0);
-            binaryWriter.write(uInt8); // Written bytes: 05 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-            binaryWriter.close();
-        } catch (OpenedException openedException) {
-            System.out.println("Oh no! The writer is opened but shouldn't be!");
-            openedException.printStackTrace();
-        } catch (ClosedException closedException) {
-            System.out.println("Oh no! The writer is closed but shouldn't be!");
-            closedException.printStackTrace();
-        } catch (IOException ioException) {
-            System.out.println("Oh no! Something goes wrong while writing the file!");
-            ioException.printStackTrace();
+            binaryFile.open(Paths.get("FILE_PATH"), 0x0, FileMode.READ_AND_WRITE);
+            binaryFile.enablePadding(0x0F, (byte) 0x0);
+            binaryFile.write(uInt8); // Written bytes: 05 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+            binaryFile.close();
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
             System.out.println("Oh no! A value is out of bounds!");
             rangeOutOfBoundsException.printStackTrace();
+        } catch (InvalidFileModeException invalidFileModeException) {
+            System.out.println("Oh no! The file is opened in the wrong mode!");
+            closedException.printStackTrace();
+        } catch (ClosedException closedException) {
+            System.out.println("Oh no! The file is closed but shouldn't be!");
+            closedException.printStackTrace();
+        } catch (OpenedException openedException) {
+            System.out.println("Oh no! The file is opened but shouldn't be!");
+            openedException.printStackTrace();
+        } catch (IOException ioException) {
+            System.out.println("Oh no! An IOException occurred!");
+            ioException.printStackTrace();
         }
     }
 }
@@ -216,22 +224,28 @@ class Foo {
         String stringToWrite = "Support human rights!";
 
         try {
-            BinaryWriter binaryWriter = new BinaryWriter();
+            BinaryFile binaryFile = new BinaryFile();
             
-            // If no ByteOrder is set the nativeOrder will be used.
-            // For this example we will handle it as the BIG_ENDIAN byte order.
+            // If no ByteOrder is set, the nativeOrder will be used.
+            // For this example, we will handle it as the BIG_ENDIAN byte order.
 
-            binaryWriter.open(Paths.get("FILE_PATH"), true); // overwrite = true; Replaces the file with new bytes if it's already exist!
-            binaryWriter.write(stringToWrite); // Written bytes: 53 75 70 70 6F 72 74 20 68 75 6D 61 6E 20 72 69 67 68 74 73 21
-            binaryWriter.close();
-        } catch (OpenedException openedException) {
-            System.out.println("Oh no! The writer is opened but shouldn't be!");
-            openedException.printStackTrace();
-        } catch (ClosedException closedException) {
-            System.out.println("Oh no! The writer is closed but shouldn't be!");
+            binaryFile.open(Paths.get("FILE_PATH"), 0x0, FileMode.WRITE);
+            binaryFile.write(stringToWrite); // Written bytes: 53 75 70 70 6F 72 74 20 68 75 6D 61 6E 20 72 69 67 68 74 73 21
+            binaryFile.close();
+        } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
+            System.out.println("Oh no! A value is out of bounds!");
+            rangeOutOfBoundsException.printStackTrace();
+        } catch (InvalidFileModeException invalidFileModeException) {
+            System.out.println("Oh no! The file is opened in the wrong mode!");
             closedException.printStackTrace();
+        } catch (ClosedException closedException) {
+            System.out.println("Oh no! The file is closed but shouldn't be!");
+            closedException.printStackTrace();
+        } catch (OpenedException openedException) {
+            System.out.println("Oh no! The file is opened but shouldn't be!");
+            openedException.printStackTrace();
         } catch (IOException ioException) {
-            System.out.println("Oh no! Something goes wrong while writing the file!");
+            System.out.println("Oh no! An IOException occurred!");
             ioException.printStackTrace();
         }
     }
