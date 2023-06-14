@@ -1,9 +1,6 @@
 package club.psychose.library.ibo.core.io;
 
-import club.psychose.library.ibo.core.datatypes.types.signed.Int16;
-import club.psychose.library.ibo.core.datatypes.types.signed.Int32;
-import club.psychose.library.ibo.core.datatypes.types.signed.Int64;
-import club.psychose.library.ibo.core.datatypes.types.signed.Int8;
+import club.psychose.library.ibo.core.datatypes.types.signed.*;
 import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt16;
 import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt32;
 import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt64;
@@ -332,6 +329,37 @@ public final class BinaryFile extends FileByteManagement {
             this.readIntoTheMemory(this.getFileOffsetPosition(), UInt16.getByteLength());
 
         return new UInt16(this.readBytes(UInt16.getByteLength()), this.getByteOrder());
+    }
+
+    /**
+     * This method reads bytes from a file as {@link Int24}.
+     * @return {@link Int24}
+     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
+    public Int24 readInt24 () throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
+        if (this.isClosed())
+            throw new ClosedException("The BinaryFile is closed!");
+
+        if (this.getFileMode().equals(FileMode.WRITE))
+            throw new InvalidFileModeException("Insufficient permissions to access the read methods in the WRITE mode!");
+
+        long newOffsetPosition = (this.getFileOffsetPosition() + Int24.getByteLength());
+        if (newOffsetPosition > this.getFileLength())
+            throw new RangeOutOfBoundsException("The new offset position is out of bounds!");
+
+        if (!(this.isChunkUsageEnabled())) {
+            byte[] bytes = this.readBytesFromFile(Int24.getByteLength());
+            this.skipOffsetPosition(Int24.getByteLength());
+            return new Int24(bytes, this.getByteOrder());
+        }
+
+        if (this.getCurrentChunk() != this.calculateChunk(newOffsetPosition))
+            this.readIntoTheMemory(this.getFileOffsetPosition(), Int24.getByteLength());
+
+        return new Int24(this.readBytes(Int24.getByteLength()), this.getByteOrder());
     }
 
     /**
@@ -741,6 +769,24 @@ public final class BinaryFile extends FileByteManagement {
             throw new InvalidFileModeException("Insufficient permissions to access the write methods in the READ mode!");
 
         this.write(uInt16.getAsBytes(this.getByteOrder()));
+    }
+
+    /**
+     * This method writes an {@link Int24} into a file.
+     * @param int24 The {@link Int24}.
+     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
+    public void write (Int24 int24) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
+        if (this.isClosed())
+            throw new ClosedException("The BinaryFile is closed!");
+
+        if (this.getFileMode().equals(FileMode.READ))
+            throw new InvalidFileModeException("Insufficient permissions to access the write methods in the READ mode!");
+
+        this.write(int24.getAsBytes(this.getByteOrder()));
     }
 
     /**
