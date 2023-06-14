@@ -1,13 +1,7 @@
 package club.psychose.testsuite.ibo.testcases.io;
 
-import club.psychose.library.ibo.core.datatypes.types.signed.Int16;
-import club.psychose.library.ibo.core.datatypes.types.signed.Int32;
-import club.psychose.library.ibo.core.datatypes.types.signed.Int64;
-import club.psychose.library.ibo.core.datatypes.types.signed.Int8;
-import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt16;
-import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt32;
-import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt64;
-import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt8;
+import club.psychose.library.ibo.core.datatypes.types.signed.*;
+import club.psychose.library.ibo.core.datatypes.types.unsigned.*;
 import club.psychose.library.ibo.core.io.BinaryFile;
 import club.psychose.library.ibo.enums.FileMode;
 import club.psychose.library.ibo.exceptions.ClosedException;
@@ -92,7 +86,7 @@ public final class TC0009BinaryFile extends Test {
                 return;
             } catch (IOException ignored) {}
 
-            // Check if every write method works without any issues.
+            // Check if every written method works without any issues.
             {
                 byte[] bytes = new byte[2];
                 bytes[0] = 0x9;
@@ -113,8 +107,10 @@ public final class TC0009BinaryFile extends Test {
             binaryFile.write((float) 3.4);
             binaryFile.write(4.5);
             binaryFile.write("LoveeYou<3<3<3");
+            binaryFile.write(new Int24(8));
+            binaryFile.write(new UInt24(9));
 
-            if (binaryFile.getFileOffsetPosition() != 0x3B) {
+            if (binaryFile.getFileOffsetPosition() != 0x41) {
                 this.failed("WRITE_OPERATION_FAILED");
                 return;
             }
@@ -123,21 +119,21 @@ public final class TC0009BinaryFile extends Test {
             binaryFile.enablePadding(0x10, (byte) 0xFF);
             binaryFile.write((byte) 0x43);
 
-            if (binaryFile.getFileOffsetPosition() != 0x4B) {
+            if (binaryFile.getFileOffsetPosition() != 0x51) {
                 this.failed("PADDING_OPERATION_FAILED_1");
                 return;
             }
 
             binaryFile.fill((byte) 0x2A, 2);
 
-            if (binaryFile.getFileOffsetPosition() != 0x5B) {
+            if (binaryFile.getFileOffsetPosition() != 0x61) {
                 this.failed("PADDING_OPERATION_FAILED_2");
                 return;
             }
 
             binaryFile.fillWithoutPadding((byte) 0x31, 0x05);
 
-            if (binaryFile.getFileOffsetPosition() != 0x60) {
+            if (binaryFile.getFileOffsetPosition() != 0x66) {
                 this.failed("PADDING_OPERATION_FAILED_3");
                 return;
             }
@@ -145,7 +141,7 @@ public final class TC0009BinaryFile extends Test {
             binaryFile.disablePadding();
             binaryFile.write(new Int8(12));
 
-            if (binaryFile.getFileOffsetPosition() != 0x61) {
+            if (binaryFile.getFileOffsetPosition() != 0x67) {
                 this.failed("PADDING_OPERATION_FAILED_4");
                 return;
             }
@@ -288,8 +284,18 @@ public final class TC0009BinaryFile extends Test {
                 return;
             }
 
-            if (binaryFile.getFileOffsetPosition() != 0x3B) {
+            if (binaryFile.readInt24().getValue() != 0x8) {
                 this.failed("READ_OPERATION_FAILED_25");
+                return;
+            }
+
+            if (binaryFile.readUInt24().getValue() != 0x9) {
+                this.failed("READ_OPERATION_FAILED_26");
+                return;
+            }
+
+            if (binaryFile.getFileOffsetPosition() != 0x41) {
+                this.failed("READ_OPERATION_FAILED_27");
                 return;
             }
 
@@ -324,7 +330,7 @@ public final class TC0009BinaryFile extends Test {
 
             long sequence1Offset = binaryFile.searchNextByteSequence(sequence1);
 
-            if (sequence1Offset != 0x3C) {
+            if (sequence1Offset != 0x42) {
                 this.failed("CHUNK_OPERATION_FAILED_4");
                 return;
             }
@@ -335,7 +341,7 @@ public final class TC0009BinaryFile extends Test {
 
             long sequence2Offset = binaryFile.searchNextHEXValue(sequence2);
 
-            if (sequence2Offset != 0x4C) {
+            if (sequence2Offset != 0x52) {
                 this.failed("CHUNK_OPERATION_FAILED_5");
                 return;
             }
