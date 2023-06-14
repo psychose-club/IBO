@@ -1033,6 +1033,10 @@ public final class BinaryFile extends FileByteManagement {
 
                 if (valid) {
                     this.setOffsetPosition(oldOffsetPosition);
+
+                    if (wasChunkUsageEnabled)
+                        this.setChunkUsage(true);
+
                     return (offsetAt + byteIndex);
                 }
 
