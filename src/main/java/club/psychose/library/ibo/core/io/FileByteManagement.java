@@ -40,6 +40,7 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.file.Path;
+import java.util.stream.IntStream;
 
 /**
  * The FileByteManagement class handles the management of the chunk reading or normal file reading for the {@link BinaryFile}.
@@ -373,6 +374,62 @@ class FileByteManagement {
             throw new RangeOutOfBoundsException("The calculated offset position is out of bounds!");
 
         return calculatedOffsetPosition;
+    }
+
+    /**
+     * This method searches for the next available offset position from a provided byte sequence / array.<p>
+     * Information: If the chunk mode is enabled, the usage of chunks will be ignored!<p>
+     * Also, be aware that large file can take up to a few minutes to look through!
+     * @param bytes The byte sequence to search.
+     * @return The next available offset position or -1 when nothing was found.
+     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
+    public long searchNextByteSequence (byte[] bytes) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
+        if (this.isClosed())
+            throw new ClosedException("The BinaryFile is closed!");
+
+        if (this.getFileMode().equals(FileMode.WRITE))
+            throw new InvalidFileModeException("Insufficient permissions to access the read methods in the WRITE mode!");
+
+        long newOffsetPosition = this.getFileOffsetPosition() + bytes.length;
+        if (newOffsetPosition > this.getFileLength())
+            return -1;
+
+        long oldOffsetPosition = this.getFileOffsetPosition();
+
+        boolean wasChunkUsageEnabled = this.isChunkUsageEnabled();
+        if (wasChunkUsageEnabled)
+            this.setChunkUsage(false);
+
+        byte[] byteBuffer = new byte[bytes.length];
+        long offsetPosition = oldOffsetPosition;
+        while (offsetPosition <= (this.getFileLength() - bytes.length)) {
+            this.randomAccessFile.seek(offsetPosition);
+            this.randomAccessFile.readFully(byteBuffer);
+
+            boolean notFound = IntStream.range(0, bytes.length).anyMatch(byteIndex -> byteBuffer[byteIndex] != bytes[byteIndex]);
+
+            if (!(notFound)) {
+                this.setOffsetPosition(oldOffsetPosition);
+
+                if (wasChunkUsageEnabled)
+                    this.setChunkUsage(true);
+
+                return offsetPosition;
+            }
+
+            offsetPosition ++;
+        }
+
+        this.setOffsetPosition(oldOffsetPosition);
+
+        if (wasChunkUsageEnabled)
+            this.setChunkUsage(true);
+
+        return -1;
     }
 
     /**
