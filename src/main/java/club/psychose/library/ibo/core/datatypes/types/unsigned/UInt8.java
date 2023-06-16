@@ -55,7 +55,7 @@ public final class UInt8 extends IBODataType<Short> {
         if (dataBytes.length < 1)
             throw new RangeOutOfBoundsException("The dataBytes are shorter than one byte.");
 
-        this.setValue((short) dataBytes[0]);
+        this.setValue((short) dataBytes[0] & 0xFF);
     }
 
     /**
