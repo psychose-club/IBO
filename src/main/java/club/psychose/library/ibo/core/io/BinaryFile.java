@@ -1043,7 +1043,7 @@ public final class BinaryFile extends FileByteManagement {
         if (this.isClosed())
             throw new ClosedException("The BinaryFile is closed!");
 
-        if (this.getFileMode().equals(FileMode.WRITE))
+        if (this.getFileMode().equals(FileMode.READ))
             throw new InvalidFileModeException("Insufficient permissions to access the write methods in the READ mode!");
 
         if (paddingChunkLength <= 0)
@@ -1063,7 +1063,7 @@ public final class BinaryFile extends FileByteManagement {
         if (this.isClosed())
             throw new ClosedException("The BinaryFile is closed!");
 
-        if (this.getFileMode().equals(FileMode.WRITE))
+        if (this.getFileMode().equals(FileMode.READ))
             throw new InvalidFileModeException("Insufficient permissions to access the write methods in the READ mode!");
 
         this.paddingEnabled = false;
@@ -1085,7 +1085,7 @@ public final class BinaryFile extends FileByteManagement {
         if (this.isClosed())
             throw new ClosedException("The BinaryFile is closed!");
 
-        if (this.getFileMode().equals(FileMode.READ))
+        if (this.getFileMode().equals(FileMode.WRITE))
             throw new InvalidFileModeException("Insufficient permissions to access the read methods in the WRITE mode!");
 
         if ((hexValue.length() % 2) != 0)
@@ -1111,7 +1111,7 @@ public final class BinaryFile extends FileByteManagement {
         if (this.isClosed())
             throw new ClosedException("The BinaryFile is closed!");
 
-        if (this.getFileMode().equals(FileMode.WRITE))
+        if (this.getFileMode().equals(FileMode.READ))
             throw new InvalidFileModeException("Insufficient permissions to access the write methods in the READ mode!");
 
         return this.paddingEnabled;
@@ -1127,7 +1127,7 @@ public final class BinaryFile extends FileByteManagement {
         if (this.isClosed())
             throw new ClosedException("The BinaryFile is closed!");
 
-        if (this.getFileMode().equals(FileMode.WRITE))
+        if (this.getFileMode().equals(FileMode.READ))
             throw new InvalidFileModeException("Insufficient permissions to access the write methods in the READ mode!");
 
         return (this.paddingEnabled) ? (this.paddingByte) : (-1);
@@ -1143,7 +1143,7 @@ public final class BinaryFile extends FileByteManagement {
         if (this.isClosed())
             throw new ClosedException("The BinaryFile is closed!");
 
-        if (this.getFileMode().equals(FileMode.WRITE))
+        if (this.getFileMode().equals(FileMode.READ))
             throw new InvalidFileModeException("Insufficient permissions to access the write methods in the READ mode!");
 
         return (this.paddingEnabled) ? (this.paddingChunkLength) : (-1);
