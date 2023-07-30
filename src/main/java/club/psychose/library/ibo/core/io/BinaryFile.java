@@ -199,8 +199,11 @@ public final class BinaryFile extends FileByteManagement {
         if (this.getFileMode().equals(FileMode.WRITE))
             throw new InvalidFileModeException("Insufficient permissions to access the read methods in the WRITE mode!");
 
-        if (length <= 0)
-            throw new RangeOutOfBoundsException("The length to read can't be negative or 0!");
+        if (length == 0)
+            return new byte[0];
+
+        if (length < 0)
+            throw new RangeOutOfBoundsException("The length to read can't be negative!");
 
         long newOffsetPosition = (this.getFileOffsetPosition() + length);
         if (newOffsetPosition > this.getFileLength())
@@ -681,7 +684,7 @@ public final class BinaryFile extends FileByteManagement {
             throw new RangeOutOfBoundsException("The provided offset position is out of bounds!");
 
         if (length <= 0)
-            throw new RangeOutOfBoundsException("The fill length is out of bounds!");
+            throw new RangeOutOfBoundsException("The fill length can't be negative or 0!");
 
         this.fillWithoutPadding(fillWithByte, length);
 
@@ -725,7 +728,7 @@ public final class BinaryFile extends FileByteManagement {
             throw new RangeOutOfBoundsException("The provided offset position is out of bounds!");
 
         if (length <= 0)
-            throw new RangeOutOfBoundsException("The fill length is out of bounds!");
+            throw new RangeOutOfBoundsException("The fill length can't be negative or 0!");
 
         byte[] fillBytes = new byte[length];
         Arrays.fill(fillBytes, fillWithByte);
@@ -1047,7 +1050,7 @@ public final class BinaryFile extends FileByteManagement {
             throw new InvalidFileModeException("Insufficient permissions to access the write methods in the READ mode!");
 
         if (paddingChunkLength <= 0)
-            throw new RangeOutOfBoundsException("The padding length is out of bounds!");
+            throw new RangeOutOfBoundsException("The padding length can't be negative or 0!");
 
         this.paddingEnabled = true;
         this.paddingByte = paddingByte;
