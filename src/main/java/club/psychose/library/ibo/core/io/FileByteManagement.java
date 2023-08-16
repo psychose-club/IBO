@@ -45,19 +45,16 @@ import java.util.stream.IntStream;
 /**
  * The FileByteManagement class handles the management of the chunk reading or normal file reading for the {@link BinaryFile}.
  */
-
 class FileByteManagement {
     private ByteBuffer byteBuffer;
     private ByteOrder byteOrder;
     private FileMode fileMode;
     private Path filePath;
     private RandomAccessFile randomAccessFile;
-
     private boolean closed;
     private boolean chunksUsed;
     private boolean chunkLengthSet;
     private boolean stayOnOffsetPosition;
-
     private int chunkLength;
     private int currentChunk;
     private int chunkOffsetPosition;
@@ -73,24 +70,16 @@ class FileByteManagement {
         this.resetChunkManagement();
     }
 
-/* PUBLIC METHODS. */
-    /**
-     * This method sets the {@link ByteBuffer} of the read bytes.
-     * @param value The {@link ByteBuffer}.
-     */
-    public void setByteOrder (ByteOrder value) {
-        this.byteOrder = value;
-
-        if (this.byteBuffer != null)
-            this.byteBuffer.order(value);
-    }
+    /* PUBLIC METHODS. */
 
     /**
      * This method sets the usage of the chunk system.
+     *
      * @param value The state if chunks should be used or not.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     *
+     * @throws ClosedException          This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException This exception will be thrown when the chunk length is not set.
+     * @throws IOException              This exception will be thrown when the chunk length is not set.
      */
     public void setChunkUsage (boolean value) throws ClosedException, InvalidFileModeException, IOException {
         if (this.isClosed())
@@ -108,11 +97,13 @@ class FileByteManagement {
 
     /**
      * This method sets the usage of the chunk system.
-     * @param value The state if chunks should be used or not.
+     *
+     * @param value       The state if chunks should be used or not.
      * @param chunkLength The chunk length that should be used.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void setChunkUsage (boolean value, int chunkLength) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -128,10 +119,12 @@ class FileByteManagement {
 
     /**
      * This method loads a specific chunk into the memory.
+     *
      * @param chunkNumber The chunk which should be loaded.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void loadChunkIntoTheMemory (int chunkNumber) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -140,11 +133,13 @@ class FileByteManagement {
 
     /**
      * This method loads a specific chunk into the memory.
-     * @param chunkNumber The chunk which should be loaded.
+     *
+     * @param chunkNumber         The chunk which should be loaded.
      * @param chunkOffsetPosition The chunk offset position from which should be started from.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void loadChunkIntoTheMemory (int chunkNumber, int chunkOffsetPosition) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -173,9 +168,10 @@ class FileByteManagement {
 
     /**
      * This method updates the bytes from the current chunk. (Useful when a third-party application accesses the file at the same time)
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void updateChunk () throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -195,69 +191,13 @@ class FileByteManagement {
     }
 
     /**
-     * This method sets the length of a single chunk.
-     * @param chunkLength The chunk length that should be used.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
-     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
-     */
-    public void setChunkLength (int chunkLength) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
-        if (this.isClosed())
-            throw new ClosedException("The BinaryFile is closed!");
-
-        if (this.fileMode.equals(FileMode.WRITE))
-            throw new InvalidFileModeException("Insufficient permissions to access the chunk methods in the WRITE mode!");
-
-        if ((chunkLength <= 0) || (chunkLength > this.getFileLength()))
-            throw new RangeOutOfBoundsException("An invalid chunk length was provided!");
-
-        this.chunkLengthSet = true;
-        this.chunkLength = chunkLength;
-
-        if (this.chunksUsed)
-            this.chunkOffsetPosition = this.calculateChunkOffsetPosition(this.offsetPosition);
-    }
-
-    /**
-     * This method sets the current chunk-offset position.
-     * @param chunkOffsetPosition The chunk-offset position.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
-     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
-     */
-    public void setChunkOffsetPosition (int chunkOffsetPosition) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
-        if (this.isClosed())
-            throw new ClosedException("The BinaryFile is closed!");
-
-        if (this.fileMode.equals(FileMode.WRITE))
-            throw new InvalidFileModeException("Insufficient permissions to access the chunk methods in the WRITE mode!");
-
-        if (!(this.isChunkUsageEnabled()))
-            throw new IOException("You need to enable the chunk usage before you can use the chunk methods!");
-
-        if (!(this.chunkLengthSet))
-            throw new IOException("You need to set the chunk length before you can update the chunks!");
-        
-        if (chunkOffsetPosition > this.chunkLength)
-            throw new RangeOutOfBoundsException("The chunk offset position is greater than the chunk length!");
-        
-        long fileOffsetPosition = (this.calculateChunk(this.offsetPosition) + chunkOffsetPosition);
-
-        if ((fileOffsetPosition < 0) || (fileOffsetPosition > this.getFileLength()))
-            throw new RangeOutOfBoundsException("The new offset position is out of bounds!");
-        
-        this.setOffsetPosition(fileOffsetPosition);
-        this.chunkOffsetPosition = chunkOffsetPosition;
-    }
-    
-    /**
      * This method sets the current file offset position to a new one.
+     *
      * @param offsetPosition The offset position which should be set to.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void setOffsetPosition (long offsetPosition) throws ClosedException, IOException, InvalidFileModeException, RangeOutOfBoundsException {
@@ -280,10 +220,12 @@ class FileByteManagement {
 
     /**
      * This method skips a specified number of bytes from the current offset position.
+     *
      * @param length The length of the bytes that should be skipped.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void skipOffsetPosition (long length) throws ClosedException, IOException, InvalidFileModeException, RangeOutOfBoundsException {
@@ -296,6 +238,7 @@ class FileByteManagement {
     /**
      * This method forces that the offset position wouldn't be updated after reading or writing bytes.<p>
      * Notice: This will be reset when the close function is called and setOffsetPosition or skipOffsetPosition also didn't update their offset position when this option is enabled.
+     *
      * @param value The state of the option.
      */
     public void setStayOnOffsetPosition (boolean value) {
@@ -304,9 +247,12 @@ class FileByteManagement {
 
     /**
      * This method returns the chunk from a provided offset position.
+     *
      * @param offsetPosition The offset position that should be calculated from.
+     *
      * @return The calculated chunk. (It is -1 when no chunk length is defined)
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     *
+     * @throws ClosedException          This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
      */
     public int calculateChunk (long offsetPosition) throws ClosedException, InvalidFileModeException {
@@ -324,11 +270,14 @@ class FileByteManagement {
 
     /**
      * This method calculates the chunk offset position from an offset position in a file.
+     *
      * @param offsetPosition The file offset position.
+     *
      * @return The chunk offset position.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     *
+     * @throws ClosedException          This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException This exception will be thrown when the chunk length is not set.
+     * @throws IOException              This exception will be thrown when the chunk length is not set.
      */
     public int calculateChunkOffsetPosition (long offsetPosition) throws ClosedException, InvalidFileModeException, IOException {
         if (this.isClosed())
@@ -348,11 +297,14 @@ class FileByteManagement {
 
     /**
      * This method calculates the start offset position from a chunk.
+     *
      * @param chunkNumber The chunk to calculate.
+     *
      * @return The calculated start offset position from the chunk.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public long calculateChunkStartOffsetPosition (int chunkNumber) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -380,11 +332,14 @@ class FileByteManagement {
      * This method searches for the next available offset position from a provided byte sequence / array.<p>
      * Information: If the chunk mode is enabled, the usage of chunks will be ignored!<p>
      * Also, be aware that large file can take up to a few minutes to look through!
+     *
      * @param bytes The byte sequence to search.
+     *
      * @return The next available offset position or -1 when nothing was found.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public long searchNextByteSequence (byte[] bytes) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -421,7 +376,7 @@ class FileByteManagement {
                 return offsetPosition;
             }
 
-            offsetPosition ++;
+            offsetPosition++;
         }
 
         this.setOffsetPosition(oldOffsetPosition);
@@ -434,7 +389,9 @@ class FileByteManagement {
 
     /**
      * This method returns the state if chunks are used or not.
+     *
      * @return The state if chunks are used.
+     *
      * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      */
     public boolean isChunkUsageEnabled () throws ClosedException {
@@ -446,6 +403,7 @@ class FileByteManagement {
 
     /**
      * This method returns the state if the {@link BinaryFile} is closed or not.
+     *
      * @return The state if it's closed or not.
      */
     public boolean isClosed () {
@@ -453,7 +411,18 @@ class FileByteManagement {
     }
 
     /**
+     * This method sets the closed state.<p>
+     * Notice: This method is only accessible for an inherited class.
+     *
+     * @param value The state of the boolean value.
+     */
+    protected void setClosed (boolean value) {
+        this.closed = value;
+    }
+
+    /**
      * This method returns the state if the offset position shouldn't be updated after an operation.
+     *
      * @return The state of the option.
      */
     public boolean isStayOnOffsetPositionEnabled () {
@@ -462,6 +431,7 @@ class FileByteManagement {
 
     /**
      * This method returns the current selected and used {@link ByteOrder}.
+     *
      * @return The current used {@link ByteOrder}.
      */
     public ByteOrder getByteOrder () {
@@ -469,9 +439,23 @@ class FileByteManagement {
     }
 
     /**
+     * This method sets the {@link ByteBuffer} of the read bytes.
+     *
+     * @param value The {@link ByteBuffer}.
+     */
+    public void setByteOrder (ByteOrder value) {
+        this.byteOrder = value;
+
+        if (this.byteBuffer != null)
+            this.byteBuffer.order(value);
+    }
+
+    /**
      * This method returns the current chunk length.
+     *
      * @return The current chunk length. (It is -1 when no chunk length is defined)
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     *
+     * @throws ClosedException          This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
      */
     public int getChunkLength () throws ClosedException, InvalidFileModeException {
@@ -488,9 +472,38 @@ class FileByteManagement {
     }
 
     /**
+     * This method sets the length of a single chunk.
+     *
+     * @param chunkLength The chunk length that should be used.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
+    public void setChunkLength (int chunkLength) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
+        if (this.isClosed())
+            throw new ClosedException("The BinaryFile is closed!");
+
+        if (this.fileMode.equals(FileMode.WRITE))
+            throw new InvalidFileModeException("Insufficient permissions to access the chunk methods in the WRITE mode!");
+
+        if ((chunkLength <= 0) || (chunkLength > this.getFileLength()))
+            throw new RangeOutOfBoundsException("An invalid chunk length was provided!");
+
+        this.chunkLengthSet = true;
+        this.chunkLength = chunkLength;
+
+        if (this.chunksUsed)
+            this.chunkOffsetPosition = this.calculateChunkOffsetPosition(this.offsetPosition);
+    }
+
+    /**
      * This method returns the current chunk offset position.
+     *
      * @return The chunk offset position. (It is -1 when the chunks aren't used)
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     *
+     * @throws ClosedException          This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
      */
     public int getChunkOffsetPosition () throws ClosedException, InvalidFileModeException {
@@ -507,9 +520,46 @@ class FileByteManagement {
     }
 
     /**
+     * This method sets the current chunk-offset position.
+     *
+     * @param chunkOffsetPosition The chunk-offset position.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
+    public void setChunkOffsetPosition (int chunkOffsetPosition) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
+        if (this.isClosed())
+            throw new ClosedException("The BinaryFile is closed!");
+
+        if (this.fileMode.equals(FileMode.WRITE))
+            throw new InvalidFileModeException("Insufficient permissions to access the chunk methods in the WRITE mode!");
+
+        if (!(this.isChunkUsageEnabled()))
+            throw new IOException("You need to enable the chunk usage before you can use the chunk methods!");
+
+        if (!(this.chunkLengthSet))
+            throw new IOException("You need to set the chunk length before you can update the chunks!");
+
+        if (chunkOffsetPosition > this.chunkLength)
+            throw new RangeOutOfBoundsException("The chunk offset position is greater than the chunk length!");
+
+        long fileOffsetPosition = (this.calculateChunk(this.offsetPosition) + chunkOffsetPosition);
+
+        if ((fileOffsetPosition < 0) || (fileOffsetPosition > this.getFileLength()))
+            throw new RangeOutOfBoundsException("The new offset position is out of bounds!");
+
+        this.setOffsetPosition(fileOffsetPosition);
+        this.chunkOffsetPosition = chunkOffsetPosition;
+    }
+
+    /**
      * This method returns the current used chunk.
+     *
      * @return The current used chunk. (It is -1 when the chunks aren't used)
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     *
+     * @throws ClosedException          This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
      */
     public int getCurrentChunk () throws ClosedException, InvalidFileModeException {
@@ -527,10 +577,12 @@ class FileByteManagement {
 
     /**
      * This method returns the remaining chunk bytes.
+     *
      * @return The remaining chunk bytes. (It is -1 when the chunks aren't used)
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     *
+     * @throws ClosedException          This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException This exception will be thrown when the chunk usage is not set.
+     * @throws IOException              This exception will be thrown when the chunk usage is not set.
      */
     public int getRemainingChunkBytes () throws ClosedException, InvalidFileModeException, IOException {
         if (this.isClosed())
@@ -547,7 +599,9 @@ class FileByteManagement {
 
     /**
      * This method returns the current selected {@link FileMode}.
+     *
      * @return The current {@link FileMode}.
+     *
      * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      */
     public FileMode getFileMode () throws ClosedException {
@@ -558,8 +612,20 @@ class FileByteManagement {
     }
 
     /**
+     * This method sets the used {@link FileMode}.<p>
+     * Notice: This method is only accessible for an inherited class.
+     *
+     * @param value The used {@link FileMode}.
+     */
+    protected void setFileMode (FileMode value) {
+        this.fileMode = value;
+    }
+
+    /**
      * This method returns the length of the current used file.
+     *
      * @return The length of the current used file.
+     *
      * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      */
     public long getFileLength () throws ClosedException {
@@ -569,9 +635,13 @@ class FileByteManagement {
         return this.filePath.toFile().length();
     }
 
+    /* PROTECTED METHODS. */
+
     /**
      * This method returns the current file-offset position.
+     *
      * @return The current file offset position.
+     *
      * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      */
     public long getFileOffsetPosition () throws ClosedException {
@@ -583,7 +653,9 @@ class FileByteManagement {
 
     /**
      * This method returns the {@link Path} of the current used file.
+     *
      * @return The {@link Path} of the current used file.
+     *
      * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      */
     public Path getFilePath () throws ClosedException {
@@ -593,9 +665,19 @@ class FileByteManagement {
         return this.filePath;
     }
 
-/* PROTECTED METHODS. */
+    /**
+     * This method sets the {@link Path} of the current used file.<p>
+     * Notice: This method is only accessible for an inherited class.
+     *
+     * @param filePath The used {@link Path}.
+     */
+    protected void setFilePath (Path filePath) {
+        this.filePath = filePath;
+    }
+
     /**
      * This method initializes the {@link ByteBuffer}.
+     *
      * @param capacity The maximum number of bytes that should be used.
      */
     protected void initializeByteBuffer (int capacity) {
@@ -649,11 +731,14 @@ class FileByteManagement {
 
     /**
      * This method reads bytes from a file into the memory and returns the bytes as an array.
+     *
      * @param length The length to read.
+     *
      * @return An array of bytes.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     protected byte[] readBytesFromFile (int length) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -675,9 +760,10 @@ class FileByteManagement {
 
     /**
      * This method checks the current chunk state.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     protected void checkChunk () throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -709,14 +795,17 @@ class FileByteManagement {
 
     /**
      * This method loads an entire chunk into the memory.
+     *
      * @param chunkStartOffsetPosition The start offset position from the chunk.
-     * @param chunkOffsetPosition The chunk offset position from which should be started from.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     * @param chunkOffsetPosition      The chunk offset position from which should be started from.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    protected void loadChunkIntoTheMemory (long chunkStartOffsetPosition, int chunkOffsetPosition) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
+    protected void loadChunkIntoTheMemory (long chunkStartOffsetPosition,
+                                           int chunkOffsetPosition) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The BinaryFile is closed!");
 
@@ -738,11 +827,13 @@ class FileByteManagement {
 
     /**
      * This method reads the bytes from the file into the memory.
+     *
      * @param offsetPosition The offset position where the reading should be started from.
-     * @param length The length to read.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     * @param length         The length to read.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     protected void readIntoTheMemory (long offsetPosition, int length) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -783,7 +874,8 @@ class FileByteManagement {
 
     /**
      * This method opens the random access file.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     *
+     * @throws ClosedException       This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      * @throws FileNotFoundException This exception will be thrown when the required file was not found.
      */
     protected void openRandomAccessFile () throws ClosedException, FileNotFoundException {
@@ -792,11 +884,13 @@ class FileByteManagement {
 
     /**
      * This method writes bytes to a file.
+     *
      * @param offsetPosition The offset position where should be started from.
-     * @param bytes The array of bytes.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     * @param bytes          The array of bytes.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     protected void writeBytes (long offsetPosition, byte[] bytes) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -840,35 +934,9 @@ class FileByteManagement {
     }
 
     /**
-     * This method sets the closed state.<p>
-     * Notice: This method is only accessible for an inherited class.
-     * @param value The state of the boolean value.
-     */
-    protected void setClosed (boolean value) {
-        this.closed = value;
-    }
-
-    /**
-     * This method sets the used {@link FileMode}.<p>
-     * Notice: This method is only accessible for an inherited class.
-     * @param value The used {@link FileMode}.
-     */
-    protected void setFileMode (FileMode value) {
-        this.fileMode = value;
-    }
-
-    /**
-     * This method sets the {@link Path} of the current used file.<p>
-     * Notice: This method is only accessible for an inherited class.
-     * @param filePath The used {@link Path}.
-     */
-    protected void setFilePath (Path filePath) {
-        this.filePath = filePath;
-    }
-
-    /**
      * This method returns the current used {@link ByteBuffer}.<p>
      * Notice: This method is only accessible for an inherited class.
+     *
      * @return The current used {@link ByteBuffer}.
      */
     protected ByteBuffer getByteBuffer () {

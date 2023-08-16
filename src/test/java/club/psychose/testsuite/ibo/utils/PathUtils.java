@@ -36,7 +36,9 @@ import java.nio.file.Paths;
 public final class PathUtils {
     // Folder constant.
     public static Path getTestSuiteFolderPath (String additionalPath) {
-        return additionalPath != null ? getOSPath(Paths.get(System.getProperty("user.home") + "\\psychose.club\\TestSuites\\IBO\\" + additionalPath)) : getOSPath(Paths.get(System.getProperty("user.home") + "\\psychose.club\\TestSuites\\IBO\\"));
+        return additionalPath != null
+               ? getOSPath(Paths.get(System.getProperty("user.home") + "\\psychose.club\\TestSuites\\IBO\\" + additionalPath))
+               : getOSPath(Paths.get(System.getProperty("user.home") + "\\psychose.club\\TestSuites\\IBO\\"));
     }
 
     // This returns a path with the valid file separators for the OS.

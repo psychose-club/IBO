@@ -33,7 +33,6 @@ import club.psychose.testsuite.ibo.utils.logging.ConsoleLogger;
 
 public abstract class Test {
     private final String testCaseName;
-
     private boolean succeed = false;
 
     public Test (String testCaseName) {

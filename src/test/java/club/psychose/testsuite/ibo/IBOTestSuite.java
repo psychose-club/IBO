@@ -40,12 +40,12 @@ public final class IBOTestSuite {
     private static final ArrayList<Test> testCasesArrayList = new ArrayList<>();
     private static short succeededTestCases = 0;
 
-    public static void main(String[] arguments) {
+    public static void main (String[] arguments) {
         registerTestCases();
         runTests();
     }
 
-    private static void registerTestCases() {
+    private static void registerTestCases () {
         // Data types.
         testCasesArrayList.add(new TC0001DatatypeInt8()); // Int8
         testCasesArrayList.add(new TC0002DatatypeUInt8()); // UInt8
@@ -68,7 +68,7 @@ public final class IBOTestSuite {
 
             test.executeTestCase();
             if (test.isPassed())
-                succeededTestCases ++;
+                succeededTestCases++;
 
             ConsoleLogger.printEmptyLine();
         });

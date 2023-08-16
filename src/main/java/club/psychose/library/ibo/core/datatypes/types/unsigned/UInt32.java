@@ -40,13 +40,14 @@ import java.util.Objects;
 /**
  * This class handles the UInt32 data type.
  */
-
 public final class UInt32 extends IBODataType<Long> {
     /**
      * The default constructor.<p>
      * Information: The byte array will be only using the first four bytes, more bytes will be thrown away.<p>
      * The default {@link ByteOrder} is the native order.
+     *
      * @param dataBytes The bytes that should be interpreted as {@link UInt32}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public UInt32 (byte[] dataBytes) throws RangeOutOfBoundsException {
@@ -58,7 +59,7 @@ public final class UInt32 extends IBODataType<Long> {
         if (dataBytes.length > 4) {
             byte[] newBytes = new byte[4];
 
-            for (byte index = 0; index < 4; index ++) {
+            for (byte index = 0; index < 4; index++) {
                 newBytes[index] = dataBytes[index];
             }
 
@@ -71,8 +72,10 @@ public final class UInt32 extends IBODataType<Long> {
     /**
      * The default constructor.<p>
      * Information: The byte array will be only using the first four bytes, more bytes will be thrown away.
+     *
      * @param dataBytes The bytes that should be interpreted as {@link UInt32}.
      * @param byteOrder The used {@link ByteOrder}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public UInt32 (byte[] dataBytes, ByteOrder byteOrder) throws RangeOutOfBoundsException {
@@ -84,7 +87,7 @@ public final class UInt32 extends IBODataType<Long> {
         if (dataBytes.length > 4) {
             byte[] newBytes = new byte[4];
 
-            for (byte index = 0; index < 4; index ++) {
+            for (byte index = 0; index < 4; index++) {
                 newBytes[index] = dataBytes[index];
             }
 
@@ -96,7 +99,9 @@ public final class UInt32 extends IBODataType<Long> {
 
     /**
      * The default constructor.
+     *
      * @param value The value that should be interpreted as {@link UInt32}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public UInt32 (byte value) throws RangeOutOfBoundsException {
@@ -105,7 +110,9 @@ public final class UInt32 extends IBODataType<Long> {
 
     /**
      * The default constructor.
+     *
      * @param value The value that should be interpreted as {@link UInt32}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public UInt32 (short value) throws RangeOutOfBoundsException {
@@ -114,7 +121,9 @@ public final class UInt32 extends IBODataType<Long> {
 
     /**
      * The default constructor.
+     *
      * @param value The value that should be interpreted as {@link UInt32}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public UInt32 (int value) throws RangeOutOfBoundsException {
@@ -123,7 +132,9 @@ public final class UInt32 extends IBODataType<Long> {
 
     /**
      * The default constructor.
+     *
      * @param value The value that should be interpreted as {@link UInt32}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public UInt32 (long value) throws RangeOutOfBoundsException {
@@ -134,7 +145,9 @@ public final class UInt32 extends IBODataType<Long> {
      * The default constructor.<p>
      * Information: The data type didn't handle floating points.<p>
      * So the floating points will be automatically cut from the value.
+     *
      * @param value The value that should be interpreted as {@link UInt32}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public UInt32 (float value) throws RangeOutOfBoundsException {
@@ -145,7 +158,9 @@ public final class UInt32 extends IBODataType<Long> {
      * The default constructor.<p>
      * Information: The data type didn't handle floating points.<p>
      * So the floating points will be automatically cut from the value.
+     *
      * @param value The value that should be interpreted as {@link UInt32}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public UInt32 (double value) throws RangeOutOfBoundsException {
@@ -154,7 +169,9 @@ public final class UInt32 extends IBODataType<Long> {
 
     /**
      * The default constructor.
+     *
      * @param value The value that should be interpreted as {@link UInt32}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public UInt32 (BigInteger value) throws RangeOutOfBoundsException {
@@ -163,7 +180,9 @@ public final class UInt32 extends IBODataType<Long> {
 
     /**
      * The default constructor.
+     *
      * @param value The value that should be interpreted as {@link UInt32}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public UInt32 (String value) throws RangeOutOfBoundsException {
@@ -171,8 +190,37 @@ public final class UInt32 extends IBODataType<Long> {
     }
 
     /**
+     * This method returns the length of the data type.
+     *
+     * @return {@link Short}
+     */
+    public static short getByteLength () {
+        return 4;
+    }
+
+    /**
+     * This method returns the minimum value for this data type.
+     *
+     * @return {@link Long}
+     */
+    public static long getMinimumValue () {
+        return 0;
+    }
+
+    /**
+     * This method returns the maximum value for this data type.
+     *
+     * @return {@link Long}
+     */
+    public static long getMaximumValue () {
+        return 4294967295L;
+    }
+
+    /**
      * This method sets a new value for the data type.
+     *
      * @param value The value that should be interpreted as {@link UInt32}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void setValue (byte value) throws RangeOutOfBoundsException {
@@ -187,7 +235,9 @@ public final class UInt32 extends IBODataType<Long> {
 
     /**
      * This method sets a new value for the data type.
+     *
      * @param value The value that should be interpreted as {@link UInt32}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void setValue (short value) throws RangeOutOfBoundsException {
@@ -200,7 +250,9 @@ public final class UInt32 extends IBODataType<Long> {
 
     /**
      * This method sets a new value for the data type.
+     *
      * @param value The value that should be interpreted as {@link UInt32}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void setValue (int value) throws RangeOutOfBoundsException {
@@ -213,7 +265,9 @@ public final class UInt32 extends IBODataType<Long> {
 
     /**
      * This method sets a new value for the data type.
+     *
      * @param value The value that should be interpreted as {@link UInt32}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     @Override
@@ -223,7 +277,9 @@ public final class UInt32 extends IBODataType<Long> {
 
     /**
      * This method sets a new value for the data type.
+     *
      * @param value The value that should be interpreted as {@link UInt32}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void setValue (long value) throws RangeOutOfBoundsException {
@@ -238,7 +294,9 @@ public final class UInt32 extends IBODataType<Long> {
      * This method sets a new value for the data type.<p>
      * Information: The data type didn't handle floating points.<p>
      * So the floating points will be automatically cut from the value.
+     *
      * @param value The value that should be interpreted as {@link UInt32}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void setValue (float value) throws RangeOutOfBoundsException {
@@ -253,7 +311,9 @@ public final class UInt32 extends IBODataType<Long> {
      * This method sets a new value for the data type.<p>
      * Information: The data type didn't handle floating points.<p>
      * So the floating points will be automatically cut from the value.
+     *
      * @param value The value that should be interpreted as {@link UInt32}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void setValue (double value) throws RangeOutOfBoundsException {
@@ -266,14 +326,17 @@ public final class UInt32 extends IBODataType<Long> {
 
     /**
      * This method sets a new value for the data type.
+     *
      * @param value The value that should be interpreted as {@link UInt32}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void setValue (BigInteger value) throws RangeOutOfBoundsException {
         BigInteger convertedMinimumValue = BigInteger.valueOf(getMinimumValue());
         BigInteger convertedMaximumValue = BigInteger.valueOf(getMaximumValue());
 
-        if (((value.compareTo(convertedMinimumValue) > 0) || (value.equals(convertedMinimumValue))) && ((value.compareTo(convertedMaximumValue) < 0) || (value.equals(convertedMaximumValue)))) {
+        if (((value.compareTo(convertedMinimumValue) > 0) || (value.equals(convertedMinimumValue))) && ((value.compareTo(convertedMaximumValue) < 0) || (value.equals(
+                convertedMaximumValue)))) {
             this.dataObject = value.longValue();
         } else {
             throw new RangeOutOfBoundsException("The value for the UInt32 data type is out of bounds!");
@@ -282,7 +345,9 @@ public final class UInt32 extends IBODataType<Long> {
 
     /**
      * This method sets a new value for the data type.
+     *
      * @param value The value that should be interpreted as {@link UInt32}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void setValue (String value) throws RangeOutOfBoundsException {
@@ -297,45 +362,27 @@ public final class UInt32 extends IBODataType<Long> {
 
     /**
      * This method returns the data type as an array of {@link Byte}.
+     *
      * @param byteOrder ByteOrder for the bytes.
+     *
      * @return An array of {@link Byte}
      */
     @Override
     public byte[] getAsBytes (ByteOrder byteOrder) throws RangeOutOfBoundsException {
-        byte[] longBytes = (byteOrder != null) ? (ByteBuffer.allocate(getByteLength() * 2).order(byteOrder).putLong(this.dataObject).array()) : (ByteBuffer.allocate(getByteLength() * 2).order(ByteOrder.nativeOrder()).putLong(this.dataObject).array());
+        byte[] longBytes = (byteOrder != null)
+                           ? (ByteBuffer.allocate(getByteLength() * 2).order(byteOrder).putLong(this.dataObject).array())
+                           : (ByteBuffer.allocate(getByteLength() * 2).order(ByteOrder.nativeOrder()).putLong(this.dataObject).array());
         return this.extractBytes(longBytes, byteOrder, 4, 4, false);
     }
 
     /**
      * This function compares the internal data type with another data object from the same type.
+     *
      * @param uInt32 The other data object.
+     *
      * @return True or False
      */
     public boolean equals (UInt32 uInt32) {
         return Objects.equals(this.dataObject, uInt32.getValue());
-    }
-
-    /**
-     * This method returns the length of the data type.
-     * @return {@link Short}
-     */
-    public static short getByteLength () {
-        return 4;
-    }
-
-    /**
-     * This method returns the minimum value for this data type.
-     * @return {@link Long}
-     */
-    public static long getMinimumValue () {
-        return 0;
-    }
-
-    /**
-     * This method returns the maximum value for this data type.
-     * @return {@link Long}
-     */
-    public static long getMaximumValue () {
-        return 4294967295L;
     }
 }

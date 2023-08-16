@@ -271,6 +271,8 @@ Don't forget to give the project a star! Thanks again!
 5. Push to the Branch (`git push origin FEATURE_NAME`)
 6. Open a Pull Request to the development branch
 
+Also, please make sure to use the following <a href="https://github.com/psychose-club/.github/tree/production/code/formats/">Templates</a>.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- LICENSE -->

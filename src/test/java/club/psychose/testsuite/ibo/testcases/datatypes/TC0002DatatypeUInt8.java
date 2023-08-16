@@ -38,7 +38,7 @@ import java.math.BigInteger;
 import java.nio.ByteOrder;
 
 public final class TC0002DatatypeUInt8 extends Test {
-    public TC0002DatatypeUInt8() {
+    public TC0002DatatypeUInt8 () {
         super("TC_0002_DATATYPE_UINT8");
     }
 
@@ -49,13 +49,15 @@ public final class TC0002DatatypeUInt8 extends Test {
             new UInt8(UInt8.getMinimumValue() - 1);
             this.failed("OUT_OF_BOUNDS_CHECK");
             return;
-        } catch (RangeOutOfBoundsException ignoredException) {}
+        } catch (RangeOutOfBoundsException ignoredException) {
+        }
 
         try {
             new UInt8(UInt8.getMaximumValue() + 1);
             this.failed("OUT_OF_BOUNDS_CHECK");
             return;
-        } catch (RangeOutOfBoundsException ignoredException) {}
+        } catch (RangeOutOfBoundsException ignoredException) {
+        }
 
         // Storing and fetching values.
         try {
