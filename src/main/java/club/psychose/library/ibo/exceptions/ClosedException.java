@@ -32,7 +32,6 @@ package club.psychose.library.ibo.exceptions;
 /**
  * This exception will be thrown when the {@link club.psychose.library.ibo.core.io.BinaryFile} is tried to be accessed while it's closed.
  */
-
 public final class ClosedException extends Exception {
     public ClosedException () {
         super();

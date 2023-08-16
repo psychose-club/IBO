@@ -41,6 +41,7 @@ import java.util.stream.IntStream;
 
 /**
  * This class provides the structure to create a number like data type.
+ *
  * @param <DataType> The type that handles the object from the new data type.
  */
 public abstract class IBODataType<DataType extends Number> {
@@ -51,13 +52,6 @@ public abstract class IBODataType<DataType extends Number> {
     }
 
     /**
-     * This method sets a new internal data object.
-     * @param value The new internal value.
-     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
-     */
-    public abstract void setValue (DataType value) throws RangeOutOfBoundsException;
-
-    /**
      * This method extracts the required bytes from the data type to return it as a byte array.<p>
      * The main problem is that the {@link ByteBuffer} didn't support the right extraction method to remove byte padding.<p>
      * As an example when we want to get short bytes but saved them as an Integer we cannot just convert the Integer as an array of bytes we need to remove the padding from it.<p>
@@ -65,12 +59,15 @@ public abstract class IBODataType<DataType extends Number> {
      * For a negative value we will cast the byte to an Integer with the masking of {@code 0xFF} and checking if the Integer contains the HEX string {@code FF} to interpret theses as padding byte.<p>
      * However, it can happen that the original data type has the exact padding byte also as bytes which we want to extract than too.<p>
      * When the padding is not yet happened we will reset an internal counter and write the bytes in the {@link ByteBuffer}.
-     * @param bytes The bytes to extract.
-     * @param byteOrder The ByteOrder how the bytes should be sorted.
-     * @param extractLength The length to extract.
+     *
+     * @param bytes             The bytes to extract.
+     * @param byteOrder         The ByteOrder how the bytes should be sorted.
+     * @param extractLength     The length to extract.
      * @param paddedBytesLength The bytes that are padded to the bytes.
-     * @param isValueNegative A negative value is using another padding detection algorithm than a positive one.
+     * @param isValueNegative   A negative value is using another padding detection algorithm than a positive one.
+     *
      * @return Extracted a byte array.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     protected byte[] extractBytes (byte[] bytes, ByteOrder byteOrder, int extractLength, int paddedBytesLength, boolean isValueNegative) throws RangeOutOfBoundsException {
@@ -95,7 +92,7 @@ public abstract class IBODataType<DataType extends Number> {
                 boolean indicatePaddingUsage = (isValueNegative) ? (Integer.toHexString(extractedByte & 0xFF).equalsIgnoreCase("FF")) : (extractedByte == 0x0);
 
                 if (indicatePaddingUsage) {
-                    paddingCount ++;
+                    paddingCount++;
 
                     if (paddingCount == paddedBytesLength) {
                         paddingFound = true;
@@ -121,7 +118,7 @@ public abstract class IBODataType<DataType extends Number> {
             }
 
             byteBuffer.put(extractedByte);
-            bytesFound ++;
+            bytesFound++;
         }
 
         return byteBuffer.array();
@@ -132,8 +129,10 @@ public abstract class IBODataType<DataType extends Number> {
      * When the {@link ByteOrder} is little endian the bytes will be reversed.<p>
      * To be honest, the method could also reverse the bytes from little endian to big endian,
      * but while Java interprets bytes as big endian, we do it too.
-     * @param bytes The byte array that should be returned.
+     *
+     * @param bytes     The byte array that should be returned.
      * @param byteOrder The {@link ByteOrder}.
+     *
      * @return The byte array.
      */
     protected byte[] getBytesAsBigEndianByteOrder (byte[] bytes, ByteOrder byteOrder) {
@@ -156,6 +155,7 @@ public abstract class IBODataType<DataType extends Number> {
 
     /**
      * This method returns the internal value of the data object.
+     *
      * @return The internal data object.
      */
     public DataType getValue () {
@@ -163,9 +163,20 @@ public abstract class IBODataType<DataType extends Number> {
     }
 
     /**
+     * This method sets a new internal data object.
+     *
+     * @param value The new internal value.
+     *
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
+    public abstract void setValue (DataType value) throws RangeOutOfBoundsException;
+
+    /**
      * This function converts the data type to a byte array with the correct byte length.<p>
      * As ByteOrder {@code null} will be inserted which means that the native ByteOrder should be used.
+     *
      * @return Byte Array
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public byte[] getAsBytes () throws RangeOutOfBoundsException {
@@ -174,14 +185,18 @@ public abstract class IBODataType<DataType extends Number> {
 
     /**
      * This function converts the data type to a byte array with the correct byte length.
+     *
      * @param byteOrder ByteOrder for the bytes.
+     *
      * @return Byte Array
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public abstract byte[] getAsBytes (ByteOrder byteOrder) throws RangeOutOfBoundsException;
 
     /**
      * Returns a hash code value for the object.
+     *
      * @return Hash code value for this object.
      */
     public int hashCode () {
@@ -190,6 +205,7 @@ public abstract class IBODataType<DataType extends Number> {
 
     /**
      * Returns the internal data type that is stored as a number as a string.
+     *
      * @return String
      */
     public String getAsString () {
@@ -198,8 +214,11 @@ public abstract class IBODataType<DataType extends Number> {
 
     /**
      * This function converts the byte array from the correct data type into a hexadecimal string.
+     *
      * @param hexFormat The format how the output should be printed.
+     *
      * @return String
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public String getAsHEXString (HEXFormat hexFormat) throws RangeOutOfBoundsException {
@@ -208,9 +227,12 @@ public abstract class IBODataType<DataType extends Number> {
 
     /**
      * This function converts the byte array from the correct data type into a hexadecimal string.
+     *
      * @param hexFormat The format how the output should be printed.
      * @param byteOrder The ByteOrder for the getAsByte function.
+     *
      * @return String
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public String getAsHEXString (HEXFormat hexFormat, ByteOrder byteOrder) throws RangeOutOfBoundsException {

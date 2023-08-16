@@ -39,7 +39,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 public final class TC0005DatatypeInt32 extends Test {
-    public TC0005DatatypeInt32() {
+    public TC0005DatatypeInt32 () {
         super("TC_0005_DATATYPE_INT32");
     }
 
@@ -50,13 +50,15 @@ public final class TC0005DatatypeInt32 extends Test {
             new Int32(Int32.getMinimumValue() - 1);
             this.failed("OUT_OF_BOUNDS_CHECK");
             return;
-        } catch (RangeOutOfBoundsException ignoredException) {}
+        } catch (RangeOutOfBoundsException ignoredException) {
+        }
 
         try {
             new Int32(Int32.getMaximumValue() + 1);
             this.failed("OUT_OF_BOUNDS_CHECK");
             return;
-        } catch (RangeOutOfBoundsException ignoredException) {}
+        } catch (RangeOutOfBoundsException ignoredException) {
+        }
 
         // Storing and fetching values.
         try {

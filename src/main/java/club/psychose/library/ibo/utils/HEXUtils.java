@@ -34,12 +34,13 @@ import club.psychose.library.ibo.enums.HEXFormat;
 /**
  * This class handles methods to convert specific values into their HEX values.
  */
-
 public final class HEXUtils {
     /**
      * This method converts the bytes into a HEX string.
-     * @param bytes The bytes to convert.
+     *
+     * @param bytes     The bytes to convert.
      * @param hexFormat The format that should be used to display the bytes.
+     *
      * @return {@link String}
      */
     public static String convertBytesToHEXString (byte[] bytes, HEXFormat hexFormat) {

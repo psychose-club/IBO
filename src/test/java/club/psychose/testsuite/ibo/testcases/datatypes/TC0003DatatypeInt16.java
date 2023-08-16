@@ -39,7 +39,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 public final class TC0003DatatypeInt16 extends Test {
-    public TC0003DatatypeInt16() {
+    public TC0003DatatypeInt16 () {
         super("TC_0003_DATATYPE_INT16");
     }
 
@@ -50,13 +50,15 @@ public final class TC0003DatatypeInt16 extends Test {
             new Int16(Int16.getMinimumValue() - 1);
             this.failed("OUT_OF_BOUNDS_CHECK");
             return;
-        } catch (RangeOutOfBoundsException ignoredException) {}
+        } catch (RangeOutOfBoundsException ignoredException) {
+        }
 
         try {
             new Int16(Int16.getMaximumValue() + 1);
             this.failed("OUT_OF_BOUNDS_CHECK");
             return;
-        } catch (RangeOutOfBoundsException ignoredException) {}
+        } catch (RangeOutOfBoundsException ignoredException) {
+        }
 
         // Storing and fetching values.
         try {

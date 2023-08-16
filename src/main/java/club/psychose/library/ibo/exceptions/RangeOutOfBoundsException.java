@@ -32,7 +32,6 @@ package club.psychose.library.ibo.exceptions;
 /**
  * This exception will be thrown when a value is not in the correct range.
  */
-
 public final class RangeOutOfBoundsException extends Exception {
     public RangeOutOfBoundsException () {
         super();

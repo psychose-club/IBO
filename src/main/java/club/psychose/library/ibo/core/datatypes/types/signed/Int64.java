@@ -41,13 +41,14 @@ import java.util.stream.IntStream;
 /**
  * This class handles the Int64 data type.
  */
-
 public final class Int64 extends IBODataType<BigInteger> {
     /**
      * The default constructor.<p>
      * Information: The byte array will be only using the first eight bytes, more bytes will be thrown away.<p>
      * The default {@link ByteOrder} is the native order.
+     *
      * @param dataBytes The bytes that should be interpreted as {@link Int64}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int64 (byte[] dataBytes) throws RangeOutOfBoundsException {
@@ -59,7 +60,7 @@ public final class Int64 extends IBODataType<BigInteger> {
         if (dataBytes.length > 8) {
             byte[] newBytes = new byte[8];
 
-            for (byte index = 0; index < 8; index ++) {
+            for (byte index = 0; index < 8; index++) {
                 newBytes[index] = dataBytes[index];
             }
 
@@ -72,8 +73,10 @@ public final class Int64 extends IBODataType<BigInteger> {
     /**
      * The default constructor.<p>
      * Information: The byte array will be only using the first eight bytes, more bytes will be thrown away.
+     *
      * @param dataBytes The bytes that should be interpreted as {@link Int64}.
      * @param byteOrder The used {@link ByteOrder}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int64 (byte[] dataBytes, ByteOrder byteOrder) throws RangeOutOfBoundsException {
@@ -85,7 +88,7 @@ public final class Int64 extends IBODataType<BigInteger> {
         if (dataBytes.length > 8) {
             byte[] newBytes = new byte[8];
 
-            for (byte index = 0; index < 8; index ++) {
+            for (byte index = 0; index < 8; index++) {
                 newBytes[index] = dataBytes[index];
             }
 
@@ -97,7 +100,9 @@ public final class Int64 extends IBODataType<BigInteger> {
 
     /**
      * The default constructor.
+     *
      * @param value The value that should be interpreted as {@link Int64}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int64 (byte value) throws RangeOutOfBoundsException {
@@ -106,7 +111,9 @@ public final class Int64 extends IBODataType<BigInteger> {
 
     /**
      * The default constructor.
+     *
      * @param value The value that should be interpreted as {@link Int64}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int64 (short value) throws RangeOutOfBoundsException {
@@ -115,7 +122,9 @@ public final class Int64 extends IBODataType<BigInteger> {
 
     /**
      * The default constructor.
+     *
      * @param value The value that should be interpreted as {@link Int64}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int64 (int value) throws RangeOutOfBoundsException {
@@ -124,7 +133,9 @@ public final class Int64 extends IBODataType<BigInteger> {
 
     /**
      * The default constructor.
+     *
      * @param value The value that should be interpreted as {@link Int64}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int64 (long value) throws RangeOutOfBoundsException {
@@ -135,7 +146,9 @@ public final class Int64 extends IBODataType<BigInteger> {
      * The default constructor.<p>
      * Information: The data type didn't handle floating points.<p>
      * So the floating points will be automatically cut from the value.
+     *
      * @param value The value that should be interpreted as {@link Int64}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int64 (float value) throws RangeOutOfBoundsException {
@@ -146,7 +159,9 @@ public final class Int64 extends IBODataType<BigInteger> {
      * The default constructor.<p>
      * Information: The data type didn't handle floating points.<p>
      * So the floating points will be automatically cut from the value.
+     *
      * @param value The value that should be interpreted as {@link Int64}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int64 (double value) throws RangeOutOfBoundsException {
@@ -155,7 +170,9 @@ public final class Int64 extends IBODataType<BigInteger> {
 
     /**
      * The default constructor.
+     *
      * @param value The value that should be interpreted as {@link Int64}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int64 (BigInteger value) throws RangeOutOfBoundsException {
@@ -164,7 +181,9 @@ public final class Int64 extends IBODataType<BigInteger> {
 
     /**
      * The default constructor.
+     *
      * @param value The value that should be interpreted as {@link Int64}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int64 (String value) throws RangeOutOfBoundsException {
@@ -172,8 +191,37 @@ public final class Int64 extends IBODataType<BigInteger> {
     }
 
     /**
+     * This method returns the length of the data type.
+     *
+     * @return {@link Short}
+     */
+    public static short getByteLength () {
+        return 8;
+    }
+
+    /**
+     * This method returns the minimum value for this data type.
+     *
+     * @return {@link BigInteger}
+     */
+    public static BigInteger getMinimumValue () {
+        return BigInteger.valueOf(-9223372036854775808L);
+    }
+
+    /**
+     * This method returns the maximum value for this data type.
+     *
+     * @return {@link BigInteger}
+     */
+    public static BigInteger getMaximumValue () {
+        return BigInteger.valueOf(9223372036854775807L);
+    }
+
+    /**
      * This method sets a new value for the data type.
+     *
      * @param value The value that should be interpreted as {@link Int64}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void setValue (byte value) throws RangeOutOfBoundsException {
@@ -186,7 +234,9 @@ public final class Int64 extends IBODataType<BigInteger> {
 
     /**
      * This method sets a new value for the data type.
+     *
      * @param value The value that should be interpreted as {@link Int64}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void setValue (short value) throws RangeOutOfBoundsException {
@@ -199,7 +249,9 @@ public final class Int64 extends IBODataType<BigInteger> {
 
     /**
      * This method sets a new value for the data type.
+     *
      * @param value The value that should be interpreted as {@link Int64}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void setValue (int value) throws RangeOutOfBoundsException {
@@ -212,7 +264,9 @@ public final class Int64 extends IBODataType<BigInteger> {
 
     /**
      * This method sets a new value for the data type.
+     *
      * @param value The value that should be interpreted as {@link Int64}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void setValue (long value) throws RangeOutOfBoundsException {
@@ -227,7 +281,9 @@ public final class Int64 extends IBODataType<BigInteger> {
      * This method sets a new value for the data type.<p>
      * Information: The data type didn't handle floating points.<p>
      * So the floating points will be automatically cut from the value.
+     *
      * @param value The value that should be interpreted as {@link Int64}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void setValue (float value) throws RangeOutOfBoundsException {
@@ -242,7 +298,9 @@ public final class Int64 extends IBODataType<BigInteger> {
      * This method sets a new value for the data type.<p>
      * Information: The data type didn't handle floating points.<p>
      * So the floating points will be automatically cut from the value.
+     *
      * @param value The value that should be interpreted as {@link Int64}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void setValue (double value) throws RangeOutOfBoundsException {
@@ -255,7 +313,9 @@ public final class Int64 extends IBODataType<BigInteger> {
 
     /**
      * This method sets a new value for the data type.
+     *
      * @param value The value that should be interpreted as {@link Int64}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     @Override
@@ -269,7 +329,9 @@ public final class Int64 extends IBODataType<BigInteger> {
 
     /**
      * This method sets a new value for the data type.
+     *
      * @param value The value that should be interpreted as {@link Int64}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void setValue (String value) throws RangeOutOfBoundsException {
@@ -279,7 +341,9 @@ public final class Int64 extends IBODataType<BigInteger> {
 
     /**
      * This method returns the data type as an array of {@link Byte}.
+     *
      * @param byteOrder ByteOrder for the bytes.
+     *
      * @return An array of {@link Byte}
      */
     @Override
@@ -299,34 +363,12 @@ public final class Int64 extends IBODataType<BigInteger> {
 
     /**
      * This function compares the internal data type with another data object from the same type.
+     *
      * @param int64 The other data object.
+     *
      * @return True or False
      */
     public boolean equals (Int64 int64) {
         return Objects.equals(this.dataObject, int64.getValue());
-    }
-
-    /**
-     * This method returns the length of the data type.
-     * @return {@link Short}
-     */
-    public static short getByteLength () {
-        return 8;
-    }
-
-    /**
-     * This method returns the minimum value for this data type.
-     * @return {@link BigInteger}
-     */
-    public static BigInteger getMinimumValue () {
-        return BigInteger.valueOf(-9223372036854775808L);
-    }
-
-    /**
-     * This method returns the maximum value for this data type.
-     * @return {@link BigInteger}
-     */
-    public static BigInteger getMaximumValue () {
-        return BigInteger.valueOf(9223372036854775807L);
     }
 }

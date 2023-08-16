@@ -32,7 +32,6 @@ package club.psychose.library.ibo.enums;
 /**
  * This enum represents the selectable output HEX formats.
  */
-
 public enum HEXFormat {
     LOWERCASE,
     UPPERCASE

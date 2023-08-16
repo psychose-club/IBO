@@ -9,7 +9,7 @@ import java.math.BigInteger;
 import java.nio.ByteOrder;
 
 public final class TC0010DatatypeInt24 extends Test {
-    public TC0010DatatypeInt24() {
+    public TC0010DatatypeInt24 () {
         super("TC_0010_DATATYPE_INT24");
     }
 
@@ -20,13 +20,15 @@ public final class TC0010DatatypeInt24 extends Test {
             new Int24(Int24.getMinimumValue() - 1);
             this.failed("OUT_OF_BOUNDS_CHECK");
             return;
-        } catch (RangeOutOfBoundsException ignoredException) {}
+        } catch (RangeOutOfBoundsException ignoredException) {
+        }
 
         try {
             new Int24(Int24.getMaximumValue() + 1);
             this.failed("OUT_OF_BOUNDS_CHECK");
             return;
-        } catch (RangeOutOfBoundsException ignoredException) {}
+        } catch (RangeOutOfBoundsException ignoredException) {
+        }
 
         // Storing and fetching values.
         try {

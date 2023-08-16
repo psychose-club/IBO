@@ -39,7 +39,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 public final class TC0007DatatypeInt64 extends Test {
-    public TC0007DatatypeInt64() {
+    public TC0007DatatypeInt64 () {
         super("TC_0007_DATATYPE_INT64");
     }
 
@@ -50,13 +50,15 @@ public final class TC0007DatatypeInt64 extends Test {
             new Int64(new BigInteger(Int64.getMinimumValue().toString()).subtract(BigInteger.valueOf(1)));
             this.failed("OUT_OF_BOUNDS_CHECK");
             return;
-        } catch (RangeOutOfBoundsException ignoredException) {}
+        } catch (RangeOutOfBoundsException ignoredException) {
+        }
 
         try {
             new Int64(new BigInteger(Int64.getMaximumValue().toString()).add(BigInteger.valueOf(1)));
             this.failed("OUT_OF_BOUNDS_CHECK");
             return;
-        } catch (RangeOutOfBoundsException ignoredException) {}
+        } catch (RangeOutOfBoundsException ignoredException) {
+        }
 
         // Storing and fetching values.
         try {

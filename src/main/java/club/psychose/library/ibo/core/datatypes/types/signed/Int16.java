@@ -40,13 +40,14 @@ import java.util.Objects;
 /**
  * This class handles the Int16 data type.
  */
-
 public final class Int16 extends IBODataType<Integer> {
     /**
      * The default constructor.<p>
      * Information: The byte array will be only using the first two bytes, more bytes will be thrown away.<p>
      * The default {@link ByteOrder} is the native order.
+     *
      * @param dataBytes The bytes that should be interpreted as {@link Int16}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int16 (byte[] dataBytes) throws RangeOutOfBoundsException {
@@ -58,7 +59,7 @@ public final class Int16 extends IBODataType<Integer> {
         if (dataBytes.length > 2) {
             byte[] newBytes = new byte[2];
 
-            for (byte index = 0; index < 2; index ++) {
+            for (byte index = 0; index < 2; index++) {
                 newBytes[index] = dataBytes[index];
             }
 
@@ -71,8 +72,10 @@ public final class Int16 extends IBODataType<Integer> {
     /**
      * The default constructor.<p>
      * Information: The byte array will be only using the first two bytes, more bytes will be thrown away.
+     *
      * @param dataBytes The bytes that should be interpreted as {@link Int16}.
      * @param byteOrder The used {@link ByteOrder}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int16 (byte[] dataBytes, ByteOrder byteOrder) throws RangeOutOfBoundsException {
@@ -84,7 +87,7 @@ public final class Int16 extends IBODataType<Integer> {
         if (dataBytes.length > 2) {
             byte[] newBytes = new byte[2];
 
-            for (byte index = 0; index < 2; index ++) {
+            for (byte index = 0; index < 2; index++) {
                 newBytes[index] = dataBytes[index];
             }
 
@@ -96,7 +99,9 @@ public final class Int16 extends IBODataType<Integer> {
 
     /**
      * The default constructor.
+     *
      * @param value The value that should be interpreted as {@link Int16}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int16 (byte value) throws RangeOutOfBoundsException {
@@ -105,7 +110,9 @@ public final class Int16 extends IBODataType<Integer> {
 
     /**
      * The default constructor.
+     *
      * @param value The value that should be interpreted as {@link Int16}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int16 (short value) throws RangeOutOfBoundsException {
@@ -114,7 +121,9 @@ public final class Int16 extends IBODataType<Integer> {
 
     /**
      * The default constructor.
+     *
      * @param value The value that should be interpreted as {@link Int16}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int16 (int value) throws RangeOutOfBoundsException {
@@ -123,7 +132,9 @@ public final class Int16 extends IBODataType<Integer> {
 
     /**
      * The default constructor.
+     *
      * @param value The value that should be interpreted as {@link Int16}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int16 (long value) throws RangeOutOfBoundsException {
@@ -134,7 +145,9 @@ public final class Int16 extends IBODataType<Integer> {
      * The default constructor.<p>
      * Information: The data type didn't handle floating points.<p>
      * So the floating points will be automatically cut from the value.
+     *
      * @param value The value that should be interpreted as {@link Int16}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int16 (float value) throws RangeOutOfBoundsException {
@@ -145,7 +158,9 @@ public final class Int16 extends IBODataType<Integer> {
      * The default constructor.<p>
      * Information: The data type didn't handle floating points.<p>
      * So the floating points will be automatically cut from the value.
+     *
      * @param value The value that should be interpreted as {@link Int16}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int16 (double value) throws RangeOutOfBoundsException {
@@ -154,7 +169,9 @@ public final class Int16 extends IBODataType<Integer> {
 
     /**
      * The default constructor.
+     *
      * @param value The value that should be interpreted as {@link Int16}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int16 (BigInteger value) throws RangeOutOfBoundsException {
@@ -163,7 +180,9 @@ public final class Int16 extends IBODataType<Integer> {
 
     /**
      * The default constructor.
+     *
      * @param value The value that should be interpreted as {@link Int16}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int16 (String value) throws RangeOutOfBoundsException {
@@ -171,8 +190,37 @@ public final class Int16 extends IBODataType<Integer> {
     }
 
     /**
+     * This method returns the length of the data type.
+     *
+     * @return {@link Short}
+     */
+    public static short getByteLength () {
+        return 2;
+    }
+
+    /**
+     * This method returns the minimum value for this data type.
+     *
+     * @return {@link Short}
+     */
+    public static short getMinimumValue () {
+        return -32768;
+    }
+
+    /**
+     * This method returns the maximum value for this data type.
+     *
+     * @return {@link Short}
+     */
+    public static short getMaximumValue () {
+        return 32767;
+    }
+
+    /**
      * This method sets a new value for the data type.
+     *
      * @param value The value that should be interpreted as {@link Int16}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void setValue (byte value) throws RangeOutOfBoundsException {
@@ -185,7 +233,9 @@ public final class Int16 extends IBODataType<Integer> {
 
     /**
      * This method sets a new value for the data type.
+     *
      * @param value The value that should be interpreted as {@link Int16}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void setValue (short value) throws RangeOutOfBoundsException {
@@ -198,7 +248,9 @@ public final class Int16 extends IBODataType<Integer> {
 
     /**
      * This method sets a new value for the data type.
+     *
      * @param value The value that should be interpreted as {@link Int16}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     @Override
@@ -208,7 +260,9 @@ public final class Int16 extends IBODataType<Integer> {
 
     /**
      * This method sets a new value for the data type.
+     *
      * @param value The value that should be interpreted as {@link Int16}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void setValue (int value) throws RangeOutOfBoundsException {
@@ -221,7 +275,9 @@ public final class Int16 extends IBODataType<Integer> {
 
     /**
      * This method sets a new value for the data type.
+     *
      * @param value The value that should be interpreted as {@link Int16}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void setValue (long value) throws RangeOutOfBoundsException {
@@ -236,7 +292,9 @@ public final class Int16 extends IBODataType<Integer> {
      * This method sets a new value for the data type.<p>
      * Information: The data type didn't handle floating points.<p>
      * So the floating points will be automatically cut from the value.
+     *
      * @param value The value that should be interpreted as {@link Int16}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void setValue (float value) throws RangeOutOfBoundsException {
@@ -251,7 +309,9 @@ public final class Int16 extends IBODataType<Integer> {
      * This method sets a new value for the data type.<p>
      * Information: The data type didn't handle floating points.<p>
      * So the floating points will be automatically cut from the value.
+     *
      * @param value The value that should be interpreted as {@link Int16}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void setValue (double value) throws RangeOutOfBoundsException {
@@ -264,14 +324,17 @@ public final class Int16 extends IBODataType<Integer> {
 
     /**
      * This method sets a new value for the data type.
+     *
      * @param value The value that should be interpreted as {@link Int16}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void setValue (BigInteger value) throws RangeOutOfBoundsException {
         BigInteger convertedMinimumValue = BigInteger.valueOf(getMinimumValue());
         BigInteger convertedMaximumValue = BigInteger.valueOf(getMaximumValue());
 
-        if (((value.compareTo(convertedMinimumValue) > 0) || (value.equals(convertedMinimumValue))) && ((value.compareTo(convertedMaximumValue) < 0) || (value.equals(convertedMaximumValue)))) {
+        if (((value.compareTo(convertedMinimumValue) > 0) || (value.equals(convertedMinimumValue))) && ((value.compareTo(convertedMaximumValue) < 0) || (value.equals(
+                convertedMaximumValue)))) {
             this.dataObject = value.intValue();
         } else {
             throw new RangeOutOfBoundsException("The value for the Int16 data type is out of bounds!");
@@ -280,7 +343,9 @@ public final class Int16 extends IBODataType<Integer> {
 
     /**
      * This method sets a new value for the data type.
+     *
      * @param value The value that should be interpreted as {@link Int16}.
+     *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void setValue (String value) throws RangeOutOfBoundsException {
@@ -295,46 +360,28 @@ public final class Int16 extends IBODataType<Integer> {
 
     /**
      * This method returns the data type as an array of {@link Byte}.
+     *
      * @param byteOrder ByteOrder for the bytes.
+     *
      * @return An array of {@link Byte}
      */
     @Override
     public byte[] getAsBytes (ByteOrder byteOrder) throws RangeOutOfBoundsException {
-        byte[] integerBytes = (byteOrder != null) ? (ByteBuffer.allocate(getByteLength() * 2).order(byteOrder).putInt(this.dataObject).array()) : (ByteBuffer.allocate(getByteLength() * 2).order(ByteOrder.nativeOrder()).putInt(this.dataObject).array());
+        byte[] integerBytes = (byteOrder != null)
+                              ? (ByteBuffer.allocate(getByteLength() * 2).order(byteOrder).putInt(this.dataObject).array())
+                              : (ByteBuffer.allocate(getByteLength() * 2).order(ByteOrder.nativeOrder()).putInt(this.dataObject).array());
         boolean isValueNegative = (this.dataObject < 0);
         return this.extractBytes(integerBytes, byteOrder, 2, 2, isValueNegative);
     }
 
     /**
      * This function compares the internal data type with another data object from the same type.
+     *
      * @param int16 The other data object.
+     *
      * @return True or False
      */
     public boolean equals (Int16 int16) {
         return Objects.equals(this.dataObject, int16.getValue());
-    }
-
-    /**
-     * This method returns the length of the data type.
-     * @return {@link Short}
-     */
-    public static short getByteLength () {
-        return 2;
-    }
-
-    /**
-     * This method returns the minimum value for this data type.
-     * @return {@link Short}
-     */
-    public static short getMinimumValue () {
-        return -32768;
-    }
-
-    /**
-     * This method returns the maximum value for this data type.
-     * @return {@link Short}
-     */
-    public static short getMaximumValue () {
-        return 32767;
     }
 }

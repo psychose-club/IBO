@@ -43,7 +43,8 @@ public final class TC0009BinaryFile extends Test {
                 binaryFile.getRemainingFileBytes();
                 this.failed("ACCESSED_METHOD_WITHOUT_OPENED_FILE"); // <- This shouldn't happen.
                 return;
-            } catch (ClosedException ignored) {}
+            } catch (ClosedException ignored) {
+            }
 
             // Open + close.
             binaryFile.open(filePath, 0x0);
@@ -54,7 +55,8 @@ public final class TC0009BinaryFile extends Test {
                 binaryFile.open(filePath, 0x2);
                 this.failed("POSITION_OUT_OF_BOUNDS_OPEN");
                 return;
-            } catch (RangeOutOfBoundsException ignored) {}
+            } catch (RangeOutOfBoundsException ignored) {
+            }
 
             // Check if invalid file mode exception is thrown when we try to access write methods in the read mode.
             binaryFile.open(filePath, 0x0, FileMode.READ);
@@ -63,7 +65,8 @@ public final class TC0009BinaryFile extends Test {
                 binaryFile.write(0x0);
                 this.failed("INVALID_FILE_MODE_1");
                 return;
-            } catch (InvalidFileModeException ignored) {}
+            } catch (InvalidFileModeException ignored) {
+            }
 
             binaryFile.close();
 
@@ -74,7 +77,8 @@ public final class TC0009BinaryFile extends Test {
                 binaryFile.readBytes(1);
                 this.failed("INVALID_FILE_MODE_2");
                 return;
-            } catch (InvalidFileModeException ignored) {}
+            } catch (InvalidFileModeException ignored) {
+            }
 
             binaryFile.close();
             // Check if an io exception is thrown when we try to access chunk methods without enabling the chunk mode.
@@ -84,7 +88,8 @@ public final class TC0009BinaryFile extends Test {
                 binaryFile.updateChunk();
                 this.failed("INVALID_FILE_MODE_3");
                 return;
-            } catch (IOException ignored) {}
+            } catch (IOException ignored) {
+            }
 
             // Check if every written method works without any issues.
             {
@@ -306,7 +311,8 @@ public final class TC0009BinaryFile extends Test {
                 binaryFile.setChunkUsage(true);
                 this.failed("CHUNK_OPERATION_FAILED_1");
                 return;
-            } catch (IOException ignored) {}
+            } catch (IOException ignored) {
+            }
 
             binaryFile.setChunkLength(0x10);
             binaryFile.setChunkUsage(true);

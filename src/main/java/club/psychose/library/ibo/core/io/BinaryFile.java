@@ -54,12 +54,11 @@ import java.util.Arrays;
  * Information: If you read something larger in the chunk mode than the chunk itself,
  * the missing bytes that are required for the read process will be read into the memory with the already read chunk.
  */
-
 public final class BinaryFile extends FileByteManagement {
     private boolean paddingEnabled;
     private byte paddingByte;
     private int paddingChunkLength;
-    
+
     /**
      * The default constructor.
      */
@@ -70,6 +69,7 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * The default constructor.
+     *
      * @param byteOrder Sets the default {@link ByteOrder} for the bytes.
      */
     public BinaryFile (ByteOrder byteOrder) {
@@ -80,15 +80,18 @@ public final class BinaryFile extends FileByteManagement {
     /**
      * This method opens the binary file.<p>
      * The default {@link FileMode} is READ_AND_WRITE.
-     * @param filePath The file path to the binary file.
+     *
+     * @param filePath                    The file path to the binary file.
      * @param startFromLastOffsetPosition When true, the offset position will be set to the last byte of the file instead of the first byte.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
-     * @throws OpenedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's opened.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
+     * @throws OpenedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's opened.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    public void open (Path filePath, boolean startFromLastOffsetPosition) throws ClosedException, InvalidFileModeException, IOException, OpenedException, RangeOutOfBoundsException {
+    public void open (Path filePath,
+                      boolean startFromLastOffsetPosition) throws ClosedException, InvalidFileModeException, IOException, OpenedException, RangeOutOfBoundsException {
         if (!(this.isClosed()))
             throw new OpenedException("The BinaryFile is already opened!");
 
@@ -97,16 +100,20 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method opens the binary file.
-     * @param filePath The file path to the binary file.
+     *
+     * @param filePath                    The file path to the binary file.
      * @param startFromLastOffsetPosition When true, the offset position will be set to the last byte of the file instead of the first byte.
-     * @param fileMode The {@link FileMode} that should be used.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
-     * @throws OpenedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's opened.
+     * @param fileMode                    The {@link FileMode} that should be used.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
+     * @throws OpenedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's opened.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    public void open (Path filePath, boolean startFromLastOffsetPosition, FileMode fileMode) throws ClosedException, InvalidFileModeException, IOException, OpenedException, RangeOutOfBoundsException {
+    public void open (Path filePath,
+                      boolean startFromLastOffsetPosition,
+                      FileMode fileMode) throws ClosedException, InvalidFileModeException, IOException, OpenedException, RangeOutOfBoundsException {
         if (!(this.isClosed()))
             throw new OpenedException("The BinaryFile is already opened!");
 
@@ -116,12 +123,14 @@ public final class BinaryFile extends FileByteManagement {
     /**
      * This method opens the binary file.
      * The default {@link FileMode} is READ_AND_WRITE.
-     * @param filePath The file path to the binary file.
+     *
+     * @param filePath            The file path to the binary file.
      * @param startOffsetPosition The file offset position that should be started from.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
-     * @throws OpenedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's opened.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
+     * @throws OpenedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's opened.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void open (Path filePath, long startOffsetPosition) throws ClosedException, InvalidFileModeException, IOException, OpenedException, RangeOutOfBoundsException {
@@ -133,16 +142,20 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method opens the binary file.
-     * @param filePath The file path to the binary file.
+     *
+     * @param filePath            The file path to the binary file.
      * @param startOffsetPosition The file offset position that should be started from.
-     * @param fileMode The {@link FileMode} that should be used.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
-     * @throws OpenedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's opened.
+     * @param fileMode            The {@link FileMode} that should be used.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
+     * @throws OpenedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's opened.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    public void open (Path filePath, long startOffsetPosition, FileMode fileMode) throws ClosedException, InvalidFileModeException, IOException, OpenedException, RangeOutOfBoundsException {
+    public void open (Path filePath,
+                      long startOffsetPosition,
+                      FileMode fileMode) throws ClosedException, InvalidFileModeException, IOException, OpenedException, RangeOutOfBoundsException {
         if (!(this.isClosed()))
             throw new OpenedException("The BinaryFile is already opened!");
 
@@ -185,11 +198,14 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method reads bytes from the file and returns it.
+     *
      * @param length The length that should be read.
+     *
      * @return An array of bytes.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public byte[] readBytes (int length) throws ClosedException, InvalidFileModeException, RangeOutOfBoundsException, IOException {
@@ -219,7 +235,7 @@ public final class BinaryFile extends FileByteManagement {
             this.readIntoTheMemory(this.calculateChunkStartOffsetPosition(this.calculateChunk(this.getFileOffsetPosition())), this.getChunkLength() + length);
 
         byte[] bytes = new byte[length];
-        for (int bufferIndex = 0; bufferIndex < length; bufferIndex ++) {
+        for (int bufferIndex = 0; bufferIndex < length; bufferIndex++) {
             bytes[bufferIndex] = this.getByteBuffer().get(this.getChunkOffsetPosition() + bufferIndex);
         }
 
@@ -230,10 +246,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method reads a byte from a file as {@link Int8}.
+     *
      * @return {@link Int8}
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int8 readInt8 () throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -265,10 +283,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method reads a byte from a file as {@link UInt8}.
+     *
      * @return {@link UInt8}
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public UInt8 readUInt8 () throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -300,10 +320,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method reads bytes from a file as {@link Int16}.
+     *
      * @return {@link Int16}
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int16 readInt16 () throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -331,10 +353,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method reads bytes from a file as {@link UInt16}.
+     *
      * @return {@link UInt16}
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public UInt16 readUInt16 () throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -362,10 +386,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method reads bytes from a file as {@link Int24}.
+     *
      * @return {@link Int24}
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int24 readInt24 () throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -393,10 +419,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method reads bytes from a file as {@link UInt24}.
+     *
      * @return {@link UInt24}
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public UInt24 readUInt24 () throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -424,10 +452,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method reads bytes from a file as {@link Int32}.
+     *
      * @return {@link Int32}
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int32 readInt32 () throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -455,10 +485,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method reads bytes from a file as {@link UInt32}.
+     *
      * @return {@link UInt32}
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public UInt32 readUInt32 () throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -486,10 +518,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method reads bytes from a file as {@link Int64}.
+     *
      * @return {@link Int64}
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public Int64 readInt64 () throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -517,10 +551,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method reads bytes from a file as {@link UInt64}.
+     *
      * @return {@link UInt64}
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public UInt64 readUInt64 () throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -548,10 +584,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method reads bytes from a file as {@link Float}.
+     *
      * @return {@link Float}
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public float readFloat () throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -581,10 +619,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method reads bytes from a file as {@link Double}.
+     *
      * @return {@link Double}
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public double readDouble () throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -614,11 +654,14 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method reads bytes from a file as {@link String}. Information: The charset used here is UTF-8!
+     *
      * @param length The length that should be read.
+     *
      * @return {@link String}
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public String readString (int length) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -627,12 +670,15 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method reads bytes from a file as {@link String}.
-     * @param length The length that should be read.
+     *
+     * @param length  The length that should be read.
      * @param charset The charset that should be used for the {@link String}
+     *
      * @return {@link String}
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public String readString (int length, Charset charset) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -652,11 +698,13 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method fills bytes from a specific length.
+     *
      * @param fillWithByte The byte to fill.
-     * @param length The length of the filling process.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     * @param length       The length of the filling process.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void fill (byte fillWithByte, int length) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -665,12 +713,14 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method fills bytes from a specific length.
+     *
      * @param offsetPositionToStartFrom The offset position from which should be started from to write.
-     * @param fillWithByte The byte to fill.
-     * @param length The length of the filling process.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     * @param fillWithByte              The byte to fill.
+     * @param length                    The length of the filling process.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void fill (long offsetPositionToStartFrom, byte fillWithByte, int length) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -696,11 +746,13 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method fills bytes from a specific length without the usage of padding if it's enabled.
+     *
      * @param fillWithByte The byte to fill.
-     * @param length The length of the filling process.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     * @param length       The length of the filling process.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void fillWithoutPadding (byte fillWithByte, int length) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -709,15 +761,19 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method fills bytes from a specific length without the usage of padding if it's enabled.
+     *
      * @param offsetPositionToStartFrom The offset position from which should be started from to write.
-     * @param fillWithByte The byte to fill.
-     * @param length The length of the filling process.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     * @param fillWithByte              The byte to fill.
+     * @param length                    The length of the filling process.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    public void fillWithoutPadding (long offsetPositionToStartFrom, byte fillWithByte, int length) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
+    public void fillWithoutPadding (long offsetPositionToStartFrom,
+                                    byte fillWithByte,
+                                    int length) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
         if (this.isClosed())
             throw new ClosedException("The BinaryFile is closed!");
 
@@ -738,10 +794,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method writes the given array of {@link Byte} into the file.
+     *
      * @param bytes The bytes that should be written.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void write (byte[] bytes) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -761,10 +819,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method writes an {@link Int8} into a file.
+     *
      * @param int8 The {@link Int8}.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void write (Int8 int8) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -779,10 +839,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method writes an {@link UInt8} into a file.
+     *
      * @param uInt8 The {@link UInt8}.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void write (UInt8 uInt8) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -797,10 +859,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method writes an {@link Int16} into a file.
+     *
      * @param int16 The {@link Int16}.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void write (Int16 int16) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -815,10 +879,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method writes an {@link UInt16} into a file.
+     *
      * @param uInt16 The {@link UInt16}.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void write (UInt16 uInt16) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -833,10 +899,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method writes an {@link Int24} into a file.
+     *
      * @param int24 The {@link Int24}.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void write (Int24 int24) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -851,10 +919,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method writes an {@link UInt24} into a file.
+     *
      * @param uInt24 The {@link UInt24}.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void write (UInt24 uInt24) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -869,10 +939,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method writes an {@link Int32} into a file.
+     *
      * @param int32 The {@link Int32}.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void write (Int32 int32) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -887,10 +959,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method writes an {@link UInt32} into a file.
+     *
      * @param uInt32 The {@link UInt32}.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void write (UInt32 uInt32) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -905,10 +979,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method writes an {@link Int64} into a file.
+     *
      * @param int64 The {@link Int64}.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void write (Int64 int64) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -923,10 +999,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method writes an {@link UInt64} into a file.
+     *
      * @param uInt64 The {@link UInt64}.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void write (UInt64 uInt64) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -941,10 +1019,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method writes an {@link Byte} into a file.
+     *
      * @param byteValue The {@link Byte}.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void write (byte byteValue) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -959,10 +1039,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method writes an {@link Float} into a file.
+     *
      * @param floatValue The {@link Float}.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void write (float floatValue) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -977,10 +1059,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method writes an {@link Double} into a file.
+     *
      * @param doubleValue The {@link Double}.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void write (double doubleValue) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -995,10 +1079,12 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method writes an {@link String} into a file. Information: The charset used here is UTF-8!
+     *
      * @param stringValue The {@link String}.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void write (String stringValue) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -1013,11 +1099,13 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method writes an {@link String} into a file. Information: The charset used here is UTF-8!
+     *
      * @param stringValue The {@link String}.
-     * @param charset The {@link Charset}.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     * @param charset     The {@link Charset}.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void write (String stringValue, Charset charset) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -1036,10 +1124,12 @@ public final class BinaryFile extends FileByteManagement {
      * {@code Padding Chunk Length: 20} and {@code Fill length: 15} = {@code Padding Length: 5}<p>
      * {@code Padding Chunk Length: 20} and {@code Fill length: 21} = {@code Padding Length: 19}<p>
      * {@code Padding Chunk Length: 13} and {@code Fill length: 56} = {@code Padding Length: 9}<p>
+     *
      * @param paddingChunkLength The padding length of the file chunks.
-     * @param paddingByte The byte that should be used for the padding process.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @param paddingByte        The byte that should be used for the padding process.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public void enablePadding (int paddingChunkLength, byte paddingByte) throws ClosedException, InvalidFileModeException, RangeOutOfBoundsException {
@@ -1059,7 +1149,8 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method disables the padding for the writing process.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     *
+     * @throws ClosedException          This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
      */
     public void disablePadding () throws ClosedException, InvalidFileModeException {
@@ -1077,11 +1168,14 @@ public final class BinaryFile extends FileByteManagement {
     /**
      * This method searches for the next available offset position from a specific HEX value.
      * Information: If the chunk mode is enabled, the usage of chunks will be ignored!
+     *
      * @param hexValue The HEX string.
+     *
      * @return The next available offset position or -1 when nothing was found.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
     public long searchNextHEXValue (String hexValue) throws ClosedException, InvalidFileModeException, IOException, RangeOutOfBoundsException {
@@ -1106,8 +1200,10 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method returns the state if padding is enabled or disabled.
+     *
      * @return The padding state.
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     *
+     * @throws ClosedException          This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
      */
     public boolean isPaddingEnabled () throws ClosedException, InvalidFileModeException {
@@ -1122,8 +1218,10 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method returns the used padding byte.
+     *
      * @return The padding byte. (It is -1 when the padding is disabled)
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     *
+     * @throws ClosedException          This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
      */
     public byte getPaddingByte () throws ClosedException, InvalidFileModeException {
@@ -1138,8 +1236,10 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method returns the used padding chunk length.
+     *
      * @return The padding length. (It is -1 when the padding is disabled)
-     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     *
+     * @throws ClosedException          This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
      */
     public int getPaddingChunkLength () throws ClosedException, InvalidFileModeException {
@@ -1154,7 +1254,9 @@ public final class BinaryFile extends FileByteManagement {
 
     /**
      * This method returns the remaining number of bytes until the file ends.
+     *
      * @return The remaining bytes until the end of the file.
+     *
      * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      */
     public long getRemainingFileBytes () throws ClosedException {
