@@ -254,6 +254,24 @@ class Foo {
 }
 ```
 
+<h3>BitUtils</h3>
+_Extracting bits from a data type._
+```java
+class Foo {
+    public void bar () {
+        try {
+            Int8 int8 = new Int8(12);
+
+            // The result should be 0000 0100 (4)
+            long int8BitResult = BitUtils.extractBits(int8, 0, 2);
+            System.out.println("Result: " + int8BitResult);
+        } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
+            rangeOutOfBoundsException.printStackTrace();
+        }
+    }
+}
+```
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTRIBUTING -->
