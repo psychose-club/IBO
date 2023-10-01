@@ -32,6 +32,7 @@ package club.psychose.testsuite.ibo;
 import club.psychose.testsuite.ibo.testcases.Test;
 import club.psychose.testsuite.ibo.testcases.datatypes.*;
 import club.psychose.testsuite.ibo.testcases.io.TC0009BinaryFile;
+import club.psychose.testsuite.ibo.testcases.utils.TC0012BitUtils;
 import club.psychose.testsuite.ibo.utils.logging.ConsoleLogger;
 
 import java.util.ArrayList;
@@ -61,6 +62,9 @@ public final class IBOTestSuite {
 
         // IO
         testCasesArrayList.add(new TC0009BinaryFile()); // BinaryFile
+
+        // Utils
+        testCasesArrayList.add(new TC0012BitUtils());
     }
 
     private static void runTests () {
