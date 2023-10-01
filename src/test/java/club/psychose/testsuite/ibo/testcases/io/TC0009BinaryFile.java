@@ -35,7 +35,7 @@ public final class TC0009BinaryFile extends Test {
             // Test part.
             BinaryFile binaryFile = new BinaryFile(ByteOrder.BIG_ENDIAN);
 
-            // Check if nothing will be thrown when close is called without open called before.
+            // Check if nothing will be thrown when close is called without an open called before.
             binaryFile.close();
 
             // Try to access a method without that the file is opened.
@@ -70,7 +70,7 @@ public final class TC0009BinaryFile extends Test {
 
             binaryFile.close();
 
-            // Check if invalid file mode exception is thrown when we try to access read methods in the write mode.
+            // Check if invalid file mode exception is thrown when we try to access read methods in the written mode.
             binaryFile.open(filePath, 0x0, FileMode.WRITE);
 
             try {
