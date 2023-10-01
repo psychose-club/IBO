@@ -35,9 +35,10 @@ import club.psychose.testsuite.ibo.testcases.io.TC0009BinaryFile;
 import club.psychose.testsuite.ibo.utils.logging.ConsoleLogger;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public final class IBOTestSuite {
-    private static final ArrayList<Test> testCasesArrayList = new ArrayList<>();
+    private static final List<Test> testCasesArrayList = new ArrayList<>();
     private static short succeededTestCases = 0;
 
     public static void main (String[] arguments) {
@@ -73,7 +74,7 @@ public final class IBOTestSuite {
             ConsoleLogger.printEmptyLine();
         });
 
-        if (testCasesArrayList.size() != 0) {
+        if (!(testCasesArrayList.isEmpty())) {
             if (testCasesArrayList.size() == succeededTestCases) {
                 ConsoleLogger.printConsole("[SUCCESS] All " + succeededTestCases + " TestCases passed successfully!");
             } else {

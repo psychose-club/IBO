@@ -37,6 +37,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.stream.IntStream;
 
 /**
@@ -140,7 +141,7 @@ public abstract class IBODataType<DataType extends Number> {
             byteOrder = ByteOrder.nativeOrder();
 
         if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
-            ArrayList<Byte> byteArrayList = new ArrayList<>();
+            List<Byte> byteArrayList = new ArrayList<>();
 
             for (Byte arrayByte : bytes) {
                 byteArrayList.add(arrayByte);
