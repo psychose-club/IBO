@@ -189,12 +189,21 @@ public final class Int24 extends IBODataType<Integer> {
     }
 
     /**
-     * This method returns the length of the data type.
+     * This method returns the byte length of the data type.
      *
      * @return {@link Short}
      */
     public static short getByteLength () {
         return 3;
+    }
+
+    /**
+     * This method returns the bit length of the data type.
+     *
+     * @return {@link Short}
+     */
+    public static short getBitLength () {
+        return 24;
     }
 
     /**
