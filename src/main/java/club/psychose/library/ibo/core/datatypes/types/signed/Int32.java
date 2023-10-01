@@ -190,12 +190,21 @@ public final class Int32 extends IBODataType<Long> {
     }
 
     /**
-     * This method returns the length of the data type.
+     * This method returns the byte length of the data type.
      *
      * @return {@link Short}
      */
     public static short getByteLength () {
         return 4;
+    }
+
+    /**
+     * This method returns the bit length of the data type.
+     *
+     * @return {@link Short}
+     */
+    public static short getBitLength () {
+        return 32;
     }
 
     /**
