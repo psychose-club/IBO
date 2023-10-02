@@ -255,6 +255,7 @@ class Foo {
 ```
 
 <h3>BitUtils</h3>
+
 _Extracting bits from a data type._
 
 ```java
