@@ -5,7 +5,7 @@ import club.psychose.library.ibo.core.datatypes.types.unsigned.*;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
 
 /**
- * This class handles methods that related with bits.
+ * This class handles methods that are related with bits.
  */
 public final class BitUtils {
     /**
