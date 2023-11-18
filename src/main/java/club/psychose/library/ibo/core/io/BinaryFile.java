@@ -45,6 +45,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 
 /**
@@ -1119,6 +1120,256 @@ public final class BinaryFile extends FileByteManagement {
     }
 
     /**
+     * This method copies this binary file object into another file.<p>
+     * WARNING: The file will probably be overwritten.
+     *
+     * @param filePathToCopyTo The file to create and write to. (If it already exists, it will be overwritten!)
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
+     * @throws OpenedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's opened.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
+    public void copy (Path filePathToCopyTo) throws ClosedException, InvalidFileModeException, IOException, OpenedException, RangeOutOfBoundsException {
+        if (this.isClosed())
+            throw new ClosedException("The BinaryFile is closed!");
+
+        if (this.getFileMode().equals(FileMode.WRITE))
+            throw new InvalidFileModeException("Insufficient permissions to access the read methods in the WRITE mode!");
+
+        this.copy(ByteOrder.nativeOrder(), filePathToCopyTo, true);
+    }
+
+    /**
+     * This method copies this binary file object into another file.<p>
+     * WARNING: If nativeCopy is {@code true} the file will probably be overwritten.
+     *
+     * @param filePathToCopyTo The file to create and write to. (If it already exists, it will be overwritten!)
+     * @param nativeCopy       If {@code true} we'll use Files.copy() instead of reading and writing the BinaryFile objects with class methods.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
+     * @throws OpenedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's opened.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
+    public void copy (Path filePathToCopyTo, boolean nativeCopy) throws ClosedException, InvalidFileModeException, IOException, OpenedException, RangeOutOfBoundsException {
+        if (this.isClosed())
+            throw new ClosedException("The BinaryFile is closed!");
+
+        if (this.getFileMode().equals(FileMode.WRITE))
+            throw new InvalidFileModeException("Insufficient permissions to access the read methods in the WRITE mode!");
+
+        this.copy(ByteOrder.nativeOrder(), filePathToCopyTo, nativeCopy);
+    }
+
+    /**
+     * This method copies this binary file object into another file.<p>
+     * WARNING: The file will probably be overwritten.
+     *
+     * @param byteOrder        The {@link ByteOrder} to use.
+     * @param filePathToCopyTo The file to create and write to. (If it already exists, it will be overwritten!)
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
+     * @throws OpenedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's opened.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
+    public void copy (ByteOrder byteOrder, Path filePathToCopyTo) throws ClosedException, InvalidFileModeException, IOException, OpenedException, RangeOutOfBoundsException {
+        if (this.isClosed())
+            throw new ClosedException("The BinaryFile is closed!");
+
+        if (this.getFileMode().equals(FileMode.WRITE))
+            throw new InvalidFileModeException("Insufficient permissions to access the read methods in the WRITE mode!");
+
+        this.copy(byteOrder, filePathToCopyTo, true);
+    }
+
+    /**
+     * This method copies this binary file object into another file.<p>
+     * WARNING: If nativeCopy is {@code true} the file will probably be overwritten.
+     *
+     * @param byteOrder        The {@link ByteOrder} to use.
+     * @param filePathToCopyTo The file to create and write to. (If it already exists, it will be overwritten!)
+     * @param nativeCopy       If {@code true} we'll use Files.copy() instead of reading and writing the BinaryFile objects with class methods.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
+     * @throws OpenedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's opened.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
+    public void copy (ByteOrder byteOrder,
+                      Path filePathToCopyTo,
+                      boolean nativeCopy) throws ClosedException, InvalidFileModeException, IOException, OpenedException, RangeOutOfBoundsException {
+        if (this.isClosed())
+            throw new ClosedException("The BinaryFile is closed!");
+
+        if (this.getFileMode().equals(FileMode.WRITE))
+            throw new InvalidFileModeException("Insufficient permissions to access the read methods in the WRITE mode!");
+
+        // Deletes the file if it already exists.
+        Files.deleteIfExists(filePathToCopyTo);
+
+        // If nativeCopy is enabled, we'll copy it with Files.copy().
+        if (nativeCopy) {
+            Files.copy(this.getFilePath(), filePathToCopyTo);
+            return;
+        }
+
+        // Creates the file.
+        Files.createFile(filePathToCopyTo);
+
+        // Opens a default binary file object to copy to.
+        BinaryFile binaryFile = new BinaryFile(byteOrder);
+        binaryFile.open(filePathToCopyTo, 0x0, FileMode.WRITE);
+
+        // Copies the content of this object to the other object.
+        this.copy(binaryFile);
+
+        // Closes the binary file.
+        binaryFile.close();
+    }
+
+    /**
+     * This method copies this binary file object into another file.<p>
+     * WARNING: The file will probably be overwritten and chunk usage will automatically be disabled if you are in the WRITE only mode.
+     *
+     * @param binaryFileObjectToCopyTo The {@link BinaryFile} to write to.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
+     * @throws OpenedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's opened.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
+    public void copy (BinaryFile binaryFileObjectToCopyTo) throws ClosedException, InvalidFileModeException, IOException, OpenedException, RangeOutOfBoundsException {
+        if (this.isClosed())
+            throw new ClosedException("The BinaryFile is closed!");
+
+        if (this.getFileMode().equals(FileMode.WRITE))
+            throw new InvalidFileModeException("Insufficient permissions to access the read methods in the WRITE mode!");
+
+        if (binaryFileObjectToCopyTo.getFileMode().equals(FileMode.READ))
+            throw new InvalidFileModeException("Insufficient permissions for the binary file to copy to, to access the write methods in the READ mode!");
+
+        // Copies the object with the native copy mode.
+        this.copy(binaryFileObjectToCopyTo, true);
+    }
+
+    /**
+     * This method copies this binary file object into another file.<p>
+     * WARNING:<p>
+     * If nativeCopy is {@code true} the file will probably be overwritten and chunk usage will automatically be disabled, if you are in the WRITE only mode.
+     * If nativeCopy is {@code false} and you set the offset position somewhere in the file, the copied bytes will most likely overwrite the written bytes in the file!
+     *
+     * @param binaryFileObjectToCopyTo The {@link BinaryFile} to write to.
+     * @param nativeCopy               If {@code true} we'll use Files.copy() instead of reading and writing the BinaryFile objects with class methods.
+     *
+     * @throws ClosedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
+     * @throws InvalidFileModeException  This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws IOException               Signals that an I/O exception of some sort has occurred.
+     * @throws OpenedException           This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's opened.
+     * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
+     */
+    public void copy (BinaryFile binaryFileObjectToCopyTo,
+                      boolean nativeCopy) throws ClosedException, InvalidFileModeException, IOException, OpenedException, RangeOutOfBoundsException {
+        if (this.isClosed())
+            throw new ClosedException("The BinaryFile is closed!");
+
+        if (this.getFileMode().equals(FileMode.WRITE))
+            throw new InvalidFileModeException("Insufficient permissions to access the read methods in the WRITE mode!");
+
+        if (binaryFileObjectToCopyTo.getFileMode().equals(FileMode.READ))
+            throw new InvalidFileModeException("Insufficient permissions for the binary file to copy to, to access the write methods in the READ mode!");
+
+        // If nativeCopy is enabled, we'll copy it with Files.copy().
+        if (nativeCopy) {
+            Path originalFilePath = binaryFileObjectToCopyTo.getFilePath();
+            Path temporaryFilePath = Paths.get(binaryFileObjectToCopyTo.getFilePath() + ".temp");
+            Files.deleteIfExists(temporaryFilePath);
+
+            Files.copy(this.getFilePath(), temporaryFilePath);
+
+            // Saving file configuration.
+            boolean chunkUsageEnabled = binaryFileObjectToCopyTo.isChunkUsageEnabled();
+            boolean stayOnOffsetPosition = binaryFileObjectToCopyTo.isStayOnOffsetPositionEnabled();
+            long offsetPosition = binaryFileObjectToCopyTo.getFileOffsetPosition();
+            FileMode fileMode = binaryFileObjectToCopyTo.getFileMode();
+
+            // Saving the configuration for READ mode objects.
+            boolean paddingEnabled = false;
+            byte paddingByte = (byte) 0;
+            int chunkLength = -1;
+            int chunkOffsetPosition = -1;
+            int paddingChunkLength = -1;
+
+            if (!(fileMode.equals(FileMode.WRITE))) {
+                paddingEnabled = binaryFileObjectToCopyTo.isPaddingEnabled();
+                paddingByte = binaryFileObjectToCopyTo.getPaddingByte();
+                chunkLength = binaryFileObjectToCopyTo.getChunkLength();
+                chunkOffsetPosition = binaryFileObjectToCopyTo.getChunkOffsetPosition();
+                paddingChunkLength = binaryFileObjectToCopyTo.getPaddingChunkLength();
+            }
+
+            // Closing the binary file.
+            binaryFileObjectToCopyTo.close();
+
+            // Deleting the original file and renaming the temporary file.
+            Files.deleteIfExists(originalFilePath);
+            Files.move(temporaryFilePath, originalFilePath);
+
+            // Open the new file and load the configuration.
+            binaryFileObjectToCopyTo.open(originalFilePath, offsetPosition, fileMode);
+            binaryFileObjectToCopyTo.setStayOnOffsetPosition(stayOnOffsetPosition);
+
+            // Loading the READ mode object configuration.
+            if (!(fileMode.equals(FileMode.WRITE))) {
+                if (paddingEnabled)
+                    binaryFileObjectToCopyTo.enablePadding(paddingChunkLength, paddingByte);
+
+                if (chunkUsageEnabled) {
+                    binaryFileObjectToCopyTo.setChunkUsage(true, chunkLength);
+                    binaryFileObjectToCopyTo.setChunkOffsetPosition(chunkOffsetPosition);
+                }
+            }
+
+            // Deleting the temporary file.
+            Files.deleteIfExists(temporaryFilePath);
+            return;
+        }
+
+        // Jumps to the first position of this file.
+        long currentOffsetPosition = this.getFileOffsetPosition();
+        this.setOffsetPosition(0x0);
+
+        // We'll write in chunks, if chunk usage is enabled.
+        if (this.isChunkUsageEnabled()) {
+            while (this.getRemainingFileBytes() == 0) {
+                int fileLength = (this.getRemainingFileBytes() > this.getChunkLength()) ? (this.getChunkLength()) : (int) (this.getRemainingFileBytes());
+                binaryFileObjectToCopyTo.write(this.readBytes(fileLength));
+            }
+        } else {
+            // If the file is larger than Integer.MAX_VALUE, we'll copy it in chunks until we have all bytes.
+            int fileLength = (this.getFileLength() <= Integer.MAX_VALUE) ? ((int) this.getFileLength()) : (0);
+
+            if (this.getFileLength() > Integer.MAX_VALUE) {
+                while (this.getRemainingFileBytes() == 0) {
+                    fileLength = (this.getRemainingFileBytes() > Integer.MAX_VALUE) ? (Integer.MAX_VALUE) : (int) (this.getRemainingFileBytes());
+                    binaryFileObjectToCopyTo.write(this.readBytes(fileLength));
+                }
+            } else {
+                binaryFileObjectToCopyTo.write(this.readBytes(fileLength));
+            }
+        }
+
+        // Resets the position of this file with the old position before the method was used.
+        this.setOffsetPosition(currentOffsetPosition);
+    }
+
+    /**
      * This method enables the padding for the writing process.<p>
      * The padding processes uses a chunk system to understand it better here are some examples:<p>
      * {@code Padding Chunk Length: 20} and {@code Fill length: 15} = {@code Padding Length: 5}<p>
@@ -1206,12 +1457,9 @@ public final class BinaryFile extends FileByteManagement {
      * @throws ClosedException          This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
      */
-    public boolean isPaddingEnabled () throws ClosedException, InvalidFileModeException {
+    public boolean isPaddingEnabled () throws ClosedException {
         if (this.isClosed())
             throw new ClosedException("The BinaryFile is closed!");
-
-        if (this.getFileMode().equals(FileMode.WRITE))
-            throw new InvalidFileModeException("Insufficient permissions to access the read methods in the WRITE mode!");
 
         return this.paddingEnabled;
     }
