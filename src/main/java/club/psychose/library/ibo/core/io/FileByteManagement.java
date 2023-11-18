@@ -488,7 +488,7 @@ class FileByteManagement {
         if (this.fileMode.equals(FileMode.WRITE))
             throw new InvalidFileModeException("Insufficient permissions to access the chunk methods in the WRITE mode!");
 
-        if ((chunkLength <= 0) || (chunkLength > this.getFileLength()))
+        if (chunkLength <= 0)
             throw new RangeOutOfBoundsException("An invalid chunk length was provided!");
 
         this.chunkLengthSet = true;
@@ -775,6 +775,14 @@ class FileByteManagement {
 
         if (!(this.chunkLengthSet))
             throw new IOException("You need to set the chunk length before you can update the chunks!");
+
+        // Nothing to do when no data is available to read.
+        if (this.getFileLength() == 0)
+            return;
+
+        // When the buffer is null, we'll initialize it.
+        if (this.byteBuffer == null)
+            this.initializeByteBuffer(0);
 
         if (this.currentChunk == -1)
             this.currentChunk = this.calculateChunk(this.offsetPosition);
