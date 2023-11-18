@@ -1,11 +1,4 @@
 <a name="readme-top"></a>
-
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![License][license-shield]][license-url]
-
 <div align="center">
 <h3 align="center">IBO</h3>
   <p align="center">
@@ -22,6 +15,16 @@
     <a href="https://github.com/psychose-club/IBO/issues">Request Feature</a>
   </p>
 </div>
+
+[![Issues][issues-shield]][issues-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Forks][forks-shield]][forks-url]
+[![License][license-shield]][license-url]
+[![Contributors][contributors-shield]][contributors-url]
+<p></p>
+
+[![Releases][release-shield]][release-url]
+
 <details>
   <summary>Table of Contents</summary>
   <ol>
@@ -329,3 +332,5 @@ Stay safe, love and accept other people, please! <3
 [issues-url]: https://github.com/psychose-club/IBO/issues
 [license-shield]: https://img.shields.io/github/license/psychose-club/IBO.svg?style=for-the-badge
 [license-url]: https://github.com/psychose-club/IBO/blob/master/LICENSE.txt
+[release-shield]: https://img.shields.io/github/release/psychose-club/IBO.svg
+[release-url]: https://gitHub.com/psychose-club/IBO/releases/
