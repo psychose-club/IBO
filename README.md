@@ -102,7 +102,7 @@ _Maven_
 <dependency>
     <groupId>club.psychose</groupId>
     <artifactId>ibo</artifactId>
-    <version>2.2.0</version>
+    <version>2.2.0-maven-fix</version>
 </dependency>
 ```
 
@@ -110,12 +110,12 @@ _Gradle_
 
 Long:
 ```
-implementation group: 'club.psychose', name: 'ibo', version: '2.2.0'
+implementation group: 'club.psychose', name: 'ibo', version: '2.2.0-maven-fix'
 ```
 
 Short:
 ```
-implementation 'club.psychose:ibo:2.2.0'
+implementation 'club.psychose:ibo:2.2.0-maven-fix'
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
