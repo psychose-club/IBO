@@ -29,9 +29,11 @@
 
 package club.psychose.testsuite.ibo;
 
+import club.psychose.library.ibo.utils.IBOConstants;
 import club.psychose.testsuite.ibo.testcases.Test;
 import club.psychose.testsuite.ibo.testcases.datatypes.*;
 import club.psychose.testsuite.ibo.testcases.io.TC0009BinaryFile;
+import club.psychose.testsuite.ibo.testcases.io.TC0013BinaryFileCopyMethods;
 import club.psychose.testsuite.ibo.testcases.utils.TC0012BitUtils;
 import club.psychose.testsuite.ibo.utils.logging.ConsoleLogger;
 
@@ -43,7 +45,15 @@ public final class IBOTestSuite {
     private static short succeededTestCases = 0;
 
     public static void main (String[] arguments) {
+        // Ascii Art, weird formatting because of JDK-8.
+        System.out.println(
+                "  _______        _    _____       _ _       \n" + " |__   __|      | |  / ____|     (_) |      \n" + "    | | ___  ___| |_| (___  _   _ _| |_ ___ \n" + "    | |/ _ \\/ __| __|\\___ \\| | | | | __/ _ \\\n" + "    | |  __/\\__ \\ |_ ____) | |_| | | ||  __/\n" + "    |_|\\___||___/\\__|_____/ \\__,_|_|\\__\\___|\n");
+        ConsoleLogger.printConsole("Running for the library version: " + IBOConstants.LIBRARY_VERSION);
+        ConsoleLogger.printEmptyLine();
+        ConsoleLogger.printConsole("Register TestCases...");
         registerTestCases();
+        ConsoleLogger.printConsole("TestCases registered!");
+        ConsoleLogger.printEmptyLine();
         runTests();
     }
 
@@ -62,9 +72,10 @@ public final class IBOTestSuite {
 
         // IO
         testCasesArrayList.add(new TC0009BinaryFile()); // BinaryFile
+        testCasesArrayList.add(new TC0013BinaryFileCopyMethods()); // Copy methods of the BinaryFile.
 
         // Utils
-        testCasesArrayList.add(new TC0012BitUtils());
+        testCasesArrayList.add(new TC0012BitUtils()); // BitUtils.
     }
 
     private static void runTests () {
