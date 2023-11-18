@@ -1454,8 +1454,7 @@ public final class BinaryFile extends FileByteManagement {
      *
      * @return The padding state.
      *
-     * @throws ClosedException          This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
-     * @throws InvalidFileModeException This exception will be thrown when for the {@link BinaryFile} the {@link FileMode} is invalid.
+     * @throws ClosedException This exception will be thrown when the {@link BinaryFile} is tried to be accessed while it's closed.
      */
     public boolean isPaddingEnabled () throws ClosedException {
         if (this.isClosed())
