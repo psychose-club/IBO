@@ -55,7 +55,7 @@ import java.util.Arrays;
  * Information: If you read something larger in the chunk mode than the chunk itself,
  * the missing bytes that are required for the read process will be read into the memory with the already read chunk.
  */
-public final class BinaryFile extends FileByteManagement {
+public final class BinaryFile extends FileByteManagement implements Cloneable {
     private boolean paddingEnabled;
     private byte paddingByte;
     private int paddingChunkLength;
@@ -1511,5 +1511,19 @@ public final class BinaryFile extends FileByteManagement {
             throw new ClosedException("The BinaryFile is closed!");
 
         return this.getFileLength() - this.getFileOffsetPosition();
+    }
+
+    /**
+     * Creates and returns a copy of this object,<p>
+     * For more information, see the standard definition of the {@link Object} {@code clone()} method.
+     *
+     * @return The copy of the {@link BinaryFile} object.
+     *
+     * @throws CloneNotSupportedException Thrown to indicate that the {@code clone} method in class {@code Object} has been called to clone an object,
+     *                                    but that the object's class does not implement the {@code Cloneable} interface.
+     */
+    @Override
+    public BinaryFile clone () throws CloneNotSupportedException {
+        return (BinaryFile) super.clone();
     }
 }
