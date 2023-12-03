@@ -34,6 +34,7 @@ import club.psychose.testsuite.ibo.testcases.Test;
 import club.psychose.testsuite.ibo.testcases.datatypes.*;
 import club.psychose.testsuite.ibo.testcases.io.TC0009BinaryFile;
 import club.psychose.testsuite.ibo.testcases.io.TC0013BinaryFileCopyMethods;
+import club.psychose.testsuite.ibo.testcases.io.TC0014BinaryFileClone;
 import club.psychose.testsuite.ibo.testcases.utils.TC0012BitUtils;
 import club.psychose.testsuite.ibo.utils.logging.ConsoleLogger;
 
@@ -73,6 +74,7 @@ public final class IBOTestSuite {
         // IO
         testCasesArrayList.add(new TC0009BinaryFile()); // BinaryFile
         testCasesArrayList.add(new TC0013BinaryFileCopyMethods()); // Copy methods of the BinaryFile.
+        testCasesArrayList.add(new TC0014BinaryFileClone()); // Clone method of the BinaryFile.
 
         // Utils
         testCasesArrayList.add(new TC0012BitUtils()); // BitUtils.
