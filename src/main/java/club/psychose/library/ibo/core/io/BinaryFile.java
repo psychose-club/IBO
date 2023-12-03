@@ -1514,7 +1514,7 @@ public final class BinaryFile extends FileByteManagement implements Cloneable {
     }
 
     /**
-     * Creates and returns a copy of this object,<p>
+     * Creates and returns a copy of this object.<p>
      * For more information, see the standard definition of the {@link Object} {@code clone()} method.
      *
      * @return The copy of the {@link BinaryFile} object.
