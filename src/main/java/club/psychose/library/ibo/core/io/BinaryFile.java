@@ -1116,7 +1116,9 @@ public final class BinaryFile extends FileByteManagement implements Cloneable {
         if (this.getFileMode().equals(FileMode.READ))
             throw new InvalidFileModeException("Insufficient permissions to access the write methods in the READ mode!");
 
-        this.write(ByteBuffer.allocate(stringValue.length()).order(this.getByteOrder()).put(stringValue.getBytes(charset)).array());
+        // The string.length() method can't be used here, because a character can have multiple bytes.
+        int bytesToAllocate = stringValue.getBytes(charset).length;
+        this.write(ByteBuffer.allocate(bytesToAllocate).order(this.getByteOrder()).put(stringValue.getBytes(charset)).array());
     }
 
     /**
