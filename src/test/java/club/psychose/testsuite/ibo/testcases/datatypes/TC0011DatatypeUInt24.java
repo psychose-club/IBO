@@ -60,7 +60,7 @@ public class TC0011DatatypeUInt24 extends Test {
                 return;
             }
 
-            String valueAsString = uInt24.getAsString();
+            String valueAsString = uInt24.toString();
             if (!(valueAsString.equals("2222"))) {
                 this.failed("CONVERT_TO_STRING");
                 return;

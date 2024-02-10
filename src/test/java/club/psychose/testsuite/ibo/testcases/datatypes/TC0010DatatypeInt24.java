@@ -60,7 +60,7 @@ public final class TC0010DatatypeInt24 extends Test {
                 return;
             }
 
-            String valueAsString = int24.getAsString();
+            String valueAsString = int24.toString();
             if (!(valueAsString.equals("121"))) {
                 this.failed("CONVERT_TO_STRING");
                 return;

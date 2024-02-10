@@ -90,7 +90,7 @@ public final class TC0003DatatypeInt16 extends Test {
                 return;
             }
 
-            String valueAsString = int16.getAsString();
+            String valueAsString = int16.toString();
             if (!(valueAsString.equals("4333"))) {
                 this.failed("CONVERT_TO_STRING");
                 return;

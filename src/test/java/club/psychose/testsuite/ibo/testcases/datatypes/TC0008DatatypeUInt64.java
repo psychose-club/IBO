@@ -90,7 +90,7 @@ public final class TC0008DatatypeUInt64 extends Test {
                 return;
             }
 
-            String valueAsString = uInt64.getAsString();
+            String valueAsString = uInt64.toString();
             if (!(valueAsString.equals(UInt64.getMinimumValue().toString()))) {
                 this.failed("CONVERT_TO_STRING");
                 return;

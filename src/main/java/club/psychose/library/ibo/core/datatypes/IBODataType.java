@@ -205,11 +205,22 @@ public abstract class IBODataType<DataType extends Number> {
     }
 
     /**
-     * Returns the internal data type that is stored as a number as a string.
+     * Deprecated: Will be removed in future versions, please use the .toString() method.
      *
-     * @return String
+     * @return Returns the internal data type stored as a number as a {@link String}.
      */
+    @Deprecated
     public String getAsString () {
+        return String.valueOf(this.dataObject);
+    }
+
+    /**
+     * Overriding the toString() object method, to display the internal data type with their stored number value.
+     *
+     * @return The internal value as {@link String}.
+     */
+    @Override
+    public String toString () {
         return String.valueOf(this.dataObject);
     }
 

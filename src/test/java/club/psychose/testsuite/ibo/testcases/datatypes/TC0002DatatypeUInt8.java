@@ -89,7 +89,7 @@ public final class TC0002DatatypeUInt8 extends Test {
                 return;
             }
 
-            String valueAsString = uInt8.getAsString();
+            String valueAsString = uInt8.toString();
             if (!(valueAsString.equals("42"))) {
                 this.failed("CONVERT_TO_STRING");
                 return;

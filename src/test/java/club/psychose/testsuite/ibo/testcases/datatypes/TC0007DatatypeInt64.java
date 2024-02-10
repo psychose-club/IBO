@@ -90,7 +90,7 @@ public final class TC0007DatatypeInt64 extends Test {
                 return;
             }
 
-            String valueAsString = int64.getAsString();
+            String valueAsString = int64.toString();
             if (!(valueAsString.equals("545252121212"))) {
                 this.failed("CONVERT_TO_STRING");
                 return;
