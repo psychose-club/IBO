@@ -2,10 +2,20 @@ plugins {
     id 'java'
 }
 
+group 'club.psychose'
+version '2.3.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.2'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.2'
+    testImplementation group: 'org.junit.platform', name: 'junit-platform-suite-engine', version: '1.10.2'
+}
+
 java {
     withSourcesJar()
     withJavadocJar()
 }
-
-group 'club.psychose'
-version '2.3.1'
