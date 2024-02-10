@@ -29,57 +29,52 @@
 
 package club.psychose.testsuite.ibo.testcases.datatypes;
 
-import club.psychose.library.ibo.core.datatypes.types.signed.Int16;
+import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt8;
 import club.psychose.library.ibo.enums.HEXFormat;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
-import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class TC0003DatatypeInt16 {
+public final class TestUInt8DataType {
     @Test
     public void executeTestCase () {
         // Out-of-Bounds Test.
-        assertThrows(RangeOutOfBoundsException.class, () -> new Int16(Int16.getMinimumValue() - 1));
-        assertThrows(RangeOutOfBoundsException.class, () -> new Int16(Int16.getMaximumValue() + 1));
+        assertThrows(RangeOutOfBoundsException.class, () -> new UInt8(UInt8.getMinimumValue() - 1));
+        assertThrows(RangeOutOfBoundsException.class, () -> new UInt8(UInt8.getMaximumValue() + 1));
 
         // Storing and fetching values.
-        Int16 int16 = new Int16(1234);
-        Int16 secondInt16 = new Int16(BigInteger.valueOf(4333L));
+        UInt8 uInt8 = new UInt8(213);
+        UInt8 secondUInt8 = new UInt8((double) 42);
 
-        int storedValue = int16.getValue();
-        assertEquals(storedValue, 1234);
-        storedValue = 77;
-        assertEquals(storedValue, 77);
+        short storedValue = uInt8.getValue();
+        assertEquals(storedValue, 213);
+        storedValue = 69;
+        assertEquals(storedValue, 69);
 
-        int16.setValue(4333);
-        assertEquals(int16.getValue(), 4333);
-        assertEquals(int16.getValue(), secondInt16.getValue());
-        assertEquals(int16.toString(), "4333");
+        uInt8.setValue(42);
+        assertEquals(uInt8.getValue(), (short) 42);
+        assertEquals(uInt8.getValue(), secondUInt8.getValue());
+        assertEquals(uInt8.toString(), "42");
 
-        String hexString = int16.getAsHEXString(HEXFormat.UPPERCASE, ByteOrder.LITTLE_ENDIAN);
-        assertEquals(hexString, "ED10");
+        String hexString = uInt8.getAsHEXString(HEXFormat.UPPERCASE, ByteOrder.BIG_ENDIAN);
+        assertEquals(hexString, "2A");
 
         // Checking the other constructors.
-        byte[] bytesWithoutSetByteOrder = ByteBuffer.allocate(2).order(ByteOrder.nativeOrder()).putShort((short) 24).array();
-        assertEquals(new Int16(bytesWithoutSetByteOrder).getValue(), 24);
+        byte[] bytes = new byte[153];
+        bytes[0] = 0x10;
 
-        byte[] bytesWithByteOrder = new byte[53];
-        bytesWithByteOrder[0] = 0x50;
-        bytesWithByteOrder[1] = (byte) 0xFE;
-
-        assertEquals(new Int16(bytesWithByteOrder, ByteOrder.LITTLE_ENDIAN).getValue(), -432);
-        assertEquals(new Int16((byte) -22).getValue(), -22);
-        assertEquals(new Int16((short) -149).getValue(), -149);
-        assertEquals(new Int16((long) 2432).getValue(), 2432);
-        assertEquals(new Int16(234.54f).getValue(), (int) 234f);
-        assertEquals(new Int16(723.61446).getValue(), 723);
-        assertEquals(new Int16(BigInteger.valueOf(32767)).getValue(), 32767);
-        assertEquals(new Int16("123").getValue(), 123);
+        assertEquals(new UInt8(bytes).getValue(), (short) 0x10);
+        assertEquals(new UInt8((byte) 2).getValue(), (short) 2);
+        assertEquals(new UInt8((short) 149).getValue(), (short) 149);
+        assertEquals(new UInt8((long) 242).getValue(), (short) 242);
+        assertEquals(new UInt8(24f).getValue(), (short) 24f);
+        assertEquals(new UInt8(123.5d).getValue(), (short) 123);
+        assertEquals(new UInt8(BigInteger.ONE).getValue(), (short) 1);
+        assertEquals(new UInt8("234").getValue(), (short) 234);
     }
 }

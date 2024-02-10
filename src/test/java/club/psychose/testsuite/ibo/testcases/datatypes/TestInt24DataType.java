@@ -40,7 +40,7 @@ import java.nio.ByteOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class TC0010DatatypeInt24 {
+public final class TestInt24DataType {
     @Test
     public void executeTestCase () {
         // Out-of-Bounds Test.

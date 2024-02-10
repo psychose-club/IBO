@@ -39,7 +39,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public final class TC0012BitUtils {
+public final class TestBitUtils {
     @Test
     public void executeTestCase () {
         AtomicReference<Int8> int8 = new AtomicReference<>();
