@@ -7,20 +7,19 @@ import club.psychose.library.ibo.exceptions.ClosedException;
 import club.psychose.library.ibo.exceptions.InvalidFileModeException;
 import club.psychose.library.ibo.exceptions.OpenedException;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
-import club.psychose.testsuite.ibo.testcases.Test;
 import club.psychose.testsuite.ibo.utils.PathUtils;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.ByteOrder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public final class TC0013BinaryFileCopyMethods extends Test {
-    public TC0013BinaryFileCopyMethods () {
-        super("TC_0013_BINARYFILE_COPY_METHODS");
-    }
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-    @Override
+public final class TC0013BinaryFileCopyMethods {
+    @Test
     public void executeTestCase () {
         Path filePath = PathUtils.getTestSuiteFolderPath("\\test.bin");
         Path fileToCopyTest1Path = PathUtils.getTestSuiteFolderPath("\\test_2.bin");
@@ -31,7 +30,7 @@ public final class TC0013BinaryFileCopyMethods extends Test {
         try {
             this.createTestFile(filePath);
         } catch (Exception exception) {
-            this.failed("TEST_FILE_CREATION_FAILED");
+            fail("An exception occurred while executing the testcase!");
             exception.printStackTrace();
             return;
         }
@@ -41,7 +40,7 @@ public final class TC0013BinaryFileCopyMethods extends Test {
             testBinaryFile = new BinaryFile(ByteOrder.BIG_ENDIAN);
             testBinaryFile.open(filePath, 0x0, FileMode.READ);
         } catch (Exception exception) {
-            this.failed("TEST_FILE_OPENING_FAILED");
+            fail("An exception occurred while executing the testcase!");
             exception.printStackTrace();
             return;
         }
@@ -49,7 +48,7 @@ public final class TC0013BinaryFileCopyMethods extends Test {
         try {
             testBinaryFile.copy(ByteOrder.BIG_ENDIAN, fileToCopyTest1Path, true);
         } catch (Exception exception) {
-            this.failed("COPY_1_FAILED");
+            fail("An exception occurred while executing the testcase!");
             exception.printStackTrace();
             return;
         }
@@ -57,7 +56,7 @@ public final class TC0013BinaryFileCopyMethods extends Test {
         try {
             testBinaryFile.copy(ByteOrder.BIG_ENDIAN, fileToCopyTest2Path, false);
         } catch (Exception exception) {
-            this.failed("COPY_2_FAILED");
+            fail("An exception occurred while executing the testcase!");
             exception.printStackTrace();
             return;
         }
@@ -72,7 +71,7 @@ public final class TC0013BinaryFileCopyMethods extends Test {
             testBinaryFile.copy(test3ChunkBinaryFile, false);
             test3ChunkBinaryFile.close();
         } catch (Exception exception) {
-            this.failed("COPY_3_FAILED");
+            fail("An exception occurred while executing the testcase!");
             exception.printStackTrace();
             return;
         }
@@ -86,7 +85,7 @@ public final class TC0013BinaryFileCopyMethods extends Test {
             testBinaryFile.copy(test4ChunkBinaryFile, true);
             test4ChunkBinaryFile.close();
         } catch (Exception exception) {
-            this.failed("COPY_4_FAILED");
+            fail("An exception occurred while executing the testcase!");
             exception.printStackTrace();
             return;
         }
@@ -103,32 +102,17 @@ public final class TC0013BinaryFileCopyMethods extends Test {
             test3BinaryFile.open(fileToCopyTest3Path, 0x0, FileMode.READ);
             test4BinaryFile.open(fileToCopyTest4Path, 0x0, FileMode.READ);
 
-            if (!(this.hasSampleData(test1BinaryFile))) {
-                this.failed("TEST_1_METHOD_FAILED");
-                return;
-            }
-
-            if (!(this.hasSampleData(test2BinaryFile))) {
-                this.failed("TEST_1_METHOD_FAILED");
-                return;
-            }
-
-            if (!(this.hasSampleData(test3BinaryFile))) {
-                this.failed("TEST_1_METHOD_FAILED");
-                return;
-            }
-
-            if (!(this.hasSampleData(test4BinaryFile))) {
-                this.failed("TEST_1_METHOD_FAILED");
-                return;
-            }
+            assertTrue(this.hasSampleData(test1BinaryFile));
+            assertTrue(this.hasSampleData(test2BinaryFile));
+            assertTrue(this.hasSampleData(test3BinaryFile));
+            assertTrue(this.hasSampleData(test4BinaryFile));
 
             test1BinaryFile.close();
             test2BinaryFile.close();
             test3BinaryFile.close();
             test4BinaryFile.close();
         } catch (Exception exception) {
-            this.failed("TEST_METHODS_FAILED");
+            fail("An exception occurred while executing the testcase!");
             exception.printStackTrace();
             return;
         }
@@ -141,11 +125,9 @@ public final class TC0013BinaryFileCopyMethods extends Test {
             Files.deleteIfExists(fileToCopyTest3Path);
             Files.deleteIfExists(fileToCopyTest4Path);
         } catch (Exception exception) {
-            this.failed("CLEAN_UP_FAILED");
+            fail("An exception occurred while executing the testcase!");
             exception.printStackTrace();
         }
-
-        this.passed();
     }
 
     private void createTestFile (Path filePath) throws ClosedException, InvalidFileModeException, IOException, OpenedException, RangeOutOfBoundsException {

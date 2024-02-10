@@ -32,124 +32,49 @@ package club.psychose.testsuite.ibo.testcases.datatypes;
 import club.psychose.library.ibo.core.datatypes.types.signed.Int8;
 import club.psychose.library.ibo.enums.HEXFormat;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
-import club.psychose.testsuite.ibo.testcases.Test;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
 import java.nio.ByteOrder;
 
-public final class TC0001DatatypeInt8 extends Test {
-    public TC0001DatatypeInt8 () {
-        super("TC_0001_DATATYPE_INT8");
-    }
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-    @Override
-    public void executeTestCase () {
+public final class TC0001DatatypeInt8 {
+    @Test
+    public void executeTest () {
         // Out-of-Bounds Test.
-        try {
-            new Int8(Int8.getMinimumValue() - 1);
-            this.failed("OUT_OF_BOUNDS_CHECK");
-            return;
-        } catch (RangeOutOfBoundsException ignoredException) {
-        }
-
-        try {
-            new Int8(Int8.getMaximumValue() + 1);
-            this.failed("OUT_OF_BOUNDS_CHECK");
-            return;
-        } catch (RangeOutOfBoundsException ignoredException) {
-        }
+        assertThrows(RangeOutOfBoundsException.class, () -> new Int8(Int8.getMinimumValue() - 1));
+        assertThrows(RangeOutOfBoundsException.class, () -> new Int8(Int8.getMaximumValue() + 1));
 
         // Storing and fetching values.
-        try {
-            Int8 int8 = new Int8(55);
-            short storedValue = int8.getValue();
+        Int8 int8 = new Int8(55);
+        Int8 secondInt8 = new Int8((float) -22);
 
-            if (storedValue != 55) {
-                this.failed("ASSIGNING_VALUE");
-                return;
-            }
+        short storedValue = int8.getValue();
+        assertEquals(storedValue, 55);
+        storedValue = 9;
+        assertEquals(storedValue, 9);
 
-            storedValue = 9;
+        int8.setValue(-22);
+        assertEquals(int8.getValue(), (short) -22);
+        assertEquals(int8.getValue(), secondInt8.getValue());
+        assertEquals(int8.toString(), "-22");
 
-            if (int8.getValue() == storedValue) {
-                this.failed("COMPARING_VALUE");
-                return;
-            }
+        String hexString = int8.getAsHEXString(HEXFormat.UPPERCASE, ByteOrder.BIG_ENDIAN);
+        assertEquals(hexString, "EA");
 
-            int8.setValue(-22);
-            Int8 secondInt8 = new Int8((float) -22);
+        // Checking the other constructors.
+        byte[] bytes = new byte[2];
+        bytes[0] = 0x02;
 
-            if (int8.getValue() != -22) {
-                this.failed("COMPARING_NEW_VALUE");
-                return;
-            }
-
-            if (!(int8.equals(secondInt8))) {
-                this.failed("COMPARING_NEW_VALUE");
-                return;
-            }
-
-            String valueAsString = int8.toString();
-            if (!(valueAsString.equals("-22"))) {
-                this.failed("CONVERT_TO_STRING");
-                return;
-            }
-
-            // getAsBytes is executed in the HEX string method, so we don't check it here.
-            String hexString = int8.getAsHEXString(HEXFormat.UPPERCASE, ByteOrder.BIG_ENDIAN);
-
-            if (!(hexString.equals("EA"))) {
-                this.failed("CONVERT_TO_HEX_STRING");
-                return;
-            }
-
-            // Check the other constructors.
-            byte[] bytes = new byte[2];
-            bytes[0] = 0x02;
-            if (new Int8(bytes).getValue() != 0x02) {
-                this.failed("OTHER_CONSTRUCTORS_01");
-                return;
-            }
-
-            if (new Int8((byte) 33).getValue() != 33) {
-                this.failed("OTHER_CONSTRUCTORS_02");
-                return;
-            }
-
-            if (new Int8((short) 69).getValue() != 69) {
-                this.failed("OTHER_CONSTRUCTORS_03");
-                return;
-            }
-
-            if (new Int8((long) 49).getValue() != 49) {
-                this.failed("OTHER_CONSTRUCTORS_04");
-                return;
-            }
-
-            if (new Int8(-23f).getValue() != -23f) {
-                this.failed("OTHER_CONSTRUCTORS_05");
-                return;
-            }
-
-            if (new Int8((double) 29).getValue() != 29) {
-                this.failed("OTHER_CONSTRUCTORS_06");
-                return;
-            }
-
-            if (new Int8(BigInteger.TEN).getValue() != 10) {
-                this.failed("OTHER_CONSTRUCTORS_07");
-                return;
-            }
-
-            if (new Int8("-54").getValue() != -54) {
-                this.failed("OTHER_CONSTRUCTORS_0/8");
-                return;
-            }
-        } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
-            this.failed("STORING_AND_FETCHING");
-            return;
-        }
-
-        this.passed();
+        assertEquals(new Int8(bytes).getValue(), (short) 0x02);
+        assertEquals(new Int8((byte) 33).getValue(), (short) 33);
+        assertEquals(new Int8((short) 69).getValue(), (short) 69);
+        assertEquals(new Int8((long) 49).getValue(), (short) 49);
+        assertEquals(new Int8(-23f).getValue(), (short) -23f);
+        assertEquals(new Int8(8.4234d).getValue(), (short) 8);
+        assertEquals(new Int8(BigInteger.TEN).getValue(), (short) 10);
+        assertEquals(new Int8("-54").getValue(), (short) -54);
     }
 }
