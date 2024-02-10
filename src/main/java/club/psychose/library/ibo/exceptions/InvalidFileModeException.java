@@ -32,7 +32,7 @@ package club.psychose.library.ibo.exceptions;
 /**
  * This exception will be thrown when for the {@link club.psychose.library.ibo.core.io.BinaryFile} the {@link club.psychose.library.ibo.enums.FileMode} is invalid.
  */
-public final class InvalidFileModeException extends Exception {
+public final class InvalidFileModeException extends RuntimeException {
     public InvalidFileModeException () {
         super();
     }
