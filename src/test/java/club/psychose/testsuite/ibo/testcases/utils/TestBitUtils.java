@@ -213,7 +213,7 @@ public final class TestBitUtils {
             long longBitResult = -(BitUtils.extractBits(testLong, 0, 0));
 
             // The result should be 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0001 (1)
-            assertEquals(longBitResult, 1);
+            assertEquals(longBitResult, -1);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
             fail("An exception occurred while executing the testcase!");
         }

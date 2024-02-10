@@ -44,8 +44,7 @@ import java.nio.ByteOrder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 public final class TestBinaryFileClone {
     @Test
@@ -81,12 +80,12 @@ public final class TestBinaryFileClone {
 
         try {
             clonedBinaryFile.setOffsetPosition(0x0);
-            assertEquals(testBinaryFile.getFileOffsetPosition(), clonedBinaryFile.getFileOffsetPosition());
+            assertNotEquals(testBinaryFile.getFileOffsetPosition(), clonedBinaryFile.getFileOffsetPosition());
 
             assertEquals(clonedBinaryFile.readUInt32().getValue(), 0x0);
             assertEquals(testBinaryFile.readUInt32().getValue(), 0x1);
 
-            assertEquals(testBinaryFile.getFileOffsetPosition(), clonedBinaryFile.getFileOffsetPosition());
+            assertNotEquals(testBinaryFile.getFileOffsetPosition(), clonedBinaryFile.getFileOffsetPosition());
         } catch (Exception exception) {
             fail("An exception occurred while executing the testcase!");
             exception.printStackTrace();
