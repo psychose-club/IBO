@@ -32,138 +32,60 @@ package club.psychose.testsuite.ibo.testcases.datatypes;
 import club.psychose.library.ibo.core.datatypes.types.signed.Int64;
 import club.psychose.library.ibo.enums.HEXFormat;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
-import club.psychose.testsuite.ibo.testcases.Test;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-public final class TC0007DatatypeInt64 extends Test {
-    public TC0007DatatypeInt64 () {
-        super("TC_0007_DATATYPE_INT64");
-    }
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-    @Override
+public final class TC0007DatatypeInt64 {
+    @Test
     public void executeTestCase () {
         // Out-of-Bounds Test.
-        try {
-            new Int64(new BigInteger(Int64.getMinimumValue().toString()).subtract(BigInteger.valueOf(1)));
-            this.failed("OUT_OF_BOUNDS_CHECK");
-            return;
-        } catch (RangeOutOfBoundsException ignoredException) {
-        }
-
-        try {
-            new Int64(new BigInteger(Int64.getMaximumValue().toString()).add(BigInteger.valueOf(1)));
-            this.failed("OUT_OF_BOUNDS_CHECK");
-            return;
-        } catch (RangeOutOfBoundsException ignoredException) {
-        }
+        assertThrows(RangeOutOfBoundsException.class, () -> new Int64(new BigInteger(Int64.getMinimumValue().toString()).subtract(BigInteger.valueOf(1))));
+        assertThrows(RangeOutOfBoundsException.class, () -> new Int64(new BigInteger(Int64.getMaximumValue().toString()).add(BigInteger.valueOf(1))));
 
         // Storing and fetching values.
-        try {
-            Int64 int64 = new Int64(969699);
-            BigInteger storedValue = int64.getValue();
+        Int64 int64 = new Int64(969699);
+        Int64 secondInt64 = new Int64(545252121212L);
 
-            if (!(storedValue.equals(BigInteger.valueOf(969699)))) {
-                this.failed("ASSIGNING_VALUE");
-                return;
-            }
+        BigInteger storedValue = int64.getValue();
+        assertEquals(storedValue, BigInteger.valueOf(969699));
+        storedValue = new BigInteger("24242455");
+        assertEquals(storedValue, BigInteger.valueOf(24242455));
 
-            storedValue = new BigInteger("24242455");
+        int64.setValue(545252121212L);
+        assertEquals(int64.getValue().longValue(), 545252121212L);
+        assertEquals(int64.getValue(), secondInt64.getValue());
+        assertEquals(int64.toString(), "545252121212");
 
-            if (int64.getValue().equals(storedValue)) {
-                this.failed("COMPARING_VALUE");
-                return;
-            }
+        String hexString = int64.getAsHEXString(HEXFormat.UPPERCASE, ByteOrder.BIG_ENDIAN);
+        assertEquals(hexString, "0000007EF38F1A7C");
 
-            int64.setValue(545252121212L);
-            Int64 secondInt64 = new Int64(545252121212L);
+        // Checking the other constructors.
+        byte[] bytesWithoutSetByteOrder = ByteBuffer.allocate(8).order(ByteOrder.nativeOrder()).putLong(-24124).array();
+        assertEquals(new Int64(bytesWithoutSetByteOrder).getValue().longValue(), -24124);
 
-            if (int64.getValue().longValue() != 545252121212L) {
-                this.failed("COMPARING_NEW_VALUE");
-                return;
-            }
+        byte[] bytesWithByteOrder = new byte[123];
+        bytesWithByteOrder[0] = 0x00;
+        bytesWithByteOrder[1] = 0x00;
+        bytesWithByteOrder[2] = 0x00;
+        bytesWithByteOrder[3] = 0x00;
+        bytesWithByteOrder[4] = 0x00;
+        bytesWithByteOrder[5] = 0x00;
+        bytesWithByteOrder[6] = (byte) 0xB0;
+        bytesWithByteOrder[7] = (byte) 0xBD;
 
-            if (!(int64.equals(secondInt64))) {
-                this.failed("COMPARING_NEW_VALUE");
-                return;
-            }
-
-            String valueAsString = int64.toString();
-            if (!(valueAsString.equals("545252121212"))) {
-                this.failed("CONVERT_TO_STRING");
-                return;
-            }
-
-            // getAsBytes is executed in the HEX string method, so we don't check it here.
-            String hexString = int64.getAsHEXString(HEXFormat.UPPERCASE, ByteOrder.BIG_ENDIAN);
-
-            if (!(hexString.equals("0000007EF38F1A7C"))) {
-                this.failed("CONVERT_TO_HEX_STRING");
-                return;
-            }
-
-            // Check the other constructors.
-            byte[] bytesWithoutSetByteOrder = ByteBuffer.allocate(8).order(ByteOrder.nativeOrder()).putLong(-24124).array();
-            if (new Int64(bytesWithoutSetByteOrder).getValue().longValue() != -24124) {
-                this.failed("OTHER_CONSTRUCTORS_01");
-                return;
-            }
-
-            byte[] bytesWithByteOrder = new byte[123];
-            bytesWithByteOrder[0] = 0x00;
-            bytesWithByteOrder[1] = 0x00;
-            bytesWithByteOrder[2] = 0x00;
-            bytesWithByteOrder[3] = 0x00;
-            bytesWithByteOrder[4] = 0x00;
-            bytesWithByteOrder[5] = 0x00;
-            bytesWithByteOrder[6] = (byte) 0xB0;
-            bytesWithByteOrder[7] = (byte) 0xBD;
-            if (new Int64(bytesWithByteOrder, ByteOrder.BIG_ENDIAN).getValue().longValue() != 45245) {
-                this.failed("OTHER_CONSTRUCTORS_02");
-                return;
-            }
-
-            if (new Int64((byte) 111).getValue().longValue() != 111) {
-                this.failed("OTHER_CONSTRUCTORS_03");
-                return;
-            }
-
-            if (new Int64((short) 213).getValue().longValue() != 213) {
-                this.failed("OTHER_CONSTRUCTORS_04");
-                return;
-            }
-
-            if (new Int64((long) 123).getValue().longValue() != 123) {
-                this.failed("OTHER_CONSTRUCTORS_05");
-                return;
-            }
-
-            if (new Int64(2.2512f).getValue().longValue() != 2f) {
-                this.failed("OTHER_CONSTRUCTORS_06");
-                return;
-            }
-
-            if (new Int64(12321.3).getValue().longValue() != 12321) {
-                this.failed("OTHER_CONSTRUCTORS_07");
-                return;
-            }
-
-            if (new Int64(BigInteger.valueOf(1231341535)).getValue().longValue() != 1231341535) {
-                this.failed("OTHER_CONSTRUCTORS_08");
-                return;
-            }
-
-            if (new Int64("-2341").getValue().longValue() != -2341) {
-                this.failed("OTHER_CONSTRUCTORS_09");
-                return;
-            }
-        } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
-            this.failed("STORING_AND_FETCHING");
-            return;
-        }
-
-        this.passed();
+        assertEquals(new Int64(bytesWithByteOrder, ByteOrder.BIG_ENDIAN).getValue().longValue(), 45245);
+        assertEquals(new Int64((byte) 111).getValue().longValue(), 111);
+        assertEquals(new Int64((short) 213).getValue().longValue(), 213);
+        assertEquals(new Int64((long) 123).getValue().longValue(), 123);
+        assertEquals(new Int64(2.2512f).getValue().longValue(), (int) 2f);
+        assertEquals(new Int64(12321.3).getValue().longValue(), 12321);
+        assertEquals(new Int64(BigInteger.valueOf(1231341535)).getValue().longValue(), 1231341535);
+        assertEquals(new Int64("-2341").getValue().longValue(), -2341);
     }
 }

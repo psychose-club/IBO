@@ -7,27 +7,26 @@ import club.psychose.library.ibo.exceptions.ClosedException;
 import club.psychose.library.ibo.exceptions.InvalidFileModeException;
 import club.psychose.library.ibo.exceptions.OpenedException;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
-import club.psychose.testsuite.ibo.testcases.Test;
 import club.psychose.testsuite.ibo.utils.PathUtils;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.ByteOrder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public final class TC0014BinaryFileClone extends Test {
-    public TC0014BinaryFileClone () {
-        super("TC_0014_BINARYFILE_CLONE");
-    }
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
-    @Override
+public final class TC0014BinaryFileClone {
+    @Test
     public void executeTestCase () {
         Path filePath = PathUtils.getTestSuiteFolderPath("\\test.bin");
 
         try {
             this.createTestFile(filePath);
         } catch (Exception exception) {
-            this.failed("TEST_FILE_CREATION_FAILED");
+            fail("An exception occurred while executing the testcase!");
             exception.printStackTrace();
             return;
         }
@@ -37,7 +36,7 @@ public final class TC0014BinaryFileClone extends Test {
             testBinaryFile = new BinaryFile(ByteOrder.BIG_ENDIAN);
             testBinaryFile.open(filePath, 0x4, FileMode.READ);
         } catch (Exception exception) {
-            this.failed("TEST_FILE_OPENING_FAILED");
+            fail("An exception occurred while executing the testcase!");
             exception.printStackTrace();
             return;
         }
@@ -46,38 +45,21 @@ public final class TC0014BinaryFileClone extends Test {
         try {
             clonedBinaryFile = testBinaryFile.clone();
         } catch (Exception exception) {
-            this.failed("OBJECT_CLONING_FAILED");
+            fail("An exception occurred while executing the testcase!");
             exception.printStackTrace();
             return;
         }
 
         try {
             clonedBinaryFile.setOffsetPosition(0x0);
+            assertEquals(testBinaryFile.getFileOffsetPosition(), clonedBinaryFile.getFileOffsetPosition());
 
-            if (testBinaryFile.getFileOffsetPosition() == clonedBinaryFile.getFileOffsetPosition()) {
-                this.failed("FIRST_OFFSET_POSITION_IS_EQUAL");
-                return;
-            }
+            assertEquals(clonedBinaryFile.readUInt32().getValue(), 0x0);
+            assertEquals(testBinaryFile.readUInt32().getValue(), 0x1);
 
-            UInt32 test1UInt32 = clonedBinaryFile.readUInt32();
-            UInt32 test2UInt32 = testBinaryFile.readUInt32();
-
-            if (test1UInt32.getValue() != 0x0) {
-                this.failed("FIRST_R0EAD_TEST_FAILED");
-                return;
-            }
-
-            if (test2UInt32.getValue() != 0x1) {
-                this.failed("SECOND_READ_TEST_FAILED");
-                return;
-            }
-
-            if (testBinaryFile.getFileOffsetPosition() == clonedBinaryFile.getFileOffsetPosition()) {
-                this.failed("SECOND_OFFSET_POSITION_IS_EQUAL");
-                return;
-            }
+            assertEquals(testBinaryFile.getFileOffsetPosition(), clonedBinaryFile.getFileOffsetPosition());
         } catch (Exception exception) {
-            this.failed("CLONE_TESTS_FAILED");
+            fail("An exception occurred while executing the testcase!");
             exception.printStackTrace();
             return;
         }
@@ -87,11 +69,9 @@ public final class TC0014BinaryFileClone extends Test {
             clonedBinaryFile.close();
             Files.deleteIfExists(filePath);
         } catch (Exception exception) {
-            this.failed("CLEAN_UP_FAILED");
+            fail("An exception occurred while executing the testcase!");
             exception.printStackTrace();
         }
-
-        this.passed();
     }
 
     private void createTestFile (Path filePath) throws ClosedException, InvalidFileModeException, IOException, OpenedException, RangeOutOfBoundsException {

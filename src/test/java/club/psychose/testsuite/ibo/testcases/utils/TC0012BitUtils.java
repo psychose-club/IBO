@@ -4,212 +4,159 @@ import club.psychose.library.ibo.core.datatypes.types.signed.*;
 import club.psychose.library.ibo.core.datatypes.types.unsigned.*;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
 import club.psychose.library.ibo.utils.BitUtils;
-import club.psychose.testsuite.ibo.testcases.Test;
+import org.junit.jupiter.api.Test;
 
-public final class TC0012BitUtils extends Test {
-    public TC0012BitUtils () {
-        super("TC_0012_UTILS_BITUTILS");
-    }
+import java.util.concurrent.atomic.AtomicReference;
 
-    @Override
+import static org.junit.jupiter.api.Assertions.*;
+
+public final class TC0012BitUtils {
+    @Test
     public void executeTestCase () {
-        Int8 int8;
-        UInt8 uInt8;
-        Int16 int16;
-        UInt16 uInt16;
-        Int24 int24;
-        UInt24 uInt24;
-        Int32 int32;
-        UInt32 uInt32;
-        Int64 int64;
-        UInt64 uInt64;
+        AtomicReference<Int8> int8 = new AtomicReference<>();
+        AtomicReference<UInt8> uInt8 = new AtomicReference<>();
+        AtomicReference<Int16> int16 = new AtomicReference<>();
+        AtomicReference<UInt16> uInt16 = new AtomicReference<>();
+        AtomicReference<Int24> int24 = new AtomicReference<>();
+        AtomicReference<UInt24> uInt24 = new AtomicReference<>();
+        AtomicReference<Int32> int32 = new AtomicReference<>();
+        AtomicReference<UInt32> uInt32 = new AtomicReference<>();
+        AtomicReference<Int64> int64 = new AtomicReference<>();
+        AtomicReference<UInt64> uInt64 = new AtomicReference<>();
         byte testByte;
         short testShort;
         int testInt;
         long testLong;
 
-        try {
-            // Initializing all required variables.
-            int8 = new Int8(127);
-            uInt8 = new UInt8(10);
-            int16 = new Int16(160);
-            uInt16 = new UInt16(34);
-            int24 = new Int24(12);
-            uInt24 = new UInt24(555);
-            int32 = new Int32(4000);
-            uInt32 = new UInt32(9000);
-            int64 = new Int64(-180);
-            uInt64 = new UInt64(69999);
-            testByte = (byte) 12;
-            testShort = (short) 4154;
-            testInt = 89494;
-            testLong = -623L;
-        } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
-            this.failed("INITIALIZATION_FAILED");
-            return;
-        }
+        // Initializing all required variables.
+        assertDoesNotThrow(() -> int8.set(new Int8(127)));
+        assertDoesNotThrow(() -> uInt8.set(new UInt8(10)));
+        assertDoesNotThrow(() -> int16.set(new Int16(160)));
+        assertDoesNotThrow(() -> uInt16.set(new UInt16(34)));
+        assertDoesNotThrow(() -> int24.set(new Int24(12)));
+        assertDoesNotThrow(() -> uInt24.set(new UInt24(555)));
+        assertDoesNotThrow(() -> int32.set(new Int32(4000)));
+        assertDoesNotThrow(() -> uInt32.set(new UInt32(9000)));
+        assertDoesNotThrow(() -> int64.set(new Int64(-180)));
+        assertDoesNotThrow(() -> uInt64.set(new UInt64(69999)));
+
+        testByte = (byte) 12;
+        testShort = (short) 4154;
+        testInt = 89494;
+        testLong = -623L;
+
+        // Out-of-bounds check.
+        assertThrows(RangeOutOfBoundsException.class, () -> BitUtils.extractBits(int8.get(), 0, -1));
+        assertThrows(RangeOutOfBoundsException.class, () -> BitUtils.extractBits(int8.get(), -1, 0));
+        assertThrows(RangeOutOfBoundsException.class, () -> BitUtils.extractBits(int8.get(), 0, Int8.getBitLength() + 1));
 
         try {
-            BitUtils.extractBits(int8, 0, -1);
-            this.failed("OUT_OF_BOUNDS_CHECK");
-            return;
-        } catch (RangeOutOfBoundsException ignoredException) {
-        }
-
-        try {
-            BitUtils.extractBits(int8, -1, 0);
-            this.failed("OUT_OF_BOUNDS_CHECK");
-            return;
-        } catch (RangeOutOfBoundsException ignoredException) {
-        }
-
-        try {
-            BitUtils.extractBits(int8, 0, Int8.getBitLength() + 1);
-            this.failed("OUT_OF_BOUNDS_CHECK");
-            return;
-        } catch (RangeOutOfBoundsException ignoredException) {
-        }
-
-        try {
-            long int8BitResult = BitUtils.extractBits(int8, 0, 2);
+            long int8BitResult = BitUtils.extractBits(int8.get(), 0, 2);
 
             // The result should be 0000 0111 (7)
-            if (int8BitResult != 7) {
-                this.failed("INVALID_INT8_BIT_RESULT");
-                return;
-            }
+            assertEquals(int8BitResult, 7);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
-            this.failed("RANGE_OUT_OF_BOUNDS");
+            fail("An exception occurred while executing the testcase!");
             return;
         }
 
         try {
-            long uInt8BitResult = BitUtils.extractBits(uInt8, 0, 0);
+            long uInt8BitResult = BitUtils.extractBits(uInt8.get(), 0, 0);
 
             // The result should be 0000 0000 (0)
-            if (uInt8BitResult != 0) {
-                this.failed("INVALID_UINT8_BIT_RESULT");
-                return;
-            }
+            assertEquals(uInt8BitResult, 0);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
-            this.failed("RANGE_OUT_OF_BOUNDS");
+            fail("An exception occurred while executing the testcase!");
             return;
         }
 
         try {
-            long int16BitResult = BitUtils.extractBits(int16, 0, 1);
+            long int16BitResult = BitUtils.extractBits(int16.get(), 0, 1);
 
             // The result should be 0000 0000 0000 0000 (0)
-            if (int16BitResult != 0) {
-                this.failed("INVALID_INT16_BIT_RESULT");
-                return;
-            }
+            assertEquals(int16BitResult, 0);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
-            this.failed("RANGE_OUT_OF_BOUNDS");
+            fail("An exception occurred while executing the testcase!");
             return;
         }
 
         try {
-            long uInt16BitResult = BitUtils.extractBits(uInt16, 0, 4);
+            long uInt16BitResult = BitUtils.extractBits(uInt16.get(), 0, 4);
 
             // The result should be 0000 0000 0000 0010 (2)
-            if (uInt16BitResult != 2) {
-                this.failed("INVALID_UINT16_BIT_RESULT");
-                return;
-            }
+            assertEquals(uInt16BitResult, 2);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
-            this.failed("RANGE_OUT_OF_BOUNDS");
+            fail("An exception occurred while executing the testcase!");
             return;
         }
 
         try {
-            long int24BitResult = BitUtils.extractBits(int24, 0, 8);
+            long int24BitResult = BitUtils.extractBits(int24.get(), 0, 8);
 
             // The result should be 0000 0000 0000 0000 0000 1100 (12)
-            if (int24BitResult != 12) {
-                this.failed("INVALID_INT24_BIT_RESULT");
-                return;
-            }
+            assertEquals(int24BitResult, 12);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
-            this.failed("RANGE_OUT_OF_BOUNDS");
+            fail("An exception occurred while executing the testcase!");
             return;
         }
 
         try {
-            long uInt24BitResult = BitUtils.extractBits(uInt24, 0, 0);
+            long uInt24BitResult = BitUtils.extractBits(uInt24.get(), 0, 0);
 
             // The result should be 0000 0000 0000 0000 0000 0001 (1)
-            if (uInt24BitResult != 1) {
-                this.failed("INVALID_UINT24_BIT_RESULT");
-                return;
-            }
+            assertEquals(uInt24BitResult, 1);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
-            this.failed("RANGE_OUT_OF_BOUNDS");
+            fail("An exception occurred while executing the testcase!");
             return;
         }
 
         try {
-            long int32BitResult = BitUtils.extractBits(int32, 0, 1);
+            long int32BitResult = BitUtils.extractBits(int32.get(), 0, 1);
 
             // The result should be 0000 0000 0000 0000 0000 0000 0000 0000 (0)
-            if (int32BitResult != 0) {
-                this.failed("INVALID_INT32_BIT_RESULT");
-                return;
-            }
+            assertEquals(int32BitResult, 0);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
-            this.failed("RANGE_OUT_OF_BOUNDS");
+            fail("An exception occurred while executing the testcase!");
             return;
         }
 
         try {
-            long uInt32BitResult = BitUtils.extractBits(uInt32, 0, 8);
+            long uInt32BitResult = BitUtils.extractBits(uInt32.get(), 0, 8);
 
             // The result should be 0000 0000 0000 0000 0000 0001 0010 1000 (296)
-            if (uInt32BitResult != 296) {
-                this.failed("INVALID_UINT32_BIT_RESULT");
-                return;
-            }
+            assertEquals(uInt32BitResult, 296);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
-            this.failed("RANGE_OUT_OF_BOUNDS");
+            fail("An exception occurred while executing the testcase!");
             return;
         }
 
         try {
-            long int64BitResult = -(BitUtils.extractBits(int64, 0, 2));
+            long int64BitResult = -(BitUtils.extractBits(int64.get(), 0, 2));
 
             // The result should be 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0100 (4)
-            if (int64BitResult != -4) {
-                this.failed("INVALID_INT64_BIT_RESULT");
-                return;
-            }
+            assertEquals(int64BitResult, -4);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
-            this.failed("RANGE_OUT_OF_BOUNDS");
+            fail("An exception occurred while executing the testcase!");
             return;
         }
 
         try {
-            long uInt64BitResult = BitUtils.extractBits(uInt64, 0, 9);
+            long uInt64BitResult = BitUtils.extractBits(uInt64.get(), 0, 9);
 
             // The result should be 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0001 0110 1111 (367)
-            if (uInt64BitResult != 367) {
-                this.failed("INVALID_UINT64_BIT_RESULT");
-                return;
-            }
+            assertEquals(uInt64BitResult, 367);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
-            this.failed("RANGE_OUT_OF_BOUNDS");
+            fail("An exception occurred while executing the testcase!");
             return;
         }
 
         try {
             long byteBitResult = BitUtils.extractBits(testByte, 0, 5);
 
-            // The result should be 0000 1100 (7)
-            if (byteBitResult != 12) {
-                this.failed("INVALID_BYTE_BIT_RESULT");
-                return;
-            }
+            // The result should be 0000 1100 (12)
+            assertEquals(byteBitResult, 12);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
-            this.failed("RANGE_OUT_OF_BOUNDS");
+            fail("An exception occurred while executing the testcase!");
             return;
         }
 
@@ -217,12 +164,9 @@ public final class TC0012BitUtils extends Test {
             long shortBitResult = BitUtils.extractBits(testShort, 0, 8);
 
             // The result should be 0000 0000 0011 1010 (58)
-            if (shortBitResult != 58) {
-                this.failed("INVALID_SHORT_BIT_RESULT");
-                return;
-            }
+            assertEquals(shortBitResult, 58);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
-            this.failed("RANGE_OUT_OF_BOUNDS");
+            fail("An exception occurred while executing the testcase!");
             return;
         }
 
@@ -230,12 +174,9 @@ public final class TC0012BitUtils extends Test {
             long intBitResult = BitUtils.extractBits(testInt, 0, 6);
 
             // The result should be 0000 0000 0001 0110 (22)
-            if (intBitResult != 22) {
-                this.failed("INVALID_INT_BIT_RESULT");
-                return;
-            }
+            assertEquals(intBitResult, 22);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
-            this.failed("RANGE_OUT_OF_BOUNDS");
+            fail("An exception occurred while executing the testcase!");
             return;
         }
 
@@ -243,15 +184,9 @@ public final class TC0012BitUtils extends Test {
             long longBitResult = -(BitUtils.extractBits(testLong, 0, 0));
 
             // The result should be 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0001 (1)
-            if (longBitResult != -1) {
-                this.failed("INVALID_INT_BIT_RESULT");
-                return;
-            }
+            assertEquals(longBitResult, 1);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
-            this.failed("RANGE_OUT_OF_BOUNDS");
-            return;
+            fail("An exception occurred while executing the testcase!");
         }
-
-        this.passed();
     }
 }

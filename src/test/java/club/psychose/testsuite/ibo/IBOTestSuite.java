@@ -29,74 +29,11 @@
 
 package club.psychose.testsuite.ibo;
 
-import club.psychose.library.ibo.utils.IBOConstants;
-import club.psychose.testsuite.ibo.testcases.Test;
-import club.psychose.testsuite.ibo.testcases.datatypes.*;
-import club.psychose.testsuite.ibo.testcases.io.TC0009BinaryFile;
-import club.psychose.testsuite.ibo.testcases.io.TC0013BinaryFileCopyMethods;
-import club.psychose.testsuite.ibo.testcases.io.TC0014BinaryFileClone;
-import club.psychose.testsuite.ibo.testcases.utils.TC0012BitUtils;
-import club.psychose.testsuite.ibo.utils.logging.ConsoleLogger;
+import org.junit.platform.suite.api.SelectPackages;
+import org.junit.platform.suite.api.Suite;
+import org.junit.platform.suite.api.SuiteDisplayName;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public final class IBOTestSuite {
-    private static final List<Test> testCasesArrayList = new ArrayList<>();
-    private static short succeededTestCases = 0;
-
-    public static void main (String[] arguments) {
-        // Ascii Art, weird formatting because of JDK-8.
-        System.out.println(
-                "  _______        _    _____       _ _       \n" + " |__   __|      | |  / ____|     (_) |      \n" + "    | | ___  ___| |_| (___  _   _ _| |_ ___ \n" + "    | |/ _ \\/ __| __|\\___ \\| | | | | __/ _ \\\n" + "    | |  __/\\__ \\ |_ ____) | |_| | | ||  __/\n" + "    |_|\\___||___/\\__|_____/ \\__,_|_|\\__\\___|\n");
-        ConsoleLogger.printConsole("Running for the library version: " + IBOConstants.LIBRARY_VERSION);
-        ConsoleLogger.printEmptyLine();
-        ConsoleLogger.printConsole("Register TestCases...");
-        registerTestCases();
-        ConsoleLogger.printConsole("TestCases registered!");
-        ConsoleLogger.printEmptyLine();
-        runTests();
-    }
-
-    private static void registerTestCases () {
-        // Data types.
-        testCasesArrayList.add(new TC0001DatatypeInt8()); // Int8
-        testCasesArrayList.add(new TC0002DatatypeUInt8()); // UInt8
-        testCasesArrayList.add(new TC0003DatatypeInt16()); // Int16
-        testCasesArrayList.add(new TC0004DatatypeUInt16()); // UInt16
-        testCasesArrayList.add(new TC0005DatatypeInt32()); // Int32
-        testCasesArrayList.add(new TC0006DatatypeUInt32()); // UInt32
-        testCasesArrayList.add(new TC0007DatatypeInt64()); // Int64
-        testCasesArrayList.add(new TC0008DatatypeUInt64()); // UInt64
-        testCasesArrayList.add(new TC0010DatatypeInt24()); // Int24
-        testCasesArrayList.add(new TC0011DatatypeUInt24()); // UInt24
-
-        // IO
-        testCasesArrayList.add(new TC0009BinaryFile()); // BinaryFile
-        testCasesArrayList.add(new TC0013BinaryFileCopyMethods()); // Copy methods of the BinaryFile.
-        testCasesArrayList.add(new TC0014BinaryFileClone()); // Clone method of the BinaryFile.
-
-        // Utils
-        testCasesArrayList.add(new TC0012BitUtils()); // BitUtils.
-    }
-
-    private static void runTests () {
-        testCasesArrayList.forEach((test) -> {
-            ConsoleLogger.printConsole("[RUNNING] \"" + test.getTestCaseName() + "\"...");
-
-            test.executeTestCase();
-            if (test.isPassed())
-                succeededTestCases++;
-
-            ConsoleLogger.printEmptyLine();
-        });
-
-        if (!(testCasesArrayList.isEmpty())) {
-            if (testCasesArrayList.size() == succeededTestCases) {
-                ConsoleLogger.printConsole("[SUCCESS] All " + succeededTestCases + " TestCases passed successfully!");
-            } else {
-                ConsoleLogger.printConsole("[FAILED] Only " + succeededTestCases + " out of " + testCasesArrayList.size() + " TestCases passed successfully!");
-            }
-        }
-    }
-}
+@Suite
+@SuiteDisplayName("The TestSuite for the IBO project.")
+@SelectPackages("club.psychose.testsuite.ibo.testcases")
+public final class IBOTestSuite {}

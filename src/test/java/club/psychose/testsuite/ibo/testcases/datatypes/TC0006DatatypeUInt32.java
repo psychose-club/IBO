@@ -32,134 +32,56 @@ package club.psychose.testsuite.ibo.testcases.datatypes;
 import club.psychose.library.ibo.core.datatypes.types.unsigned.UInt32;
 import club.psychose.library.ibo.enums.HEXFormat;
 import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
-import club.psychose.testsuite.ibo.testcases.Test;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-public final class TC0006DatatypeUInt32 extends Test {
-    public TC0006DatatypeUInt32 () {
-        super("TC_0006_DATATYPE_UINT32");
-    }
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-    @Override
+public final class TC0006DatatypeUInt32 {
+    @Test
     public void executeTestCase () {
         // Out-of-Bounds Test.
-        try {
-            new UInt32(UInt32.getMinimumValue() - 1);
-            this.failed("OUT_OF_BOUNDS_CHECK");
-            return;
-        } catch (RangeOutOfBoundsException ignoredException) {
-        }
-
-        try {
-            new UInt32(UInt32.getMaximumValue() + 1);
-            this.failed("OUT_OF_BOUNDS_CHECK");
-            return;
-        } catch (RangeOutOfBoundsException ignoredException) {
-        }
+        assertThrows(RangeOutOfBoundsException.class, () -> new UInt32(UInt32.getMinimumValue() - 1));
+        assertThrows(RangeOutOfBoundsException.class, () -> new UInt32(UInt32.getMaximumValue() + 1));
 
         // Storing and fetching values.
-        try {
-            UInt32 uInt32 = new UInt32(41441041);
-            long storedValue = uInt32.getValue();
+        UInt32 uint32 = new UInt32(41441041);
+        UInt32 secondUInt32 = new UInt32(465774);
 
-            if (storedValue != 41441041) {
-                this.failed("ASSIGNING_VALUE");
-                return;
-            }
+        long storedValue = uint32.getValue();
+        assertEquals(storedValue, 41441041);
+        storedValue = 463456;
+        assertEquals(storedValue, 463456);
 
-            storedValue = 463456;
+        uint32.setValue("465774");
+        assertEquals(uint32.getValue(), 465774);
+        assertEquals(uint32.getValue(), secondUInt32.getValue());
+        assertEquals(uint32.toString(), "465774");
 
-            if (uInt32.getValue() == storedValue) {
-                this.failed("COMPARING_VALUE");
-                return;
-            }
+        String hexString = uint32.getAsHEXString(HEXFormat.UPPERCASE, ByteOrder.BIG_ENDIAN);
+        assertEquals(hexString, "00071B6E");
 
-            uInt32.setValue(new BigInteger("465774"));
-            UInt32 secondUInt32 = new UInt32(465774);
+        // Checking the other constructors.
+        byte[] bytesWithoutSetByteOrder = ByteBuffer.allocate(4).order(ByteOrder.nativeOrder()).putInt(5441854).array();
+        assertEquals(new UInt32(bytesWithoutSetByteOrder).getValue(), 5441854);
 
-            if (uInt32.getValue() != 465774) {
-                this.failed("COMPARING_NEW_VALUE");
-                return;
-            }
+        byte[] bytesWithByteOrder = new byte[124];
+        bytesWithByteOrder[0] = 0x00;
+        bytesWithByteOrder[1] = 0x0F;
+        bytesWithByteOrder[2] = 0x34;
+        bytesWithByteOrder[3] = 0x68;
 
-            if (!(uInt32.equals(secondUInt32))) {
-                this.failed("COMPARING_NEW_VALUE");
-                return;
-            }
-
-            String valueAsString = uInt32.toString();
-            if (!(valueAsString.equals("465774"))) {
-                this.failed("CONVERT_TO_STRING");
-                return;
-            }
-
-            // getAsBytes is executed in the HEX string method, so we don't check it here.
-            String hexString = uInt32.getAsHEXString(HEXFormat.UPPERCASE, ByteOrder.BIG_ENDIAN);
-
-            if (!(hexString.equals("00071B6E"))) {
-                this.failed("CONVERT_TO_HEX_STRING");
-                return;
-            }
-
-            // Check the other constructors.
-            byte[] bytesWithoutSetByteOrder = ByteBuffer.allocate(4).order(ByteOrder.nativeOrder()).putInt(5441854).array();
-            if (new UInt32(bytesWithoutSetByteOrder).getValue() != 5441854) {
-                this.failed("OTHER_CONSTRUCTORS_01");
-                return;
-            }
-
-            byte[] bytesWithByteOrder = new byte[124];
-            bytesWithByteOrder[0] = 0x00;
-            bytesWithByteOrder[1] = 0x0F;
-            bytesWithByteOrder[2] = 0x34;
-            bytesWithByteOrder[3] = 0x68;
-            if (new UInt32(bytesWithByteOrder, ByteOrder.BIG_ENDIAN).getValue() != 996456) {
-                this.failed("OTHER_CONSTRUCTORS_02");
-                return;
-            }
-
-            if (new UInt32((byte) 11).getValue() != 11) {
-                this.failed("OTHER_CONSTRUCTORS_03");
-                return;
-            }
-
-            if (new UInt32((short) 124).getValue() != 124) {
-                this.failed("OTHER_CONSTRUCTORS_04");
-                return;
-            }
-
-            if (new UInt32((long) 1254123513).getValue() != 1254123513) {
-                this.failed("OTHER_CONSTRUCTORS_05");
-                return;
-            }
-
-            if (new UInt32(2512.2512f).getValue() != 2512f) {
-                this.failed("OTHER_CONSTRUCTORS_06");
-                return;
-            }
-
-            if (new UInt32(1641.3).getValue() != 1641) {
-                this.failed("OTHER_CONSTRUCTORS_07");
-                return;
-            }
-
-            if (new UInt32(BigInteger.valueOf(13513512)).getValue() != 13513512) {
-                this.failed("OTHER_CONSTRUCTORS_08");
-                return;
-            }
-
-            if (new UInt32("1351351210").getValue() != 1351351210) {
-                this.failed("OTHER_CONSTRUCTORS_09");
-                return;
-            }
-        } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
-            this.failed("STORING_AND_FETCHING");
-            return;
-        }
-
-        this.passed();
+        assertEquals(new UInt32(bytesWithByteOrder, ByteOrder.BIG_ENDIAN).getValue(), 996456);
+        assertEquals(new UInt32((byte) 11).getValue(), 11);
+        assertEquals(new UInt32((short) 124).getValue(), 124);
+        assertEquals(new UInt32((long) 1254123513).getValue(), 1254123513);
+        assertEquals(new UInt32(2512.2512f).getValue(), (int) 2512f);
+        assertEquals(new UInt32(1641.3).getValue(), 1641);
+        assertEquals(new UInt32(BigInteger.valueOf(13513512)).getValue(), 13513512);
+        assertEquals(new UInt32("1351351210").getValue(), 1351351210);
     }
 }
