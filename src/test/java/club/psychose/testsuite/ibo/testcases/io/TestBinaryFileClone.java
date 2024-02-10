@@ -47,7 +47,7 @@ import java.nio.file.Path;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public final class TC0014BinaryFileClone {
+public final class TestBinaryFileClone {
     @Test
     public void executeTestCase () {
         Path filePath = PathUtils.getTestSuiteFolderPath("\\test.bin");

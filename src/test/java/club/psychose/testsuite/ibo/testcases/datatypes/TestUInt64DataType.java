@@ -41,7 +41,7 @@ import java.nio.ByteOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class TC0008DatatypeUInt64 {
+public final class TestUInt64DataType {
     @Test
     public void executeTestCase () {
         // Out-of-Bounds Test.

@@ -46,7 +46,7 @@ import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public final class TC0009BinaryFile {
+public final class TestBinaryFile {
     @Test
     public void executeTestCase () {
         try {
