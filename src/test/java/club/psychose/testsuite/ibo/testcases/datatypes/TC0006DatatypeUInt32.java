@@ -90,7 +90,7 @@ public final class TC0006DatatypeUInt32 extends Test {
                 return;
             }
 
-            String valueAsString = uInt32.getAsString();
+            String valueAsString = uInt32.toString();
             if (!(valueAsString.equals("465774"))) {
                 this.failed("CONVERT_TO_STRING");
                 return;

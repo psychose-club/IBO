@@ -90,7 +90,7 @@ public final class TC0005DatatypeInt32 extends Test {
                 return;
             }
 
-            String valueAsString = int32.getAsString();
+            String valueAsString = int32.toString();
             if (!(valueAsString.equals("649"))) {
                 this.failed("CONVERT_TO_STRING");
                 return;

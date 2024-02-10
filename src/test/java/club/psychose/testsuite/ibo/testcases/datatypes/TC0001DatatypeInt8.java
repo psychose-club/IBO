@@ -89,7 +89,7 @@ public final class TC0001DatatypeInt8 extends Test {
                 return;
             }
 
-            String valueAsString = int8.getAsString();
+            String valueAsString = int8.toString();
             if (!(valueAsString.equals("-22"))) {
                 this.failed("CONVERT_TO_STRING");
                 return;

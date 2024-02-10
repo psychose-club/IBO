@@ -90,7 +90,7 @@ public final class TC0004DatatypeUInt16 extends Test {
                 return;
             }
 
-            String valueAsString = uint16.getAsString();
+            String valueAsString = uint16.toString();
             if (!(valueAsString.equals("12"))) {
                 this.failed("CONVERT_TO_STRING");
                 return;
