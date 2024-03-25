@@ -38,7 +38,7 @@ import club.psychose.library.ibo.exceptions.RangeOutOfBoundsException;
  */
 public final class BitUtils {
     /**
-     * This method extracts the bits from a {@link Int8}.
+     * This method extracts the bits from a {@link Int8} via the start and end index.
      *
      * @param int8          The value to extract the bits from.
      * @param startBitIndex The index where the extraction should be started from.
@@ -48,16 +48,16 @@ public final class BitUtils {
      *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    public static long extractBits (Int8 int8, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
+    public static long extractBitsViaIndex (Int8 int8, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
         // Check if the bits can be extracted.
         if ((startBitIndex < 0) || (endBitIndex < startBitIndex) || (endBitIndex >= Int8.getBitLength()))
             throw new RangeOutOfBoundsException("The bits can't be extracted because an index is out of bounds!");
 
-        return extractBits(int8.getValue().longValue(), startBitIndex, endBitIndex);
+        return extractBitsViaIndex(int8.getValue().longValue(), startBitIndex, endBitIndex);
     }
 
     /**
-     * This method extracts the bits from a {@link UInt8}.
+     * This method extracts the bits from a {@link UInt8} via the start and end index.
      *
      * @param uInt8         The value to extract the bits from.
      * @param startBitIndex The index where the extraction should be started from.
@@ -67,16 +67,16 @@ public final class BitUtils {
      *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    public static long extractBits (UInt8 uInt8, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
+    public static long extractBitsViaIndex (UInt8 uInt8, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
         // Check if the bits can be extracted.
         if ((startBitIndex < 0) || (endBitIndex < startBitIndex) || (endBitIndex >= UInt8.getBitLength()))
             throw new RangeOutOfBoundsException("The bits can't be extracted because an index is out of bounds!");
 
-        return extractBits(uInt8.getValue().longValue(), startBitIndex, endBitIndex);
+        return extractBitsViaIndex(uInt8.getValue().longValue(), startBitIndex, endBitIndex);
     }
 
     /**
-     * This method extracts the bits from a {@link Int16}.
+     * This method extracts the bits from a {@link Int16} via the start and end index.
      *
      * @param int16         The value to extract the bits from.
      * @param startBitIndex The index where the extraction should be started from.
@@ -86,16 +86,16 @@ public final class BitUtils {
      *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    public static long extractBits (Int16 int16, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
+    public static long extractBitsViaIndex (Int16 int16, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
         // Check if the bits can be extracted.
         if ((startBitIndex < 0) || (endBitIndex < startBitIndex) || (endBitIndex >= Int16.getBitLength()))
             throw new RangeOutOfBoundsException("The bits can't be extracted because an index is out of bounds!");
 
-        return extractBits(int16.getValue().longValue(), startBitIndex, endBitIndex);
+        return extractBitsViaIndex(int16.getValue().longValue(), startBitIndex, endBitIndex);
     }
 
     /**
-     * This method extracts the bits from a {@link UInt16}.
+     * This method extracts the bits from a {@link UInt16} via the start and end index.
      *
      * @param uInt16        The value to extract the bits from.
      * @param startBitIndex The index where the extraction should be started from.
@@ -105,16 +105,16 @@ public final class BitUtils {
      *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    public static long extractBits (UInt16 uInt16, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
+    public static long extractBitsViaIndex (UInt16 uInt16, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
         // Check if the bits can be extracted.
         if ((startBitIndex < 0) || (endBitIndex < startBitIndex) || (endBitIndex >= UInt16.getBitLength()))
             throw new RangeOutOfBoundsException("The bits can't be extracted because an index is out of bounds!");
 
-        return extractBits(uInt16.getValue().longValue(), startBitIndex, endBitIndex);
+        return extractBitsViaIndex(uInt16.getValue().longValue(), startBitIndex, endBitIndex);
     }
 
     /**
-     * This method extracts the bits from a {@link Int24}.
+     * This method extracts the bits from a {@link Int24} via the start and end index.
      *
      * @param int24         The value to extract the bits from.
      * @param startBitIndex The index where the extraction should be started from.
@@ -124,16 +124,16 @@ public final class BitUtils {
      *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    public static long extractBits (Int24 int24, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
+    public static long extractBitsViaIndex (Int24 int24, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
         // Check if the bits can be extracted.
         if ((startBitIndex < 0) || (endBitIndex < startBitIndex) || (endBitIndex >= Int24.getBitLength()))
             throw new RangeOutOfBoundsException("The bits can't be extracted because an index is out of bounds!");
 
-        return extractBits(int24.getValue().longValue(), startBitIndex, endBitIndex);
+        return extractBitsViaIndex(int24.getValue().longValue(), startBitIndex, endBitIndex);
     }
 
     /**
-     * This method extracts the bits from a {@link UInt24}.
+     * This method extracts the bits from a {@link UInt24} via the start and end index.
      *
      * @param uInt24        The value to extract the bits from.
      * @param startBitIndex The index where the extraction should be started from.
@@ -143,16 +143,16 @@ public final class BitUtils {
      *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    public static long extractBits (UInt24 uInt24, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
+    public static long extractBitsViaIndex (UInt24 uInt24, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
         // Check if the bits can be extracted.
         if ((startBitIndex < 0) || (endBitIndex < startBitIndex) || (endBitIndex >= UInt24.getBitLength()))
             throw new RangeOutOfBoundsException("The bits can't be extracted because an index is out of bounds!");
 
-        return extractBits(uInt24.getValue().longValue(), startBitIndex, endBitIndex);
+        return extractBitsViaIndex(uInt24.getValue().longValue(), startBitIndex, endBitIndex);
     }
 
     /**
-     * This method extracts the bits from a {@link Int32}.
+     * This method extracts the bits from a {@link Int32} via the start and end index.
      *
      * @param int32         The value to extract the bits from.
      * @param startBitIndex The index where the extraction should be started from.
@@ -162,16 +162,16 @@ public final class BitUtils {
      *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    public static long extractBits (Int32 int32, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
+    public static long extractBitsViaIndex (Int32 int32, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
         // Check if the bits can be extracted.
         if ((startBitIndex < 0) || (endBitIndex < startBitIndex) || (endBitIndex >= Int32.getBitLength()))
             throw new RangeOutOfBoundsException("The bits can't be extracted because an index is out of bounds!");
 
-        return extractBits(int32.getValue(), startBitIndex, endBitIndex);
+        return extractBitsViaIndex(int32.getValue(), startBitIndex, endBitIndex);
     }
 
     /**
-     * This method extracts the bits from a {@link UInt32}.
+     * This method extracts the bits from a {@link UInt32} via the start and end index.
      *
      * @param uInt32        The value to extract the bits from.
      * @param startBitIndex The index where the extraction should be started from.
@@ -181,16 +181,16 @@ public final class BitUtils {
      *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    public static long extractBits (UInt32 uInt32, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
+    public static long extractBitsViaIndex (UInt32 uInt32, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
         // Check if the bits can be extracted.
         if ((startBitIndex < 0) || (endBitIndex < startBitIndex) || (endBitIndex >= UInt32.getBitLength()))
             throw new RangeOutOfBoundsException("The bits can't be extracted because an index is out of bounds!");
 
-        return extractBits(uInt32.getValue(), startBitIndex, endBitIndex);
+        return extractBitsViaIndex(uInt32.getValue(), startBitIndex, endBitIndex);
     }
 
     /**
-     * This method extracts the bits from a {@link Int64}.
+     * This method extracts the bits from a {@link Int64} via the start and end index.
      *
      * @param int64         The value to extract the bits from.
      * @param startBitIndex The index where the extraction should be started from.
@@ -200,16 +200,16 @@ public final class BitUtils {
      *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    public static long extractBits (Int64 int64, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
+    public static long extractBitsViaIndex (Int64 int64, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
         // Check if the bits can be extracted.
         if ((startBitIndex < 0) || (endBitIndex < startBitIndex) || (endBitIndex >= Int64.getBitLength()))
             throw new RangeOutOfBoundsException("The bits can't be extracted because an index is out of bounds!");
 
-        return extractBits(int64.getValue().longValue(), startBitIndex, endBitIndex);
+        return extractBitsViaIndex(int64.getValue().longValue(), startBitIndex, endBitIndex);
     }
 
     /**
-     * This method extracts the bits from a {@link UInt64}.
+     * This method extracts the bits from a {@link UInt64} via the start and end index.
      *
      * @param uInt64        The value to extract the bits from.
      * @param startBitIndex The index where the extraction should be started from.
@@ -219,16 +219,16 @@ public final class BitUtils {
      *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    public static long extractBits (UInt64 uInt64, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
+    public static long extractBitsViaIndex (UInt64 uInt64, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
         // Check if the bits can be extracted.
         if ((startBitIndex < 0) || (endBitIndex < startBitIndex) || (endBitIndex >= UInt64.getBitLength()))
             throw new RangeOutOfBoundsException("The bits can't be extracted because an index is out of bounds!");
 
-        return extractBits(uInt64.getValue().longValue(), startBitIndex, endBitIndex);
+        return extractBitsViaIndex(uInt64.getValue().longValue(), startBitIndex, endBitIndex);
     }
 
     /**
-     * This method extracts the bits from a {@link Byte}.
+     * This method extracts the bits from a {@link Byte} via the start and end index.
      *
      * @param value         The value to extract the bits from.
      * @param startBitIndex The index where the extraction should be started from.
@@ -238,16 +238,16 @@ public final class BitUtils {
      *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    public static long extractBits (byte value, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
+    public static long extractBitsViaIndex (byte value, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
         // Check if the bits can be extracted.
         if ((startBitIndex < 0) || (endBitIndex < startBitIndex) || (endBitIndex >= Byte.SIZE))
             throw new RangeOutOfBoundsException("The bits can't be extracted because an index is out of bounds!");
 
-        return extractBits((long) value, startBitIndex, endBitIndex);
+        return extractBitsViaIndex((long) value, startBitIndex, endBitIndex);
     }
 
     /**
-     * This method extracts the bits from a {@link Short}.
+     * This method extracts the bits from a {@link Short} via the start and end index.
      *
      * @param value         The value to extract the bits from.
      * @param startBitIndex The index where the extraction should be started from.
@@ -257,16 +257,16 @@ public final class BitUtils {
      *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    public static long extractBits (short value, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
+    public static long extractBitsViaIndex (short value, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
         // Check if the bits can be extracted.
         if ((startBitIndex < 0) || (endBitIndex < startBitIndex) || (endBitIndex >= Short.SIZE))
             throw new RangeOutOfBoundsException("The bits can't be extracted because an index is out of bounds!");
 
-        return extractBits((long) value, startBitIndex, endBitIndex);
+        return extractBitsViaIndex((long) value, startBitIndex, endBitIndex);
     }
 
     /**
-     * This method extracts the bits from a {@link Integer}.
+     * This method extracts the bits from a {@link Integer} via the start and end index.
      *
      * @param value         The value to extract the bits from.
      * @param startBitIndex The index where the extraction should be started from.
@@ -276,16 +276,16 @@ public final class BitUtils {
      *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    public static long extractBits (int value, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
+    public static long extractBitsViaIndex (int value, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
         // Check if the bits can be extracted.
         if ((startBitIndex < 0) || (endBitIndex < startBitIndex) || (endBitIndex >= Integer.SIZE))
             throw new RangeOutOfBoundsException("The bits can't be extracted because an index is out of bounds!");
 
-        return extractBits((long) value, startBitIndex, endBitIndex);
+        return extractBitsViaIndex((long) value, startBitIndex, endBitIndex);
     }
 
     /**
-     * This method extracts the bits from a {@link Integer}.
+     * This method extracts the bits from a {@link Long} via the start and end index.
      *
      * @param value         The value to extract the bits from.
      * @param startBitIndex The index where the extraction should be started from.
@@ -295,7 +295,7 @@ public final class BitUtils {
      *
      * @throws RangeOutOfBoundsException This exception will be thrown when a value is not in the correct range.
      */
-    public static long extractBits (long value, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
+    public static long extractBitsViaIndex (long value, int startBitIndex, int endBitIndex) throws RangeOutOfBoundsException {
         // Check if the bits can be extracted.
         if ((startBitIndex < 0) || (endBitIndex < startBitIndex) || (endBitIndex >= Long.SIZE))
             throw new RangeOutOfBoundsException("The bits can't be extracted because an index is out of bounds!");

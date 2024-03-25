@@ -75,12 +75,12 @@ public final class TestBitUtils {
         testLong = -623L;
 
         // Out-of-bounds check.
-        assertThrows(RangeOutOfBoundsException.class, () -> BitUtils.extractBits(int8.get(), 0, -1));
-        assertThrows(RangeOutOfBoundsException.class, () -> BitUtils.extractBits(int8.get(), -1, 0));
-        assertThrows(RangeOutOfBoundsException.class, () -> BitUtils.extractBits(int8.get(), 0, Int8.getBitLength() + 1));
+        assertThrows(RangeOutOfBoundsException.class, () -> BitUtils.extractBitsViaIndex(int8.get(), 0, -1));
+        assertThrows(RangeOutOfBoundsException.class, () -> BitUtils.extractBitsViaIndex(int8.get(), -1, 0));
+        assertThrows(RangeOutOfBoundsException.class, () -> BitUtils.extractBitsViaIndex(int8.get(), 0, Int8.getBitLength() + 1));
 
         try {
-            long int8BitResult = BitUtils.extractBits(int8.get(), 0, 2);
+            long int8BitResult = BitUtils.extractBitsViaIndex(int8.get(), 0, 2);
 
             // The result should be 0000 0111 (7)
             assertEquals(int8BitResult, 7);
@@ -90,7 +90,7 @@ public final class TestBitUtils {
         }
 
         try {
-            long uInt8BitResult = BitUtils.extractBits(uInt8.get(), 0, 0);
+            long uInt8BitResult = BitUtils.extractBitsViaIndex(uInt8.get(), 0, 0);
 
             // The result should be 0000 0000 (0)
             assertEquals(uInt8BitResult, 0);
@@ -100,7 +100,7 @@ public final class TestBitUtils {
         }
 
         try {
-            long int16BitResult = BitUtils.extractBits(int16.get(), 0, 1);
+            long int16BitResult = BitUtils.extractBitsViaIndex(int16.get(), 0, 1);
 
             // The result should be 0000 0000 0000 0000 (0)
             assertEquals(int16BitResult, 0);
@@ -110,7 +110,7 @@ public final class TestBitUtils {
         }
 
         try {
-            long uInt16BitResult = BitUtils.extractBits(uInt16.get(), 0, 4);
+            long uInt16BitResult = BitUtils.extractBitsViaIndex(uInt16.get(), 0, 4);
 
             // The result should be 0000 0000 0000 0010 (2)
             assertEquals(uInt16BitResult, 2);
@@ -120,7 +120,7 @@ public final class TestBitUtils {
         }
 
         try {
-            long int24BitResult = BitUtils.extractBits(int24.get(), 0, 8);
+            long int24BitResult = BitUtils.extractBitsViaIndex(int24.get(), 0, 8);
 
             // The result should be 0000 0000 0000 0000 0000 1100 (12)
             assertEquals(int24BitResult, 12);
@@ -130,7 +130,7 @@ public final class TestBitUtils {
         }
 
         try {
-            long uInt24BitResult = BitUtils.extractBits(uInt24.get(), 0, 0);
+            long uInt24BitResult = BitUtils.extractBitsViaIndex(uInt24.get(), 0, 0);
 
             // The result should be 0000 0000 0000 0000 0000 0001 (1)
             assertEquals(uInt24BitResult, 1);
@@ -140,7 +140,7 @@ public final class TestBitUtils {
         }
 
         try {
-            long int32BitResult = BitUtils.extractBits(int32.get(), 0, 1);
+            long int32BitResult = BitUtils.extractBitsViaIndex(int32.get(), 0, 1);
 
             // The result should be 0000 0000 0000 0000 0000 0000 0000 0000 (0)
             assertEquals(int32BitResult, 0);
@@ -150,7 +150,7 @@ public final class TestBitUtils {
         }
 
         try {
-            long uInt32BitResult = BitUtils.extractBits(uInt32.get(), 0, 8);
+            long uInt32BitResult = BitUtils.extractBitsViaIndex(uInt32.get(), 0, 8);
 
             // The result should be 0000 0000 0000 0000 0000 0001 0010 1000 (296)
             assertEquals(uInt32BitResult, 296);
@@ -160,7 +160,7 @@ public final class TestBitUtils {
         }
 
         try {
-            long int64BitResult = -(BitUtils.extractBits(int64.get(), 0, 2));
+            long int64BitResult = -(BitUtils.extractBitsViaIndex(int64.get(), 0, 2));
 
             // The result should be 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0100 (4)
             assertEquals(int64BitResult, -4);
@@ -170,7 +170,7 @@ public final class TestBitUtils {
         }
 
         try {
-            long uInt64BitResult = BitUtils.extractBits(uInt64.get(), 0, 9);
+            long uInt64BitResult = BitUtils.extractBitsViaIndex(uInt64.get(), 0, 9);
 
             // The result should be 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0001 0110 1111 (367)
             assertEquals(uInt64BitResult, 367);
@@ -180,7 +180,7 @@ public final class TestBitUtils {
         }
 
         try {
-            long byteBitResult = BitUtils.extractBits(testByte, 0, 5);
+            long byteBitResult = BitUtils.extractBitsViaIndex(testByte, 0, 5);
 
             // The result should be 0000 1100 (12)
             assertEquals(byteBitResult, 12);
@@ -190,7 +190,7 @@ public final class TestBitUtils {
         }
 
         try {
-            long shortBitResult = BitUtils.extractBits(testShort, 0, 8);
+            long shortBitResult = BitUtils.extractBitsViaIndex(testShort, 0, 8);
 
             // The result should be 0000 0000 0011 1010 (58)
             assertEquals(shortBitResult, 58);
@@ -200,7 +200,7 @@ public final class TestBitUtils {
         }
 
         try {
-            long intBitResult = BitUtils.extractBits(testInt, 0, 6);
+            long intBitResult = BitUtils.extractBitsViaIndex(testInt, 0, 6);
 
             // The result should be 0000 0000 0001 0110 (22)
             assertEquals(intBitResult, 22);
@@ -210,7 +210,7 @@ public final class TestBitUtils {
         }
 
         try {
-            long longBitResult = -(BitUtils.extractBits(testLong, 0, 0));
+            long longBitResult = -(BitUtils.extractBitsViaIndex(testLong, 0, 0));
 
             // The result should be 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0001 (1)
             assertEquals(longBitResult, -1);
