@@ -77,7 +77,7 @@ public final class TestBitUtils {
         // Out-of-bounds check.
         assertThrows(RangeOutOfBoundsException.class, () -> BitUtils.extractBitsViaIndex(int8.get(), 0, -1));
         assertThrows(RangeOutOfBoundsException.class, () -> BitUtils.extractBitsViaIndex(int8.get(), -1, 0));
-        assertThrows(RangeOutOfBoundsException.class, () -> BitUtils.extractBitsViaIndex(int8.get(), 0, Int8.getBitLength() + 1));
+        assertThrows(RangeOutOfBoundsException.class, () -> BitUtils.extractBitsViaIndex(int8.get(), 0, Int8.getBitLength()));
 
         try {
             long int8BitResult = BitUtils.extractBitsViaIndex(int8.get(), 0, 2);
