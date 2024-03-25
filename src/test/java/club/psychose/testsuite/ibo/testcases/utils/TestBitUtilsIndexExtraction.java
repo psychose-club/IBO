@@ -83,7 +83,7 @@ public final class TestBitUtilsIndexExtraction {
             long int8BitResult = BitUtils.extractBitsViaIndex(int8.get(), 0, 2);
 
             // The result should be 0000 0111 (7)
-            assertEquals(int8BitResult, 7);
+            assertEquals(7, int8BitResult);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
             fail("An exception occurred while executing the testcase!");
             return;
@@ -93,7 +93,7 @@ public final class TestBitUtilsIndexExtraction {
             long uInt8BitResult = BitUtils.extractBitsViaIndex(uInt8.get(), 0, 0);
 
             // The result should be 0000 0000 (0)
-            assertEquals(uInt8BitResult, 0);
+            assertEquals(0, uInt8BitResult);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
             fail("An exception occurred while executing the testcase!");
             return;
@@ -103,7 +103,7 @@ public final class TestBitUtilsIndexExtraction {
             long int16BitResult = BitUtils.extractBitsViaIndex(int16.get(), 0, 1);
 
             // The result should be 0000 0000 0000 0000 (0)
-            assertEquals(int16BitResult, 0);
+            assertEquals(0, int16BitResult);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
             fail("An exception occurred while executing the testcase!");
             return;
@@ -113,7 +113,7 @@ public final class TestBitUtilsIndexExtraction {
             long uInt16BitResult = BitUtils.extractBitsViaIndex(uInt16.get(), 0, 4);
 
             // The result should be 0000 0000 0000 0010 (2)
-            assertEquals(uInt16BitResult, 2);
+            assertEquals(2, uInt16BitResult);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
             fail("An exception occurred while executing the testcase!");
             return;
@@ -123,7 +123,7 @@ public final class TestBitUtilsIndexExtraction {
             long int24BitResult = BitUtils.extractBitsViaIndex(int24.get(), 0, 8);
 
             // The result should be 0000 0000 0000 0000 0000 1100 (12)
-            assertEquals(int24BitResult, 12);
+            assertEquals(12, int24BitResult);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
             fail("An exception occurred while executing the testcase!");
             return;
@@ -133,7 +133,7 @@ public final class TestBitUtilsIndexExtraction {
             long uInt24BitResult = BitUtils.extractBitsViaIndex(uInt24.get(), 0, 0);
 
             // The result should be 0000 0000 0000 0000 0000 0001 (1)
-            assertEquals(uInt24BitResult, 1);
+            assertEquals(1, uInt24BitResult);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
             fail("An exception occurred while executing the testcase!");
             return;
@@ -143,7 +143,7 @@ public final class TestBitUtilsIndexExtraction {
             long int32BitResult = BitUtils.extractBitsViaIndex(int32.get(), 0, 1);
 
             // The result should be 0000 0000 0000 0000 0000 0000 0000 0000 (0)
-            assertEquals(int32BitResult, 0);
+            assertEquals(0, int32BitResult);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
             fail("An exception occurred while executing the testcase!");
             return;
@@ -153,7 +153,7 @@ public final class TestBitUtilsIndexExtraction {
             long uInt32BitResult = BitUtils.extractBitsViaIndex(uInt32.get(), 0, 8);
 
             // The result should be 0000 0000 0000 0000 0000 0001 0010 1000 (296)
-            assertEquals(uInt32BitResult, 296);
+            assertEquals(296, uInt32BitResult);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
             fail("An exception occurred while executing the testcase!");
             return;
@@ -163,7 +163,7 @@ public final class TestBitUtilsIndexExtraction {
             long int64BitResult = -(BitUtils.extractBitsViaIndex(int64.get(), 0, 2));
 
             // The result should be 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0100 (4)
-            assertEquals(int64BitResult, -4);
+            assertEquals(-4, int64BitResult);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
             fail("An exception occurred while executing the testcase!");
             return;
@@ -173,7 +173,7 @@ public final class TestBitUtilsIndexExtraction {
             long uInt64BitResult = BitUtils.extractBitsViaIndex(uInt64.get(), 0, 9);
 
             // The result should be 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0001 0110 1111 (367)
-            assertEquals(uInt64BitResult, 367);
+            assertEquals(367, uInt64BitResult);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
             fail("An exception occurred while executing the testcase!");
             return;
@@ -183,7 +183,7 @@ public final class TestBitUtilsIndexExtraction {
             long byteBitResult = BitUtils.extractBitsViaIndex(testByte, 0, 5);
 
             // The result should be 0000 1100 (12)
-            assertEquals(byteBitResult, 12);
+            assertEquals(12, byteBitResult);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
             fail("An exception occurred while executing the testcase!");
             return;
@@ -193,7 +193,7 @@ public final class TestBitUtilsIndexExtraction {
             long shortBitResult = BitUtils.extractBitsViaIndex(testShort, 0, 8);
 
             // The result should be 0000 0000 0011 1010 (58)
-            assertEquals(shortBitResult, 58);
+            assertEquals(58, shortBitResult);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
             fail("An exception occurred while executing the testcase!");
             return;
@@ -203,7 +203,7 @@ public final class TestBitUtilsIndexExtraction {
             long intBitResult = BitUtils.extractBitsViaIndex(testInt, 0, 6);
 
             // The result should be 0000 0000 0001 0110 (22)
-            assertEquals(intBitResult, 22);
+            assertEquals(22, intBitResult);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
             fail("An exception occurred while executing the testcase!");
             return;
@@ -213,7 +213,7 @@ public final class TestBitUtilsIndexExtraction {
             long longBitResult = -(BitUtils.extractBitsViaIndex(testLong, 0, 0));
 
             // The result should be 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0001 (1)
-            assertEquals(longBitResult, -1);
+            assertEquals(-1, longBitResult);
         } catch (RangeOutOfBoundsException rangeOutOfBoundsException) {
             fail("An exception occurred while executing the testcase!");
         }

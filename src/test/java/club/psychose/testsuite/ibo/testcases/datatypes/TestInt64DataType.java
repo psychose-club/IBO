@@ -53,21 +53,21 @@ public final class TestInt64DataType {
         Int64 secondInt64 = new Int64(545252121212L);
 
         BigInteger storedValue = int64.getValue();
-        assertEquals(storedValue, BigInteger.valueOf(969699));
+        assertEquals(BigInteger.valueOf(969699), storedValue);
         storedValue = new BigInteger("24242455");
-        assertEquals(storedValue, BigInteger.valueOf(24242455));
+        assertEquals(BigInteger.valueOf(24242455), storedValue);
 
         int64.setValue(545252121212L);
-        assertEquals(int64.getValue().longValue(), 545252121212L);
+        assertEquals(545252121212L, int64.getValue().longValue());
         assertEquals(int64.getValue(), secondInt64.getValue());
-        assertEquals(int64.toString(), "545252121212");
+        assertEquals("545252121212", int64.toString());
 
         String hexString = int64.getAsHEXString(HEXFormat.UPPERCASE, ByteOrder.BIG_ENDIAN);
-        assertEquals(hexString, "0000007EF38F1A7C");
+        assertEquals("0000007EF38F1A7C", hexString);
 
         // Checking the other constructors.
         byte[] bytesWithoutSetByteOrder = ByteBuffer.allocate(8).order(ByteOrder.nativeOrder()).putLong(-24124).array();
-        assertEquals(new Int64(bytesWithoutSetByteOrder).getValue().longValue(), -24124);
+        assertEquals(-24124, new Int64(bytesWithoutSetByteOrder).getValue().longValue());
 
         byte[] bytesWithByteOrder = new byte[123];
         bytesWithByteOrder[0] = 0x00;
@@ -79,13 +79,13 @@ public final class TestInt64DataType {
         bytesWithByteOrder[6] = (byte) 0xB0;
         bytesWithByteOrder[7] = (byte) 0xBD;
 
-        assertEquals(new Int64(bytesWithByteOrder, ByteOrder.BIG_ENDIAN).getValue().longValue(), 45245);
-        assertEquals(new Int64((byte) 111).getValue().longValue(), 111);
-        assertEquals(new Int64((short) 213).getValue().longValue(), 213);
-        assertEquals(new Int64((long) 123).getValue().longValue(), 123);
-        assertEquals(new Int64(2.2512f).getValue().longValue(), (int) 2f);
-        assertEquals(new Int64(12321.3).getValue().longValue(), 12321);
-        assertEquals(new Int64(BigInteger.valueOf(1231341535)).getValue().longValue(), 1231341535);
-        assertEquals(new Int64("-2341").getValue().longValue(), -2341);
+        assertEquals(45245, new Int64(bytesWithByteOrder, ByteOrder.BIG_ENDIAN).getValue().longValue());
+        assertEquals(111, new Int64((byte) 111).getValue().longValue());
+        assertEquals(213, new Int64((short) 213).getValue().longValue());
+        assertEquals(123, new Int64((long) 123).getValue().longValue());
+        assertEquals((int) 2f, new Int64(2.2512f).getValue().longValue());
+        assertEquals(12321, new Int64(12321.3).getValue().longValue());
+        assertEquals(1231341535, new Int64(BigInteger.valueOf(1231341535)).getValue().longValue());
+        assertEquals(-2341, new Int64("-2341").getValue().longValue());
     }
 }

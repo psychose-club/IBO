@@ -53,21 +53,21 @@ public final class TestUInt32DataType {
         UInt32 secondUInt32 = new UInt32(465774);
 
         long storedValue = uint32.getValue();
-        assertEquals(storedValue, 41441041);
+        assertEquals(41441041, storedValue);
         storedValue = 463456;
-        assertEquals(storedValue, 463456);
+        assertEquals(463456, storedValue);
 
         uint32.setValue("465774");
-        assertEquals(uint32.getValue(), 465774);
+        assertEquals(465774, uint32.getValue());
         assertEquals(uint32.getValue(), secondUInt32.getValue());
-        assertEquals(uint32.toString(), "465774");
+        assertEquals("465774", uint32.toString());
 
         String hexString = uint32.getAsHEXString(HEXFormat.UPPERCASE, ByteOrder.BIG_ENDIAN);
-        assertEquals(hexString, "00071B6E");
+        assertEquals("00071B6E", hexString);
 
         // Checking the other constructors.
         byte[] bytesWithoutSetByteOrder = ByteBuffer.allocate(4).order(ByteOrder.nativeOrder()).putInt(5441854).array();
-        assertEquals(new UInt32(bytesWithoutSetByteOrder).getValue(), 5441854);
+        assertEquals(5441854, new UInt32(bytesWithoutSetByteOrder).getValue());
 
         byte[] bytesWithByteOrder = new byte[124];
         bytesWithByteOrder[0] = 0x00;
@@ -75,13 +75,13 @@ public final class TestUInt32DataType {
         bytesWithByteOrder[2] = 0x34;
         bytesWithByteOrder[3] = 0x68;
 
-        assertEquals(new UInt32(bytesWithByteOrder, ByteOrder.BIG_ENDIAN).getValue(), 996456);
-        assertEquals(new UInt32((byte) 11).getValue(), 11);
-        assertEquals(new UInt32((short) 124).getValue(), 124);
-        assertEquals(new UInt32((long) 1254123513).getValue(), 1254123513);
-        assertEquals(new UInt32(2512.2512f).getValue(), (int) 2512f);
-        assertEquals(new UInt32(1641.3).getValue(), 1641);
-        assertEquals(new UInt32(BigInteger.valueOf(13513512)).getValue(), 13513512);
-        assertEquals(new UInt32("1351351210").getValue(), 1351351210);
+        assertEquals(996456, new UInt32(bytesWithByteOrder, ByteOrder.BIG_ENDIAN).getValue());
+        assertEquals(11, new UInt32((byte) 11).getValue());
+        assertEquals(124, new UInt32((short) 124).getValue());
+        assertEquals(1254123513, new UInt32((long) 1254123513).getValue());
+        assertEquals((int) 2512f, new UInt32(2512.2512f).getValue());
+        assertEquals(1641, new UInt32(1641.3).getValue());
+        assertEquals(13513512, new UInt32(BigInteger.valueOf(13513512)).getValue());
+        assertEquals(1351351210, new UInt32("1351351210").getValue());
     }
 }

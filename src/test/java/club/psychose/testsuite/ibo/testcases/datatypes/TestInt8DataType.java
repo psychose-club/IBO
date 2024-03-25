@@ -52,29 +52,29 @@ public final class TestInt8DataType {
         Int8 secondInt8 = new Int8((float) -22);
 
         short storedValue = int8.getValue();
-        assertEquals(storedValue, 55);
+        assertEquals(55, storedValue);
         storedValue = 9;
-        assertEquals(storedValue, 9);
+        assertEquals(9, storedValue);
 
         int8.setValue(-22);
-        assertEquals(int8.getValue(), (short) -22);
+        assertEquals((short) -22, int8.getValue());
         assertEquals(int8.getValue(), secondInt8.getValue());
-        assertEquals(int8.toString(), "-22");
+        assertEquals("-22", int8.toString());
 
         String hexString = int8.getAsHEXString(HEXFormat.UPPERCASE, ByteOrder.BIG_ENDIAN);
-        assertEquals(hexString, "EA");
+        assertEquals("EA", hexString);
 
         // Checking the other constructors.
         byte[] bytes = new byte[2];
         bytes[0] = 0x02;
 
-        assertEquals(new Int8(bytes).getValue(), (short) 0x02);
-        assertEquals(new Int8((byte) 33).getValue(), (short) 33);
-        assertEquals(new Int8((short) 69).getValue(), (short) 69);
-        assertEquals(new Int8((long) 49).getValue(), (short) 49);
-        assertEquals(new Int8(-23f).getValue(), (short) -23f);
-        assertEquals(new Int8(8.4234d).getValue(), (short) 8);
-        assertEquals(new Int8(BigInteger.TEN).getValue(), (short) 10);
-        assertEquals(new Int8("-54").getValue(), (short) -54);
+        assertEquals((short) 0x02, new Int8(bytes).getValue());
+        assertEquals((short) 33, new Int8((byte) 33).getValue());
+        assertEquals((short) 69, new Int8((short) 69).getValue());
+        assertEquals((short) 49, new Int8((long) 49).getValue());
+        assertEquals((short) -23f, new Int8(-23f).getValue());
+        assertEquals((short) 8, new Int8(8.4234d).getValue());
+        assertEquals((short) 10, new Int8(BigInteger.TEN).getValue());
+        assertEquals((short) -54, new Int8("-54").getValue());
     }
 }

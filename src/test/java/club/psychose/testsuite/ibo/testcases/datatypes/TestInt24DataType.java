@@ -52,17 +52,17 @@ public final class TestInt24DataType {
         Int24 secondInt16 = new Int24(121);
 
         int storedValue = int16.getValue();
-        assertEquals(storedValue, 9788);
+        assertEquals(9788, storedValue);
         storedValue = 1432;
-        assertEquals(storedValue, 1432);
+        assertEquals(1432, storedValue);
 
         int16.setValue(121);
-        assertEquals(int16.getValue(), 121);
+        assertEquals(121, int16.getValue());
         assertEquals(int16.getValue(), secondInt16.getValue());
-        assertEquals(int16.toString(), "121");
+        assertEquals("121", int16.toString());
 
         String hexString = int16.getAsHEXString(HEXFormat.UPPERCASE, ByteOrder.BIG_ENDIAN);
-        assertEquals(hexString, "000079");
+        assertEquals("000079", hexString);
 
         // Checking the other constructors.
         byte[] bytesWithoutSetByteOrder = new byte[3];
@@ -78,7 +78,7 @@ public final class TestInt24DataType {
             bytesWithoutSetByteOrder[2] = (byte) 0xFF;
         }
 
-        assertEquals(new Int24(bytesWithoutSetByteOrder).getValue(), -978);
+        assertEquals(-978, new Int24(bytesWithoutSetByteOrder).getValue());
 
         // We will reverse the check now to check both ByteOrders.
         useBigEndian = !(useBigEndian);
@@ -95,13 +95,13 @@ public final class TestInt24DataType {
             bytesWithByteOrder[2] = (byte) 0xFF;
         }
 
-        assertEquals(new Int24(bytesWithByteOrder, (useBigEndian) ? (ByteOrder.BIG_ENDIAN) : (ByteOrder.LITTLE_ENDIAN)).getValue(), -404);
-        assertEquals(new Int24((byte) 3).getValue(), 3);
-        assertEquals(new Int24((short) 74).getValue(), 74);
-        assertEquals(new Int24((long) 8388607).getValue(), 8388607);
-        assertEquals(new Int24(2231f).getValue(), 2231);
-        assertEquals(new Int24(6.3).getValue(), 6);
-        assertEquals(new Int24(BigInteger.valueOf(9)).getValue(), 9);
-        assertEquals(new Int24("1").getValue(), 1);
+        assertEquals(-404, new Int24(bytesWithByteOrder, (useBigEndian) ? (ByteOrder.BIG_ENDIAN) : (ByteOrder.LITTLE_ENDIAN)).getValue());
+        assertEquals(3, new Int24((byte) 3).getValue());
+        assertEquals(74, new Int24((short) 74).getValue());
+        assertEquals(8388607, new Int24((long) 8388607).getValue());
+        assertEquals(2231, new Int24(2231f).getValue());
+        assertEquals(6, new Int24(6.3).getValue());
+        assertEquals(9, new Int24(BigInteger.valueOf(9)).getValue());
+        assertEquals(1, new Int24("1").getValue());
     }
 }

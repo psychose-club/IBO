@@ -82,8 +82,8 @@ public final class TestBinaryFileClone {
             clonedBinaryFile.setOffsetPosition(0x0);
             assertNotEquals(testBinaryFile.getFileOffsetPosition(), clonedBinaryFile.getFileOffsetPosition());
 
-            assertEquals(clonedBinaryFile.readUInt32().getValue(), 0x0);
-            assertEquals(testBinaryFile.readUInt32().getValue(), 0x1);
+            assertEquals(0x0, clonedBinaryFile.readUInt32().getValue());
+            assertEquals(0x1, testBinaryFile.readUInt32().getValue());
 
             assertNotEquals(testBinaryFile.getFileOffsetPosition(), clonedBinaryFile.getFileOffsetPosition());
         } catch (Exception exception) {

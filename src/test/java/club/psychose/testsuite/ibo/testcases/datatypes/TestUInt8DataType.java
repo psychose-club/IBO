@@ -52,29 +52,29 @@ public final class TestUInt8DataType {
         UInt8 secondUInt8 = new UInt8((double) 42);
 
         short storedValue = uInt8.getValue();
-        assertEquals(storedValue, 213);
+        assertEquals(213, storedValue);
         storedValue = 69;
-        assertEquals(storedValue, 69);
+        assertEquals(69, storedValue);
 
         uInt8.setValue(42);
-        assertEquals(uInt8.getValue(), (short) 42);
-        assertEquals(uInt8.getValue(), secondUInt8.getValue());
-        assertEquals(uInt8.toString(), "42");
+        assertEquals((short) 42, uInt8.getValue());
+        assertEquals(secondUInt8.getValue(), uInt8.getValue());
+        assertEquals("42", uInt8.toString());
 
         String hexString = uInt8.getAsHEXString(HEXFormat.UPPERCASE, ByteOrder.BIG_ENDIAN);
-        assertEquals(hexString, "2A");
+        assertEquals("2A", hexString);
 
         // Checking the other constructors.
         byte[] bytes = new byte[153];
         bytes[0] = 0x10;
 
-        assertEquals(new UInt8(bytes).getValue(), (short) 0x10);
-        assertEquals(new UInt8((byte) 2).getValue(), (short) 2);
-        assertEquals(new UInt8((short) 149).getValue(), (short) 149);
-        assertEquals(new UInt8((long) 242).getValue(), (short) 242);
-        assertEquals(new UInt8(24f).getValue(), (short) 24f);
-        assertEquals(new UInt8(123.5d).getValue(), (short) 123);
-        assertEquals(new UInt8(BigInteger.ONE).getValue(), (short) 1);
-        assertEquals(new UInt8("234").getValue(), (short) 234);
+        assertEquals((short) 0x10, new UInt8(bytes).getValue());
+        assertEquals((short) 2, new UInt8((byte) 2).getValue());
+        assertEquals((short) 149, new UInt8((short) 149).getValue());
+        assertEquals((short) 242, new UInt8((long) 242).getValue());
+        assertEquals((short) 24f, new UInt8(24f).getValue());
+        assertEquals((short) 123, new UInt8(123.5d).getValue());
+        assertEquals((short) 1, new UInt8(BigInteger.ONE).getValue());
+        assertEquals((short) 234, new UInt8("234").getValue());
     }
 }

@@ -113,69 +113,69 @@ public final class TestBinaryFile {
             binaryFile.write(new Int24(8));
             binaryFile.write(new UInt24(9));
 
-            assertEquals(binaryFile.getFileOffsetPosition(), 0x41);
+            assertEquals(0x41, binaryFile.getFileOffsetPosition());
 
             // Enabling padding
             binaryFile.enablePadding(0x10, (byte) 0xFF);
             binaryFile.write((byte) 0x43);
-            assertEquals(binaryFile.getFileOffsetPosition(), 0x51);
+            assertEquals(0x51, binaryFile.getFileOffsetPosition());
 
             binaryFile.fill((byte) 0x2A, 2);
-            assertEquals(binaryFile.getFileOffsetPosition(), 0x61);
+            assertEquals(0x61, binaryFile.getFileOffsetPosition());
 
             binaryFile.fillWithoutPadding((byte) 0x31, 0x05);
-            assertEquals(binaryFile.getFileOffsetPosition(), 0x66);
+            assertEquals(0x66, binaryFile.getFileOffsetPosition());
 
             binaryFile.disablePadding();
             binaryFile.write(new Int8(12));
-            assertEquals(binaryFile.getFileOffsetPosition(), 0x67);
+            assertEquals(0x67, binaryFile.getFileOffsetPosition());
 
             // Check if every read method works without any issues.
             binaryFile.setOffsetPosition(0x1);
-            assertEquals(binaryFile.readBytes(1)[0], 0x54);
+            assertEquals(0x54, binaryFile.readBytes(1)[0]);
 
             binaryFile.setOffsetPosition(0x0);
-            assertEquals(binaryFile.readBytes(1)[0], 0x9);
+            assertEquals(0x9, binaryFile.readBytes(1)[0]);
 
             binaryFile.skipOffsetPosition(1);
-            assertEquals(binaryFile.readInt8().getValue(), (short) 0x0);
+            assertEquals((short) 0x0, binaryFile.readInt8().getValue());
 
             binaryFile.setOffsetPosition(0x0);
             {
                 byte[] bytes = binaryFile.readBytes(2);
-                assertEquals(bytes[0], 0x9);
-                assertEquals(bytes[1], 0x54);
+                assertEquals(0x9, bytes[0]);
+                assertEquals(0x54, bytes[1]);
             }
 
-            assertEquals(binaryFile.readInt8().getValue(), (short) 0x0);
-            assertEquals(binaryFile.readUInt8().getValue(), (short) 0x1);
-            assertEquals(binaryFile.readInt16().getValue(), 0x2);
-            assertEquals(binaryFile.readUInt16().getValue(), 0x3);
-            assertEquals(binaryFile.readInt32().getValue(), 0x4);
+            assertEquals((short) 0x0, binaryFile.readInt8().getValue());
+            assertEquals((short) 0x1, binaryFile.readUInt8().getValue());
+            assertEquals(0x2, binaryFile.readInt16().getValue());
+            assertEquals(0x3, binaryFile.readUInt16().getValue());
+            assertEquals(0x4, binaryFile.readInt32().getValue());
 
             binaryFile.setStayOnOffsetPosition(true);
-            assertEquals(binaryFile.readUInt32().getValue(), 0x5);
-            assertEquals(binaryFile.readUInt32().getValue(), 0x5);
-            assertEquals(binaryFile.readUInt32().getValue(), 0x5);
+            assertEquals(0x5, binaryFile.readUInt32().getValue());
+            assertEquals(0x5, binaryFile.readUInt32().getValue());
+            assertEquals(0x5, binaryFile.readUInt32().getValue());
             binaryFile.setStayOnOffsetPosition(false);
 
-            assertEquals(binaryFile.readUInt32().getValue(), 0x5);
-            assertEquals(binaryFile.readInt64().getValue().intValue(), 0x6);
+            assertEquals(0x5, binaryFile.readUInt32().getValue());
+            assertEquals(0x6, binaryFile.readInt64().getValue().intValue());
 
             binaryFile.setStayOnOffsetPosition(true);
-            assertEquals(binaryFile.readUInt64().getValue().intValue(), 0x7);
-            assertEquals(binaryFile.readUInt64().getValue().intValue(), 0x7);
-            assertEquals(binaryFile.readUInt64().getValue().intValue(), 0x7);
+            assertEquals(0x7, binaryFile.readUInt64().getValue().intValue());
+            assertEquals(0x7, binaryFile.readUInt64().getValue().intValue());
+            assertEquals(0x7, binaryFile.readUInt64().getValue().intValue());
             binaryFile.setStayOnOffsetPosition(false);
 
-            assertEquals(binaryFile.readUInt64().getValue().intValue(), 0x7);
-            assertEquals(binaryFile.readInt8().getValue().intValue(), 0x0); // Byte = Int8
-            assertEquals(binaryFile.readFloat(), 3.4f);
-            assertEquals(binaryFile.readDouble(), 4.5);
-            assertEquals(binaryFile.readString(14), "LoveeYou<3<3<3");
-            assertEquals(binaryFile.readInt24().getValue(), 0x8);
-            assertEquals(binaryFile.readUInt24().getValue(), 0x9);
-            assertEquals(binaryFile.getFileOffsetPosition(), 0x41);
+            assertEquals(0x7, binaryFile.readUInt64().getValue().intValue());
+            assertEquals(0x0, binaryFile.readInt8().getValue().intValue()); // Byte = Int8
+            assertEquals(3.4f, binaryFile.readFloat());
+            assertEquals(4.5, binaryFile.readDouble());
+            assertEquals("LoveeYou<3<3<3", binaryFile.readString(14));
+            assertEquals(0x8, binaryFile.readInt24().getValue());
+            assertEquals(0x9, binaryFile.readUInt24().getValue());
+            assertEquals(0x41, binaryFile.getFileOffsetPosition());
 
             // Check if an io exception is thrown when we try to enable the chunk mode without setting a specified chunk length.
             binaryFile.setOffsetPosition(0x0);
@@ -184,10 +184,10 @@ public final class TestBinaryFile {
             binaryFile.setChunkLength(0x10);
             binaryFile.setChunkUsage(true);
 
-            assertEquals(binaryFile.readBytes(1)[0], 0x9);
+            assertEquals(0x9, binaryFile.readBytes(1)[0]);
 
             binaryFile.setOffsetPosition(0x8);
-            assertEquals(binaryFile.readInt32().getValue(), 0x4); // Reading bytes from two chunks while reading the value.
+            assertEquals(0x4, binaryFile.readInt32().getValue()); // Reading bytes from two chunks while reading the value.
 
             byte[] sequence1 = new byte[3];
             sequence1[0] = (byte) 0xFF;
@@ -195,13 +195,13 @@ public final class TestBinaryFile {
             sequence1[2] = (byte) 0xFF;
 
             long sequence1Offset = binaryFile.searchNextByteSequence(sequence1);
-            assertEquals(sequence1Offset, 0x42);
+            assertEquals(0x42, sequence1Offset);
 
             binaryFile.disablePadding();
             String sequence2 = "2AFF";
             long sequence2Offset = binaryFile.searchNextHEXValue(sequence2);
 
-            assertEquals(sequence2Offset, 0x52);
+            assertEquals(0x52, sequence2Offset);
             assertTrue(binaryFile.isChunkUsageEnabled());
 
             // Cleanup part.

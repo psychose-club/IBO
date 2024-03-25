@@ -53,21 +53,21 @@ public final class TestUInt64DataType {
         UInt64 secondUInt64 = new UInt64(UInt64.getMinimumValue());
 
         BigInteger storedValue = uInt64.getValue();
-        assertEquals(storedValue, UInt64.getMaximumValue());
+        assertEquals(UInt64.getMaximumValue(), storedValue);
         storedValue = BigInteger.valueOf(41541555);
-        assertEquals(storedValue, BigInteger.valueOf(41541555));
+        assertEquals(BigInteger.valueOf(41541555), storedValue);
 
         uInt64.setValue(UInt64.getMinimumValue());
-        assertEquals(uInt64.getValue(), UInt64.getMinimumValue());
+        assertEquals(UInt64.getMinimumValue(), uInt64.getValue());
         assertEquals(uInt64.getValue(), secondUInt64.getValue());
-        assertEquals(uInt64.toString(), UInt64.getMinimumValue().toString());
+        assertEquals(UInt64.getMinimumValue().toString(), uInt64.toString());
 
         String hexString = uInt64.getAsHEXString(HEXFormat.UPPERCASE, ByteOrder.LITTLE_ENDIAN);
-        assertEquals(hexString, "0000000000000000");
+        assertEquals("0000000000000000", hexString);
 
         // Checking the other constructors.
         byte[] bytesWithoutSetByteOrder = ByteBuffer.allocate(8).order(ByteOrder.nativeOrder()).putLong(249664).array();
-        assertEquals(new UInt64(bytesWithoutSetByteOrder).getValue().longValue(), 249664);
+        assertEquals(249664, new UInt64(bytesWithoutSetByteOrder).getValue().longValue());
 
         byte[] bytesWithByteOrder = new byte[123];
         bytesWithByteOrder[0] = 0x11;
@@ -79,13 +79,13 @@ public final class TestUInt64DataType {
         bytesWithByteOrder[6] = 0x00;
         bytesWithByteOrder[7] = 0x00;
 
-        assertEquals(new UInt64(bytesWithByteOrder, ByteOrder.LITTLE_ENDIAN).getValue().longValue(), 6161);
-        assertEquals(new UInt64((byte) 13).getValue().longValue(), 13);
-        assertEquals(new UInt64((short) 21).getValue().longValue(), 21);
-        assertEquals(new UInt64((long) 2222).getValue().longValue(), 2222);
-        assertEquals(new UInt64(0f).getValue().longValue(), 0);
-        assertEquals(new UInt64(0.69).getValue().longValue(), 0);
-        assertEquals(new UInt64(BigInteger.valueOf(1234)).getValue().longValue(), 1234);
-        assertEquals(new UInt64("42").getValue().longValue(), 42);
+        assertEquals(6161, new UInt64(bytesWithByteOrder, ByteOrder.LITTLE_ENDIAN).getValue().longValue());
+        assertEquals(13, new UInt64((byte) 13).getValue().longValue());
+        assertEquals(21, new UInt64((short) 21).getValue().longValue());
+        assertEquals(2222, new UInt64((long) 2222).getValue().longValue());
+        assertEquals(0, new UInt64(0f).getValue().longValue());
+        assertEquals(0, new UInt64(0.69).getValue().longValue());
+        assertEquals(1234, new UInt64(BigInteger.valueOf(1234)).getValue().longValue());
+        assertEquals(42, new UInt64("42").getValue().longValue());
     }
 }

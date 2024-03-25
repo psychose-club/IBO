@@ -53,33 +53,33 @@ public final class TestInt16DataType {
         Int16 secondInt16 = new Int16(BigInteger.valueOf(4333L));
 
         int storedValue = int16.getValue();
-        assertEquals(storedValue, 1234);
+        assertEquals(1234, storedValue);
         storedValue = 77;
-        assertEquals(storedValue, 77);
+        assertEquals(77, storedValue);
 
         int16.setValue(4333);
-        assertEquals(int16.getValue(), 4333);
+        assertEquals(4333, int16.getValue());
         assertEquals(int16.getValue(), secondInt16.getValue());
-        assertEquals(int16.toString(), "4333");
+        assertEquals("4333", int16.toString());
 
         String hexString = int16.getAsHEXString(HEXFormat.UPPERCASE, ByteOrder.LITTLE_ENDIAN);
-        assertEquals(hexString, "ED10");
+        assertEquals("ED10", hexString);
 
         // Checking the other constructors.
         byte[] bytesWithoutSetByteOrder = ByteBuffer.allocate(2).order(ByteOrder.nativeOrder()).putShort((short) 24).array();
-        assertEquals(new Int16(bytesWithoutSetByteOrder).getValue(), 24);
+        assertEquals(24, new Int16(bytesWithoutSetByteOrder).getValue());
 
         byte[] bytesWithByteOrder = new byte[53];
         bytesWithByteOrder[0] = 0x50;
         bytesWithByteOrder[1] = (byte) 0xFE;
 
-        assertEquals(new Int16(bytesWithByteOrder, ByteOrder.LITTLE_ENDIAN).getValue(), -432);
-        assertEquals(new Int16((byte) -22).getValue(), -22);
-        assertEquals(new Int16((short) -149).getValue(), -149);
-        assertEquals(new Int16((long) 2432).getValue(), 2432);
-        assertEquals(new Int16(234.54f).getValue(), (int) 234f);
-        assertEquals(new Int16(723.61446).getValue(), 723);
-        assertEquals(new Int16(BigInteger.valueOf(32767)).getValue(), 32767);
-        assertEquals(new Int16("123").getValue(), 123);
+        assertEquals(-432, new Int16(bytesWithByteOrder, ByteOrder.LITTLE_ENDIAN).getValue());
+        assertEquals(-22, new Int16((byte) -22).getValue());
+        assertEquals(-149, new Int16((short) -149).getValue());
+        assertEquals(2432, new Int16((long) 2432).getValue());
+        assertEquals((int) 234f, new Int16(234.54f).getValue());
+        assertEquals(723, new Int16(723.61446).getValue());
+        assertEquals(32767, new Int16(BigInteger.valueOf(32767)).getValue());
+        assertEquals(123, new Int16("123").getValue());
     }
 }

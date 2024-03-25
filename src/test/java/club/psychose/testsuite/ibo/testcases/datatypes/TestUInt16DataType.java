@@ -53,33 +53,33 @@ public final class TestUInt16DataType {
         UInt16 secondUInt16 = new UInt16(12);
 
         int storedValue = uInt16.getValue();
-        assertEquals(storedValue, 1337);
+        assertEquals(1337, storedValue);
         storedValue = 420;
-        assertEquals(storedValue, 420);
+        assertEquals(420, storedValue);
 
         uInt16.setValue(12);
-        assertEquals(uInt16.getValue(), 12);
+        assertEquals(12, uInt16.getValue());
         assertEquals(uInt16.getValue(), secondUInt16.getValue());
-        assertEquals(uInt16.toString(), "12");
+        assertEquals("12", uInt16.toString());
 
         String hexString = uInt16.getAsHEXString(HEXFormat.UPPERCASE, ByteOrder.LITTLE_ENDIAN);
-        assertEquals(hexString, "0C00");
+        assertEquals("0C00", hexString);
 
         // Checking the other constructors.
         byte[] bytesWithoutSetByteOrder = ByteBuffer.allocate(2).order(ByteOrder.nativeOrder()).putShort((short) 2641).array();
-        assertEquals(new UInt16(bytesWithoutSetByteOrder).getValue(), 2641);
+        assertEquals(2641, new UInt16(bytesWithoutSetByteOrder).getValue());
 
         byte[] bytesWithByteOrder = new byte[124];
         bytesWithByteOrder[0] = 0x4F;
         bytesWithByteOrder[1] = 0x15;
 
-        assertEquals(new UInt16(bytesWithByteOrder, ByteOrder.LITTLE_ENDIAN).getValue(), 5455);
-        assertEquals(new UInt16((byte) 232).getValue(), 232);
-        assertEquals(new UInt16((short) 1451).getValue(), 1451);
-        assertEquals(new UInt16((long) 23414).getValue(), 23414);
-        assertEquals(new UInt16(2344.141f).getValue(), (int) 2344f);
-        assertEquals(new UInt16((double) 6453).getValue(), 6453);
-        assertEquals(new UInt16(BigInteger.valueOf(65535)).getValue(), 65535);
-        assertEquals(new UInt16("5235").getValue(), 5235);
+        assertEquals(5455, new UInt16(bytesWithByteOrder, ByteOrder.LITTLE_ENDIAN).getValue());
+        assertEquals(232, new UInt16((byte) 232).getValue());
+        assertEquals(1451, new UInt16((short) 1451).getValue());
+        assertEquals(23414, new UInt16((long) 23414).getValue());
+        assertEquals((int) 2344f, new UInt16(2344.141f).getValue());
+        assertEquals(6453, new UInt16((double) 6453).getValue());
+        assertEquals(65535, new UInt16(BigInteger.valueOf(65535)).getValue());
+        assertEquals(5235, new UInt16("5235").getValue());
     }
 }
